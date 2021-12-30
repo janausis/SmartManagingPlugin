@@ -1,0 +1,9 @@
+main: germany.jannismartensen.smartmanaging.SmartManaging
+name: SmartManaging
+version: 1.0
+author: Jannis Martensen
+description: Manage players and the server via an external app
+commands:
+  managing:
+    description: main command for smart managing
+    usage: /managing

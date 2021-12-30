@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${name}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="../style/style.css" rel="stylesheet" />
+  <link href="../style/profile.css" rel="stylesheet" />
+  <link href="../style/scrollbar.css" rel="stylesheet" />
+
+</head>
+<body style="margin: 0;">
+
+
+  <div class="navbar">
+    <a href="/">  <button class="navbar-button b5-1">Home</button></a>
+    <a href="/profile">  <button class="navbar-button b5-2">Profile</button></a>
+    <a href="/map">      <button class="navbar-button b5-3">Map</button></a>
+    <a href="/inventory"><button class="navbar-button b5-4">Inventory</button></a>
+    <a href="/players">    <button class="navbar-button b5-5">Players</button></a>
+    <a href="/logout">    <button class="navbar-button b5-6">Logout</button></a>
+
+    <div class="topnav">
+      <a class="active">
+      </a>
+        <div id="myLinks">
+          <a class="tab" href="/">Home</a>
+          <a class="tab" href="/profile">Profile</a>
+          <a class="tab" href="/map">Map</a>
+          <a class="tab" href="/inventory">Inventory</a>
+          <a class="tab" href="/players">Players</a>
+          <a class="tab" href="/logout">Logout</a>
+        </div>
+
+      <div href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <div class="burger"></div>
+          <div class="burger"></div>
+          <div class="burger"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item-column-profile">
+    <div class="item-profilebox" >
+      <h1 class="item-bigtitle item-center white">Welcome back ${username}</h1>
+      <h3 class="item-ip item-center white">Your Playtime: ${playtime}</h3>
+      <br>
+      <h3 class="item-subtitle item-center white">${announcement}</h3>
+    </div>
+    <div class="item-center-vertical">
+      <div class="items">
+        <ul style="list-style: none;">
+          <li class="selectable">Overview</li>
+          <li class="selectable">Skywars</li>
+          <li class="selectable">Bedwars</li>
+          <li class="selectable">UHC</li>
+          <li class="selectable">Hide & Seek</li>
+          <li class="selectable">TTT</li>
+          <li class="selectable">Minigames</li>
+        <ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelector('ul').addEventListener('click', function(e) {   // 1.
+      var selected;
+
+      if(e.target.tagName === 'LI') {                                      // 2.
+        selected= document.querySelector('li.selected');                   // 2a.
+        if(selected) selected.className= 'selectable';                               // "
+        e.target.className= 'selected';                                    // 2b.
+      }
+    });
+  </script>
+</body>
+</html>

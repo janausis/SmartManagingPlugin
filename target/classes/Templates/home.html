@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${name}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="../style/style.css" rel="stylesheet" />
+  <link href="../style/scrollbar.css" rel="stylesheet" />
+
+</head>
+<body style="margin: 0;">
+
+    <div class="navbar">
+      <a href="/">  <button class="navbar-button b5-1">Home</button></a>
+      <a href="/profile">  <button class="navbar-button b5-2">Profile</button></a>
+      <a href="/map">      <button class="navbar-button b5-3">Map</button></a>
+      <a href="/inventory"><button class="navbar-button b5-4">Inventory</button></a>
+      <a href="/players">  <button class="navbar-button b5-5">Players</button></a>
+      <a href="/logout">   <button class="navbar-button b5-6">Logout</button></a>
+
+      <div class="topnav">
+        <a class="active">
+        </a>
+          <div id="myLinks">
+            <a class="tab" href="/">Home</a>
+            <a class="tab" href="/profile">Profile</a>
+            <a class="tab" href="/map">Map</a>
+            <a class="tab" href="/inventory">Inventory</a>
+            <a class="tab" href="/players">Players</a>
+            <a class="tab" href="/logout">Logout</a>
+          </div>
+
+        <div href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <div class="burger"></div>
+            <div class="burger"></div>
+            <div class="burger"></div>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="item-column-home">
+    <div class="item-homebox" >
+      <h1 class="item-bigtitle item-center white">Welcome to ${name}</h1>
+      <br>
+      <h3 class="item-subtitle item-center white">${announcement}</h3>
+
+      <div class="item-subbox">
+        <h3 class="item-ip item-center white">Server status: </h3>
+        <br>
+        <br>
+        <h3 class="item-ip item-left white inline">Active Ip:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+        <h3 class="item-ip item-left green inline">${ip}</h3>
+        <br>
+        <br>
+        <h3 class="item-ip item-left white inline">Currently Playing: &nbsp;&nbsp; </h3>
+        <h3 class="item-ip item-left green inline">${playercount}</h3>
+        <br>
+        <br>
+        <h3 class="item-ip item-left white inline">Accounts: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h3>
+        <h3 class="item-ip item-left green inline">${accountNumber}</h3>
+        <br>
+        <br>
+        <h3 class="item-ip item-left white inline">Current Version: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h3>
+        <h3 class="item-ip item-left green inline">${version}</h3>
+      </div>
+    </div>
+  </div>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>
