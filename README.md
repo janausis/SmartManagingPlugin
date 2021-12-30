@@ -1,3 +1,3 @@
 # SmartManagingPlugin
 
-Minecraft Pluginb with Web integrations
+Minecraft Plugin with Web integrations
