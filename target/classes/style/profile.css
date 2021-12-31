@@ -30,11 +30,10 @@
 }
 
 .selectable {
-  background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.5)), url("../images/profileheader.png");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-
+  background-color: rgba(0,0,0,0.8) !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   width: 250px;
   margin: 20px 15px 20px 15px;
   padding-left: 30px;
@@ -46,15 +45,15 @@
   font-size: 20px;
   color: #EEE;
   display: block;
-  display:inline-block
+  display: inline-block;
 }
 
 .selectable:hover {
-  background-image: linear-gradient(rgba(125, 125, 125,0.7), rgba(125, 125, 125,0.7)), url("../images/profileheader.png");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #000;
+  background-color: rgba(125, 125, 125,0.7) !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #000;
 }
 
 .selected {
@@ -70,8 +69,8 @@
   color: #000;
   display: block;
   display:inline-block;
-  background-image: linear-gradient(rgba(32,144,248,0.8), rgba(32,144,248,0.8)), url("../images/profileheader.png");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  background-color: rgba(125, 125, 125,0.7) !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }

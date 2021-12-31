@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>${name}</title>
+  <title>Profile</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
@@ -44,36 +44,39 @@
 
   <div class="item-column-profile">
     <div class="item-profilebox" >
-      <h1 class="item-bigtitle item-center white">Welcome back ${username}</h1>
-      <h3 class="item-ip item-center white">Your Playtime: ${playtime}</h3>
+      <h1 class="item-bigtitle item-center white">Welcome back&nbsp; ${username}</h1>
+      <h3 class="item-ip item-center white">Your Playtime:&nbsp; ${playtime}</h3>
       <br>
       <h3 class="item-subtitle item-center white">${announcement}</h3>
     </div>
     <div class="item-center-vertical">
       <div class="items">
-        <ul style="list-style: none;">
-          <li class="selectable">Overview</li>
-          <li class="selectable">Skywars</li>
-          <li class="selectable">Bedwars</li>
-          <li class="selectable">UHC</li>
-          <li class="selectable">Hide & Seek</li>
-          <li class="selectable">TTT</li>
-          <li class="selectable">Minigames</li>
+        <ul style="list-style: none;" id="gamelist">
         <ul>
       </div>
     </div>
   </div>
 
   <script>
-    document.querySelector('ul').addEventListener('click', function(e) {   // 1.
+    list = document.getElementById('gamelist');
+
+    modeList = ${modes}
+
+    list.innerHTML += '<li class="selectable" style="background-image: url(' + "../images/modes/Overview.png" + ');">Overview</li>'
+    for(var i = 0; i < modeList.length; i++) {
+       list.innerHTML += '<li class="selectable" style="background-image: url(../images/modes/' + modeList[i] + '.png);">' + modeList[i] + '</li>'
+    }
+
+    document.querySelector('ul').addEventListener('click', function(e) {
       var selected;
 
-      if(e.target.tagName === 'LI') {                                      // 2.
-        selected= document.querySelector('li.selected');                   // 2a.
-        if(selected) selected.className= 'selectable';                               // "
-        e.target.className= 'selected';                                    // 2b.
+      if(e.target.tagName === 'LI') {
+        selected= document.querySelector('li.selected');
+        if(selected) selected.className= 'selectable';
+        e.target.className= 'selected';
       }
     });
+
   </script>
 </body>
 </html>

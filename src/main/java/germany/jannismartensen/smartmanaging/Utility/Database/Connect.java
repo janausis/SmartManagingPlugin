@@ -70,7 +70,7 @@ public class Connect {
                 server = "<Server IP>";
             }
 
-            user.sendMessage("Welcome! Lookup your profile under " + server + ":" + SmartManaging.port);
+            user.sendMessage("Welcome! Lookup your profile under http://" + server + ":" + SmartManaging.port);
 
         } catch (SQLException e) {
             user.sendMessage("You could not be registered! Please try again later.");

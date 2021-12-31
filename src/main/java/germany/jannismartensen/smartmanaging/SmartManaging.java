@@ -118,6 +118,7 @@ public class SmartManaging extends JavaPlugin {
         server.createContext("/favicon.ico", new ServeFile(this, "favicon.ico"));
         server.createContext("/style", new FileServer(this, "/style"));
         server.createContext("/images", new FileServer(this, "/images"));
+        server.createContext("/images/modes", new FileServer(this, "/images/modes"));
         server.setExecutor(null);
         server.start();
 

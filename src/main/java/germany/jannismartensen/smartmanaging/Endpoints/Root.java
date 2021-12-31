@@ -1,5 +1,6 @@
 package germany.jannismartensen.smartmanaging.Endpoints;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
@@ -45,6 +46,8 @@ public class Root implements HttpHandler {
         map.put("version", plugin.getServer().getBukkitVersion());
         map.put("ip", Util.getIpOrDomain(plugin));
         map.put("loggedin", String.valueOf(Util.loggedIn(he, connect, plugin)));
+
+        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect, plugin), he);
 
         SmartManaging.copyResources("Templates/home.html", plugin, false);
         String response = engine.renderTemplate("home.html", map);

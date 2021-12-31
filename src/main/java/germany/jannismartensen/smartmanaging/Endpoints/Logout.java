@@ -10,8 +10,6 @@ import germany.jannismartensen.smartmanaging.Utility.Util;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
-import java.util.Calendar;
-import java.util.Date;
 
 import static germany.jannismartensen.smartmanaging.Utility.Util.log;
 
@@ -37,13 +35,7 @@ public class Logout implements HttpHandler {
 
         if (Util.loggedIn(he, connect, plugin)) {
             // Remove login cookie
-
-            // Make Cookie invalid by setting before current time
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.YEAR, -15);
-            Date nextYear = cal.getTime();
-            Cookie cookie = new Cookie("login", "", nextYear, null, "192.168.1.25", "/", false, false, null);
-            headers.add("Set-Cookie", cookie.toString());
+            headers.add("Set-Cookie", Util.invalidCookie().toString());
         }
 
         String response = "";

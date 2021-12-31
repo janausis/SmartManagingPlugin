@@ -4,14 +4,16 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
+import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
 import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.Utility.Util;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static germany.jannismartensen.smartmanaging.Utility.Util.log;
 
@@ -32,22 +34,42 @@ public class Profile implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         log(he.getRemoteAddress().toString().replace("/", "") + " accessed '" + he.getRequestURI() + "': " + he.getRequestMethod());
 
-        Headers headers = he.getResponseHeaders();
-        headers.add("Location", "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
-
-        if (Util.loggedIn(he, connect, plugin)) {
-            // Remove login cookie
-
-            // Make Cookie invalid by setting before current time
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.YEAR, -15);
-            Date nextYear = cal.getTime();
-            Cookie cookie = new Cookie("login", "", nextYear, null, "192.168.1.25", "/", false, false, null);
-            headers.add("Set-Cookie", cookie.toString());
+        if (!Util.loggedIn(he, connect, plugin)) {
+            Headers headers = Util.deleteInvalidCookies(false, he);
+            headers.add("Location", "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
+            String response = "";
+            he.sendResponseHeaders(302, 0);
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
         }
 
-        String response = "";
-        he.sendResponseHeaders(302, 0);
+        Map<String, String> map = new HashMap<>();
+        FileConfiguration config = plugin.getConfig();
+
+        String username = Connect.getPlayerFromCookie(connect, Util.getCookie(he));
+
+        map.put("username", username);
+        map.put("announcement", config.getString("announcement"));
+        map.put("playtime", "NOT FOUND!");
+
+        // Generate modes list
+        if (config.contains("modes")) {
+            String s = "['" + config.getString("modes").replace(" ", "").replace(",", "','") + "']";
+            log(s);
+            map.put("modes", s);
+        } else {
+            map.put("modes", "[]");
+        }
+
+        map.put("loggedin", String.valueOf(Util.loggedIn(he, connect, plugin)));
+
+        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect, plugin), he);
+
+        SmartManaging.copyResources("Templates/profile.html", plugin, false);
+        String response = engine.renderTemplate("profile.html", map);
+
+        he.sendResponseHeaders(302, response.length());
         OutputStream os = he.getResponseBody();
         os.write(response.getBytes());
         os.close();

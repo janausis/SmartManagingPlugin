@@ -2,6 +2,7 @@ package germany.jannismartensen.smartmanaging.Utility;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import germany.jannismartensen.smartmanaging.Endpoints.Cookie;
 import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
 import org.bukkit.Bukkit;
@@ -14,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.sql.Connection;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -79,27 +82,25 @@ public class Util {
     }
 
     public static boolean loggedIn(HttpExchange he, Connection connect, SmartManaging plugin) {
-        Headers reqHeaders = he.getRequestHeaders();
-        List<String> cookies = null;
-        try {
-            cookies = reqHeaders.get("Cookie");
-        } catch (Exception e) {
-            log(e.getMessage(), 3);
-        }
+        if (hasCookie(he)) {
+            Headers reqHeaders = he.getRequestHeaders();
+            List<String> cookies = null;
+            try {
+                cookies = reqHeaders.get("Cookie");
+            } catch (Exception e) {
+                log(e.getMessage(), 3);
+            }
 
-        if (cookies == null) {
-            return false;
-        }
+            for (String c : cookies) {
+                String identifier;
 
-        for (String c : cookies) {
-            String identifier;
-
-            String[] cookie = c.split("=");
-            log(cookie[0]);
-            if (cookie[0].equals("login")) {
-                log(cookie[1]);
-                identifier = cookie[1];
-                return Connect.getPlayerFromCookie(connect, identifier) != null;
+                String[] cookie = c.split("=");
+                log(cookie[0]);
+                if (cookie[0].equals("login")) {
+                    log(cookie[1]);
+                    identifier = cookie[1];
+                    return Connect.getPlayerFromCookie(connect, identifier) != null;
+                }
             }
         }
         return false;
@@ -117,5 +118,61 @@ public class Util {
         }
 
         return ip;
+    }
+
+    public static Cookie invalidCookie() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -15);
+        Date nextYear = cal.getTime();
+
+        return new Cookie("login", "", nextYear, null, "192.168.1.25", "/", false, false, null);
+    }
+
+    public static boolean hasCookie(HttpExchange he) {
+        Headers reqHeaders = he.getRequestHeaders();
+        List<String> cookies = null;
+        try {
+            cookies = reqHeaders.get("Cookie");
+        } catch (Exception e) {
+            log(e.getMessage(), 3);
+        }
+
+        return cookies != null;
+    }
+
+    public static String getCookie(HttpExchange he) {
+        Headers reqHeaders = he.getRequestHeaders();
+        List<String> cookies = null;
+        try {
+            cookies = reqHeaders.get("Cookie");
+        } catch (Exception e) {
+            log(e.getMessage(), 3);
+        }
+
+        if (cookies == null) {
+            return "";
+        }
+
+        for (String c : cookies) {
+            String identifier;
+
+            String[] cookie = c.split("=");
+            log(cookie[0]);
+            if (cookie[0].equals("login")) {
+                log(cookie[1]);
+                identifier = cookie[1];
+                return identifier;
+            }
+        }
+
+        return "";
+    }
+
+    public static Headers deleteInvalidCookies(boolean logged, HttpExchange he) {
+        Headers headers = he.getResponseHeaders();
+        if (!logged && Util.hasCookie(he)) {
+            headers.add("Set-Cookie", Util.invalidCookie().toString());
+        }
+        return headers;
     }
 }

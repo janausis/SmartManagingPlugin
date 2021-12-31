@@ -34,8 +34,9 @@ public class Login implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         log(he.getRemoteAddress().toString().replace("/", "") + " accessed '" + he.getRequestURI() + "': " + he.getRequestMethod());
 
+        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect, plugin), he);
+
         if (Util.loggedIn(he, connect, plugin)) {
-            Headers headers = he.getResponseHeaders();
             headers.add("Location", "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
             String response = "";
             he.sendResponseHeaders(302, 0);
