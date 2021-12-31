@@ -10,6 +10,7 @@
 
 </head>
 <body style="margin: 0; background-color: #444;">
+
 <div class="row">
   <div class="item-column-image">
     <img
@@ -26,16 +27,20 @@
       <h3 class="item-subtitle item-center">Please register with the /managing command
         if you don’t have an account.</h3>
 
-      <h3 class="item-message item-center">${message}</h3>
+      <h3 class="item-message item-center red">${message}</h3>
       <br>
 
-      <form action="/" method="post">
+      <form action="/login" method="post">
         <div class="item-inputdiv">
           <input class="item-inputtext" type="text" id="playername" name="playername" placeholder=" Playername" required>
         </div>
         <br>
         <div class="item-inputdiv">
           <input class="item-inputtext" type="password" id="password" name="password" placeholder=" Password" required>
+        </div>
+
+        <div class="item-inputdiv-checkbox">
+          <label><input class="item-inputcheckbox" type="checkbox" id="remember" name="remember"> Remember Login</label>
         </div>
         <br>
         <div class="item-submitdiv">

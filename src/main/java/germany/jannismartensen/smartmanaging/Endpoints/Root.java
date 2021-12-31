@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
 import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
+import germany.jannismartensen.smartmanaging.Utility.Util;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
@@ -29,7 +30,6 @@ public class Root implements HttpHandler {
     @Override
     public void handle(HttpExchange he) throws IOException {
         log(he.getRemoteAddress().toString().replace("/", "") + " accessed '" + he.getRequestURI() + "': " + he.getRequestMethod());
-
         template(he);
     }
 
@@ -43,21 +43,13 @@ public class Root implements HttpHandler {
         map.put("playercount", String.valueOf(plugin.getServer().getOnlinePlayers().size()));
         map.put("accountNumber", String.valueOf(Connect.getPlayerCount(connect)));
         map.put("version", plugin.getServer().getBukkitVersion());
-
-        String domain = config.getString("domain");
-        map.put("ip", plugin.getServer().getIp());
-        if (domain != null) {
-            if (!domain.isEmpty()) {
-                map.put("ip", config.getString("domain"));
-            }
-        }
-
+        map.put("ip", Util.getIpOrDomain(plugin));
+        map.put("loggedin", String.valueOf(Util.loggedIn(he, connect, plugin)));
 
         SmartManaging.copyResources("Templates/home.html", plugin, false);
         String response = engine.renderTemplate("home.html", map);
 
         he.sendResponseHeaders(200, response.length());
-
 
         OutputStream os = he.getResponseBody();
         os.write(response.getBytes());

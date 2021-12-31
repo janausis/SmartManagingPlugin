@@ -1,10 +1,7 @@
 package germany.jannismartensen.smartmanaging;
 
 import com.sun.net.httpserver.HttpServer;
-import germany.jannismartensen.smartmanaging.Endpoints.FileServer;
-import germany.jannismartensen.smartmanaging.Endpoints.Login;
-import germany.jannismartensen.smartmanaging.Endpoints.Root;
-import germany.jannismartensen.smartmanaging.Endpoints.ServeFile;
+import germany.jannismartensen.smartmanaging.Endpoints.*;
 import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
 import germany.jannismartensen.smartmanaging.Utility.TabCompleter;
 import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
@@ -116,6 +113,8 @@ public class SmartManaging extends JavaPlugin {
         server = HttpServer.create(new InetSocketAddress(port), 5);
         server.createContext("/", new Root(engine, this, Database));
         server.createContext("/login", new Login(engine, this, Database));
+        server.createContext("/logout", new Logout(engine, this, Database));
+        server.createContext("/profile", new Profile(engine, this, Database));
         server.createContext("/favicon.ico", new ServeFile(this, "favicon.ico"));
         server.createContext("/style", new FileServer(this, "/style"));
         server.createContext("/images", new FileServer(this, "/images"));

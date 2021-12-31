@@ -1,8 +1,12 @@
 package germany.jannismartensen.smartmanaging.Utility;
 
+import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
+import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.sql.Connection;
+import java.util.List;
 import java.util.logging.Level;
 
 public class Util {
@@ -71,5 +76,46 @@ public class Util {
         }
 
         return content;
+    }
+
+    public static boolean loggedIn(HttpExchange he, Connection connect, SmartManaging plugin) {
+        Headers reqHeaders = he.getRequestHeaders();
+        List<String> cookies = null;
+        try {
+            cookies = reqHeaders.get("Cookie");
+        } catch (Exception e) {
+            log(e.getMessage(), 3);
+        }
+
+        if (cookies == null) {
+            return false;
+        }
+
+        for (String c : cookies) {
+            String identifier;
+
+            String[] cookie = c.split("=");
+            log(cookie[0]);
+            if (cookie[0].equals("login")) {
+                log(cookie[1]);
+                identifier = cookie[1];
+                return Connect.getPlayerFromCookie(connect, identifier) != null;
+            }
+        }
+        return false;
+    }
+
+    public static String getIpOrDomain(SmartManaging plugin) {
+        String ip;
+        FileConfiguration config = plugin.getConfig();
+        String domain = config.getString("domain");
+        ip = plugin.getServer().getIp();
+        if (domain != null) {
+            if (!domain.isEmpty()) {
+                ip = config.getString("domain");
+            }
+        }
+
+        return ip;
     }
 }

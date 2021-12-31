@@ -12,13 +12,14 @@
 </head>
 <body style="margin: 0;">
 
-    <div class="navbar">
-      <a href="/">  <button class="navbar-button b5-1">Home</button></a>
-      <a href="/profile">  <button class="navbar-button b5-2">Profile</button></a>
-      <a href="/map">      <button class="navbar-button b5-3">Map</button></a>
-      <a href="/inventory"><button class="navbar-button b5-4">Inventory</button></a>
-      <a href="/players">  <button class="navbar-button b5-5">Players</button></a>
-      <a href="/logout">   <button class="navbar-button b5-6">Logout</button></a>
+
+    <div class="navbar" id="logged">
+      <a href="/">          <button class="navbar-button b5-1">Home</button></a>
+      <a href="/profile">   <button class="navbar-button b5-2">Profile</button></a>
+      <a href="/map">       <button class="navbar-button b5-3">Map</button></a>
+      <a href="/inventory"> <button class="navbar-button b5-4">Inventory</button></a>
+      <a href="/players">     <button class="navbar-button b5-5">Players</button></a>
+      <a href="/logout">    <button class="navbar-button b5-6">Logout</button></a>
 
       <div class="topnav">
         <a class="active">
@@ -39,6 +40,27 @@
         </div>
       </div>
     </div>
+
+    <div class="navbar" id="notloggedin">
+      <a href="/">             <button class="navbar-button b2-1">Home</button></a>
+      <a href="/login">        <button class="navbar-button b2-2">Login</button></a>
+
+      <div class="topnav">
+        <a class="active">
+        </a>
+          <div id="myLinks">
+            <a class="tab" href="/">Home</a>
+            <a class="tab" href="/login">Login</a>
+          </div>
+
+        <div href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <div class="burger"></div>
+            <div class="burger"></div>
+            <div class="burger"></div>
+        </div>
+      </div>
+    </div>
+
 
 
   <div class="item-column-home">
@@ -70,14 +92,24 @@
   </div>
 
 <script>
-function myFunction() {
-  var x = document.getElementById("myLinks");
-  if (x.style.display === "block") {
-    x.style.display = "none";
-  } else {
-    x.style.display = "block";
+  function myFunction() {
+    var x = document.getElementById("myLinks");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
   }
-}
+
+  var nav;
+  if(${loggedin}) {
+    nav = document.getElementById('notloggedin');
+    nav.parentNode.removeChild(nav);
+  } else {
+    nav = document.getElementById('logged');
+    nav.parentNode.removeChild(nav);
+  }
+
 </script>
 
 </body>

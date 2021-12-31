@@ -33,7 +33,8 @@ public class Connect {
             String sql = """
                     CREATE TABLE IF NOT EXISTS player (
                     name text NOT NULL UNIQUE,
-                    password text NOT NULL);""";
+                    password text NOT NULL,
+                    cookie text UNIQUE );""";
 
             try {
                 Statement stmt = conn.createStatement();
@@ -76,6 +77,40 @@ public class Connect {
             log(e.getMessage(), 3);
         }
     }
+
+    public static void insertCookie(Connection conn, String username, String cookieString) throws SQLException {
+        String sql = "UPDATE player SET cookie = ? WHERE name = ?";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, cookieString);
+        pstmt.setString(2, username);
+        pstmt.executeUpdate();
+    }
+
+    public static String getPlayerFromCookie(Connection conn, String cookie) {
+        String sql = "SELECT name FROM player WHERE cookie = ?";
+        String name = null;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, cookie);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Only expecting a single result
+
+                if (rs.next()) {
+                    name = rs.getString(1);
+                    // Get data from the current row and use it
+                }
+
+            } catch (SQLException ex) {
+                log(ex.getMessage(), 3);
+            }
+
+        } catch (SQLException e) {
+            log(e.getMessage(), 3);
+        }
+        return name;
+    }
+
     public static boolean userExists(Connection conn, String name) {
         String sql = "SELECT COUNT(*) FROM player WHERE name = ?";
 
