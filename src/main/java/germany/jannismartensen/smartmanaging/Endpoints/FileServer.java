@@ -3,14 +3,13 @@ package germany.jannismartensen.smartmanaging.Endpoints;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
+import germany.jannismartensen.smartmanaging.Utility.Util;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.Files;
-
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
 
 public class FileServer implements HttpHandler {
 
@@ -23,7 +22,7 @@ public class FileServer implements HttpHandler {
     }
 
     public void handle(HttpExchange ex) throws IOException {
-        log(ex.getRemoteAddress().toString().replace("/", "") + " accessed '" + ex.getRequestURI() + "': " + ex.getRequestMethod());
+        Util.logAccess(ex);
 
 
         URI uri = ex.getRequestURI();

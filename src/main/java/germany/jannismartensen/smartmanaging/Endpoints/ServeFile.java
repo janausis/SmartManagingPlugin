@@ -3,13 +3,12 @@ package germany.jannismartensen.smartmanaging.Endpoints;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
+import germany.jannismartensen.smartmanaging.Utility.Util;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
-
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
 
 public class ServeFile implements HttpHandler {
 
@@ -23,7 +22,7 @@ public class ServeFile implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
-        log(he.getRemoteAddress().toString().replace("/", "") + " accessed '" + he.getRequestURI() + "': " + he.getRequestMethod());
+        Util.logAccess(he);
 
         SmartManaging.copyResources(filepath, plugin, false);
 

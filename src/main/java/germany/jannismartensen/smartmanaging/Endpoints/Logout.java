@@ -28,7 +28,7 @@ public class Logout implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
-        log(he.getRemoteAddress().toString().replace("/", "") + " accessed '" + he.getRequestURI() + "': " + he.getRequestMethod());
+        Util.logAccess(he);
 
         Headers headers = he.getResponseHeaders();
         headers.add("Location", "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");

@@ -35,6 +35,9 @@ public class Util {
         }
 
     }
+    public static void logAccess(HttpExchange he) {
+        log(he.getRemoteAddress().toString().replace("/", "") + " accessed " + he.getRequestURI() + ": " + he.getRequestMethod());
+    }
 
     public static void registerUser (String m, Connection conn, CommandSender user, String password) {
         Connect.insertUser(m, conn, user, generateHash(password));
@@ -95,9 +98,7 @@ public class Util {
                 String identifier;
 
                 String[] cookie = c.split("=");
-                log(cookie[0]);
                 if (cookie[0].equals("login")) {
-                    log(cookie[1]);
                     identifier = cookie[1];
                     return Connect.getPlayerFromCookie(connect, identifier) != null;
                 }
@@ -157,9 +158,7 @@ public class Util {
             String identifier;
 
             String[] cookie = c.split("=");
-            log(cookie[0]);
             if (cookie[0].equals("login")) {
-                log(cookie[1]);
                 identifier = cookie[1];
                 return identifier;
             }

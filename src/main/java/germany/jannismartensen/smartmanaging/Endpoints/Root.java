@@ -30,7 +30,7 @@ public class Root implements HttpHandler {
     }
     @Override
     public void handle(HttpExchange he) throws IOException {
-        log(he.getRemoteAddress().toString().replace("/", "") + " accessed '" + he.getRequestURI() + "': " + he.getRequestMethod());
+        Util.logAccess(he);
         template(he);
     }
 

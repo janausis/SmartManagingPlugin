@@ -32,7 +32,7 @@ public class Login implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
-        log(he.getRemoteAddress().toString().replace("/", "") + " accessed '" + he.getRequestURI() + "': " + he.getRequestMethod());
+        Util.logAccess(he);
 
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect, plugin), he);
 

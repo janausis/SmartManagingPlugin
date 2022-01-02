@@ -32,7 +32,7 @@ public class Profile implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
-        log(he.getRemoteAddress().toString().replace("/", "") + " accessed '" + he.getRequestURI() + "': " + he.getRequestMethod());
+        Util.logAccess(he);
 
         if (!Util.loggedIn(he, connect, plugin)) {
             Headers headers = Util.deleteInvalidCookies(false, he);
@@ -56,7 +56,6 @@ public class Profile implements HttpHandler {
         // Generate modes list
         if (config.contains("modes")) {
             String s = "['" + config.getString("modes").replace(" ", "").replace(",", "','") + "']";
-            log(s);
             map.put("modes", s);
         } else {
             map.put("modes", "[]");

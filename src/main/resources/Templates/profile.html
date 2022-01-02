@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Profile</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,7 +34,7 @@
           <a class="tab" href="/logout">Logout</a>
         </div>
 
-      <div href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <div class="icon" onclick="myFunction()">
           <div class="burger"></div>
           <div class="burger"></div>
           <div class="burger"></div>
@@ -49,31 +49,114 @@
       <br>
       <h3 class="item-subtitle item-center white">${announcement}</h3>
     </div>
-    <div class="item-center-vertical">
+    <div style="box-shadow: -5px 0 50px 0 #222;">
       <div class="items">
-        <ul style="list-style: none;" id="gamelist">
-        <ul>
+        <ul style="list-style: none;" id="gamelist"></ul>
       </div>
     </div>
+    <div class="item-center-vertical" style="background-color: #333;">
+      <div class="output-items">
+        <ul class="showlist" id="showlist"></ul>
+      </div>
+    </div>
+
   </div>
 
   <script>
     list = document.getElementById('gamelist');
+    outList = document.getElementById('showlist');
 
-    modeList = ${modes}
 
-    list.innerHTML += '<li class="selectable" style="background-image: url(' + "../images/modes/Overview.png" + ');">Overview</li>'
+    modeList = ${modes};
+    //modeList = ["Skywars", "Bedwars"];
+
+    var main = "Overview";
+    modeList.unshift(main);
+
     for(var i = 0; i < modeList.length; i++) {
-       list.innerHTML += '<li class="selectable" style="background-image: url(../images/modes/' + modeList[i] + '.png);">' + modeList[i] + '</li>'
+      scoreTemplate = '' +
+        '<div class="wrapper">' +
+        '  <div class="stat-left">' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type1}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value1}</h3>' +
+        '    <br>' +
+        '    <br>' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type3}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value3}</h3>' +
+        '    <br>' +
+        '    <br>' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type5}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value5}</h3>' +
+        '    <br>' +
+        '    <br>' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type7}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value7}</h3>' +
+        '    <br>' +
+        '    <br>' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type9}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value9}</h3>' +
+        '    <br>' +
+        '    <br>' +
+        '  </div>' +
+        '  <div class="stat-right">' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type2}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value2}</h3>' +
+        '    <br>' +
+        '    <br>' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type4}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value4}</h3>' +
+        '    <br>' +
+        '    <br>' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type6}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value6}</h3>' +
+        '    <br>' +
+        '    <br>' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type8}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value8}</h3>' +
+        '    <br>' +
+        '    <br>' +
+        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type10}</h3>' +
+        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value10}</h3>' +
+
+        '  </div>' +
+        '</div>' +
+        '';
+
+        var style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = '.selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + ' { background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url(../images/modes/' + modeList[i] + '.png);}';
+        style.innerHTML += '.selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + ':hover { background-image: linear-gradient(rgba(125, 125, 125, 0.6), rgba(125, 125, 125, 0.4)), url(../images/modes/' + modeList[i] + '.png);}';
+
+        document.getElementsByTagName('head')[0].appendChild(style);
+
+        if (modeList[i] == main) {
+          list.innerHTML += '<li class="selected selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + '">' + modeList[i] + '</li>'
+        } else {
+            list.innerHTML += '<li class="selectable selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + '">' + modeList[i] + '</li>'
+        }
+
+        outList.innerHTML += '<li class="showitem" id="out-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + '">' + modeList[i] + '</li>'
+        scores = document.getElementById('out-' + modeList[i].replace(/[^a-zA-Z ]/g, ""));
+
+        scores.innerHTML += scoreTemplate;
     }
 
     document.querySelector('ul').addEventListener('click', function(e) {
       var selected;
 
       if(e.target.tagName === 'LI') {
-        selected= document.querySelector('li.selected');
-        if(selected) selected.className= 'selectable';
-        e.target.className= 'selected';
+        selected = document.querySelector('li.selected');
+        if(selected) {
+          selected.classList.add('selectable');
+          selected.classList.remove('selected');
+        }
+
+        e.target.classList.remove('selectable');
+        e.target.classList.add('selected');
+
+        //Scroll target
+        var tar = document.getElementById('out-' + e.target.textContent.replace(/[^a-zA-Z ]/g, ""));
+        tar.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
 
