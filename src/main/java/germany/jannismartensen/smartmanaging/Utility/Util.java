@@ -8,16 +8,18 @@ import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.sql.Connection;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.logging.Level;
 
 public class Util {
@@ -173,5 +175,100 @@ public class Util {
             headers.add("Set-Cookie", Util.invalidCookie().toString());
         }
         return headers;
+    }
+
+    public static void redirect(SmartManaging plugin, HttpExchange he, String location) throws IOException {
+        Headers headers = Util.deleteInvalidCookies(false, he);
+        headers.add("Location", location);
+        String response = "";
+        he.sendResponseHeaders(302, 0);
+        OutputStream os = he.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    public static Map<String, String> queryToMap(String query){
+        Map<String, String> result = new HashMap<>();
+        for (String param : query.split("&")) {
+            String[] pair = param.split("=");
+            if (pair.length>1) {
+                result.put(pair[0], pair[1]);
+            }else{
+                result.put(pair[0], "");
+            }
+        }
+        return result;
+    }
+
+    public  static Map<String, String> streamToMap(InputStream is) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+        StringBuilder content = new StringBuilder();
+        String line;
+
+
+        while ((line = br.readLine()) != null) {
+            content.append(line);
+            content.append("\n");
+        }
+
+        String[] values = content.toString().split("&");
+        Map<String, String> map = new HashMap<>();
+        for (String s : values) {
+            String[] sl = s.split("=");
+            map.put(sl[0], sl[1]);
+        }
+
+        return map;
+    }
+
+    public static String getStringFromArray(ArrayList<ArrayList<String>> valueList) {
+        StringBuilder valueString = new StringBuilder("[");
+        for (ArrayList<String> value : valueList) {
+            valueString.append("[");
+            for (String va : value) valueString.append('\"').append(va.replace(" ", "")).append("\",");
+            valueString.deleteCharAt(valueString.length() - 1);
+            valueString.append("],");
+        }
+        valueString.deleteCharAt(valueString.length() - 1);
+        valueString.append("]");
+
+        return valueString.toString();
+    }
+
+    public static String getPlayTime(ManagingPlayer user) {
+        String playtime = "";
+        String uuid = user.getUUID();
+
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject main = (JSONObject) parser.parse(new FileReader("world/stats/" + uuid + ".json"));
+            JSONObject stats = (JSONObject) main.get("stats");
+            JSONObject custom = (JSONObject) stats.get("minecraft:custom");
+            playtime = tickBeautifier(custom.get("minecraft:play_time").toString());
+
+        } catch (IOException | ParseException e) {
+            log(e.getMessage(), 3);
+        }
+
+        return playtime;
+    }
+
+    public static String tickBeautifier(String ticks) {
+        int tick = 0;
+        try {
+            tick = Integer.parseInt(ticks);
+            int seconds = tick/20;
+
+            Date d = new Date(seconds * 1000L);
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss"); // HH for 0-23
+            df.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return df.format(d);
+
+        } catch (NumberFormatException e) {
+            log(e.getMessage(), 3);
+            log("(Util.tickBeautifier) Tick value wasn't convertible to integer!", 3);
+            return ticks;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package germany.jannismartensen.smartmanaging.Utility.Database;
 
 import germany.jannismartensen.smartmanaging.SmartManaging;
+import germany.jannismartensen.smartmanaging.Utility.ManagingPlayer;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
@@ -33,6 +34,7 @@ public class Connect {
             String sql = """
                     CREATE TABLE IF NOT EXISTS player (
                     name text NOT NULL UNIQUE,
+                    uuid text NOT NULL,
                     password text NOT NULL,
                     cookie text UNIQUE );""";
 
@@ -58,12 +60,13 @@ public class Connect {
     }
 
     public static void insertUser(String server, Connection conn, CommandSender user, String password) {
-        String sql = "INSERT INTO player(name, password) VALUES(?,?)";
+        String sql = "INSERT INTO player(name, uuid, password) VALUES(?,?,?)";
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, user.getName());
-            pstmt.setString(2, password);
+            pstmt.setString(2, user.getServer().getPlayer(user.getName()).getUniqueId().toString());
+            pstmt.setString(3, password);
             pstmt.executeUpdate();
 
             if (server.isEmpty()) {
@@ -87,9 +90,13 @@ public class Connect {
         pstmt.executeUpdate();
     }
 
-    public static String getPlayerFromCookie(Connection conn, String cookie) {
-        String sql = "SELECT name FROM player WHERE cookie = ?";
+    public static ManagingPlayer getPlayerFromCookie(Connection conn, String cookie) {
+
+        String sql = "SELECT name, uuid, password FROM player WHERE cookie = ?";
         String name = null;
+        String uuid = null;
+        String password = null;
+
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, cookie);
@@ -98,8 +105,11 @@ public class Connect {
 
                 if (rs.next()) {
                     name = rs.getString(1);
+                    uuid = rs.getString(2);
+                    password = rs.getString(3);
                     // Get data from the current row and use it
                 }
+                return new ManagingPlayer(name, uuid, password, cookie);
 
             } catch (SQLException ex) {
                 log(ex.getMessage(), 3);
@@ -108,7 +118,7 @@ public class Connect {
         } catch (SQLException e) {
             log(e.getMessage(), 3);
         }
-        return name;
+        return null;
     }
 
     public static boolean userExists(Connection conn, String name) {

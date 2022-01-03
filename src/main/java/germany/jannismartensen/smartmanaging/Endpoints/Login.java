@@ -37,17 +37,12 @@ public class Login implements HttpHandler {
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect, plugin), he);
 
         if (Util.loggedIn(he, connect, plugin)) {
-            headers.add("Location", "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
-            String response = "";
-            he.sendResponseHeaders(302, 0);
-            OutputStream os = he.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            Util.redirect(plugin, he, "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
             return;
         }
 
         if (he.getRequestMethod().equals("POST")) {
-            Map<String, String> map = EndpointUtil.streamToMap(he.getRequestBody());
+            Map<String, String> map = Util.streamToMap(he.getRequestBody());
             if (!map.containsKey("playername")) {
                 template(he, "Please enter your ingame name!", false);
                 return;
@@ -71,7 +66,7 @@ public class Login implements HttpHandler {
 
         } else {
             if (he.getRequestURI().getQuery() != null) {
-                Map<String, String> params = EndpointUtil.queryToMap(he.getRequestURI().getQuery());
+                Map<String, String> params = Util.queryToMap(he.getRequestURI().getQuery());
                 template(he, params.getOrDefault("msg", ""), false);
             } else {
                 template(he, "", false);

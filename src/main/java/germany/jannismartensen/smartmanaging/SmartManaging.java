@@ -3,11 +3,13 @@ package germany.jannismartensen.smartmanaging;
 import com.sun.net.httpserver.HttpServer;
 import germany.jannismartensen.smartmanaging.Endpoints.*;
 import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
+import germany.jannismartensen.smartmanaging.Utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.Utility.TabCompleter;
 import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.Utility.TestDataGenerator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -62,7 +64,10 @@ public class SmartManaging extends JavaPlugin {
                         stopServer(sender);
 
                     } else if (args[1].equalsIgnoreCase("generateTestData")) {
-                        TestDataGenerator.generate(this, getServer().getPlayer(sender.getName()));
+                        Player p = sender.getServer().getPlayer(sender.getName());
+
+                        assert p != null;
+                        TestDataGenerator.generate(this, new ManagingPlayer( p.getName(), p.getUniqueId().toString(), null, null));
 
                     } else if (args[1].equalsIgnoreCase("deleteTestData")) {
                         new File(getDataFolder(), "testdata.db").delete();

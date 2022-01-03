@@ -34,7 +34,7 @@
           <a class="tab" href="/logout">Logout</a>
         </div>
 
-      <div class="icon" onclick="myFunction()">
+      <div href="javascript:void(0);" class="icon" onclick="myFunction()">
           <div class="burger"></div>
           <div class="burger"></div>
           <div class="burger"></div>
@@ -169,7 +169,7 @@
 
         document.getElementsByTagName('head')[0].appendChild(style);
 
-        if (modeList[i] == main) {
+        if (modeList[i] === main) {
           list.innerHTML += '<li class="selected selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + '">' + modeList[i] + '</li>'
         } else {
             list.innerHTML += '<li class="selectable selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + '">' + modeList[i] + '</li>'
@@ -199,6 +199,26 @@
         tar.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
+
+  </script>
+  <script>
+    function myFunction() {
+      var x = document.getElementById("myLinks");
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+      }
+    }
+
+    var nav;
+    if(${loggedin}) {
+      nav = document.getElementById('notloggedin');
+      nav.parentNode.removeChild(nav);
+    } else {
+      nav = document.getElementById('logged');
+      nav.parentNode.removeChild(nav);
+    }
 
   </script>
 </body>

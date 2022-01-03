@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
 import germany.jannismartensen.smartmanaging.Utility.Database.GameModesDatabaseConnector;
+import germany.jannismartensen.smartmanaging.Utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.Utility.Util;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
+import static germany.jannismartensen.smartmanaging.Utility.Util.redirect;
 
 public class Profile implements HttpHandler {
 
@@ -39,27 +40,30 @@ public class Profile implements HttpHandler {
         Util.logAccess(he);
 
         if (!Util.loggedIn(he, connect, plugin)) {
-            Headers headers = Util.deleteInvalidCookies(false, he);
-            headers.add("Location", "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
-            String response = "";
-            he.sendResponseHeaders(302, 0);
-            OutputStream os = he.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
+            return;
         }
 
         Map<String, String> map = new HashMap<>();
         FileConfiguration config = plugin.getConfig();
 
-        String username = Connect.getPlayerFromCookie(connect, Util.getCookie(he));
+        ManagingPlayer user = Connect.getPlayerFromCookie(connect, Util.getCookie(he));
+        if (user == null) {
+            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/logout");
+            return;
+        } else if (user.getUUID() == null || user.getName() == null || user.getCookie() == null || user.getPassword() == null) {
+            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/logout");
+            return;
+        }
 
-        map.put("username", username);
+
+        map.put("username", user.getName());
         map.put("announcement", config.getString("announcements.profile"));
-        map.put("playtime", "NOT FOUND!");
+        map.put("playtime", Util.getPlayTime(user));
 
 
         // Populate modeScores
-        map = populateModes(map, username);
+        map = populateModes(map, user);
         map.put("loggedin", String.valueOf(Util.loggedIn(he, connect, plugin)));
 
 
@@ -76,7 +80,7 @@ public class Profile implements HttpHandler {
 
     }
 
-    public Map<String, String> populateModes(Map<String, String> map, String username) {
+    public Map<String, String> populateModes(Map<String, String> map, ManagingPlayer user) {
         Map<String, String> outMap = new HashMap<>();
         FileConfiguration config = plugin.getConfig();
         ConfigurationSection section = config.getConfigurationSection("modes");
@@ -95,7 +99,6 @@ public class Profile implements HttpHandler {
         ArrayList<ArrayList<String>> scoreList = new ArrayList<>();
         ArrayList<ArrayList<String>> valueList = new ArrayList<>();
 
-        log(username);
 
         for (String mode : modes) {
             ArrayList<String> tmpScoreList = new ArrayList<>();
@@ -119,9 +122,9 @@ public class Profile implements HttpHandler {
             Connection conn = GameModesDatabaseConnector.connect(plugin, dbPath);
             String playerName = "";
             if (Objects.equals(playerStoredAs, "uuid")) {
-                playerName = Objects.requireNonNull(plugin.getServer().getPlayer(username)).getUniqueId().toString();
+                playerName = user.getUUID();
             } else {
-                playerName = Objects.requireNonNull(plugin.getServer().getPlayer(username)).getName();
+                playerName = user.getName();
             }
 
             for (int i = 1; i < values.size(); i++) {
@@ -138,27 +141,13 @@ public class Profile implements HttpHandler {
             valueList.add(tmpValueList);
         }
 
-        log(username);
-
-        map.put("scoreList", getStringFromArray(scoreList));
-        map.put("valueList", getStringFromArray(valueList));
+        map.put("scoreList", Util.getStringFromArray(scoreList));
+        map.put("valueList", Util.getStringFromArray(valueList));
 
         return map;
     }
 
-    public String getStringFromArray(ArrayList<ArrayList<String>> valueList) {
-        StringBuilder valueString = new StringBuilder("[");
-        for (ArrayList<String> value : valueList) {
-            valueString.append("[");
-            for (String va : value) valueString.append('\"').append(va.replace(" ", "")).append("\",");
-            valueString.deleteCharAt(valueString.length() - 1);
-            valueString.append("],");
-        }
-        valueString.deleteCharAt(valueString.length() - 1);
-        valueString.append("]");
 
-        return valueString.toString();
-    }
 
 
 }

@@ -28,7 +28,7 @@ public class GameModesDatabaseConnector {
 
     public static String getPlayerStat(Connection conn, String tableName, String player, String statName, String storedAs) {
         String sql = "SELECT "+ statName + " FROM " + tableName +" WHERE " + storedAs + " = ?";
-        String out = null;
+        String out = "";
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, player);

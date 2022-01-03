@@ -3,7 +3,6 @@ package germany.jannismartensen.smartmanaging.Utility;
 import germany.jannismartensen.smartmanaging.SmartManaging;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +14,7 @@ import static germany.jannismartensen.smartmanaging.Utility.Util.log;
 
 public class TestDataGenerator {
 
-    public static void generate(SmartManaging plugin, Player player) {
+    public static void generate(SmartManaging plugin, ManagingPlayer player) {
 
         Connection conn;
         try {
@@ -103,7 +102,7 @@ public class TestDataGenerator {
 
                 String playerName = "";
                 if (Objects.equals(playerStoredAs, "uuid")) {
-                    playerName = player.getUniqueId().toString();
+                    playerName = player.getUUID();
                 } else {
                     playerName = player.getName();
                 }
