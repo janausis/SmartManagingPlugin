@@ -22,6 +22,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
             List<String> completions = new ArrayList<>();
             completions.add("start");
             completions.add("stop");
+            completions.add("generateTestData");
 
             return completions;
         }

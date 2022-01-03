@@ -15,8 +15,6 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
-
 public class Root implements HttpHandler {
 
     TemplateEngine engine;
@@ -38,9 +36,8 @@ public class Root implements HttpHandler {
         Map<String, String> map = new HashMap<>();
         FileConfiguration config = plugin.getConfig();
 
-
         map.put("name", config.getString("servername"));
-        map.put("announcement", config.getString("announcement"));
+        map.put("announcement", config.getString("announcements.home"));
         map.put("playercount", String.valueOf(plugin.getServer().getOnlinePlayers().size()));
         map.put("accountNumber", String.valueOf(Connect.getPlayerCount(connect)));
         map.put("version", plugin.getServer().getBukkitVersion());

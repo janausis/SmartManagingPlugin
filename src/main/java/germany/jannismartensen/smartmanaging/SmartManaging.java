@@ -5,6 +5,7 @@ import germany.jannismartensen.smartmanaging.Endpoints.*;
 import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
 import germany.jannismartensen.smartmanaging.Utility.TabCompleter;
 import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
+import germany.jannismartensen.smartmanaging.Utility.TestDataGenerator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -60,6 +61,11 @@ public class SmartManaging extends JavaPlugin {
                     } else if (args[1].equalsIgnoreCase("stop")) {
                         stopServer(sender);
 
+                    } else if (args[1].equalsIgnoreCase("generateTestData")) {
+                        TestDataGenerator.generate(this, getServer().getPlayer(sender.getName()));
+
+                    } else if (args[1].equalsIgnoreCase("deleteTestData")) {
+                        new File(getDataFolder(), "testdata.db").delete();
                     } else {
                         sender.sendMessage("Unknown action");
                     }

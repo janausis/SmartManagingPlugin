@@ -68,57 +68,97 @@
 
 
     modeList = ${modes};
+    scoreList = ${scoreList};
+    valueList = ${valueList};
+    //scoreList = [["1", "1", "1", "1", "1"], ["1", "1", "1", "1", "1"]]
+    //valueList = [["a", "a", "a", "a", "a"], ["a", "a", "a", "a", "a"]]
     //modeList = ["Skywars", "Bedwars"];
 
     var main = "Overview";
-    modeList.unshift(main);
 
     for(var i = 0; i < modeList.length; i++) {
-      scoreTemplate = '' +
-        '<div class="wrapper">' +
-        '  <div class="stat-left">' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type1}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value1}</h3>' +
-        '    <br>' +
-        '    <br>' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type3}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value3}</h3>' +
-        '    <br>' +
-        '    <br>' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type5}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value5}</h3>' +
-        '    <br>' +
-        '    <br>' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type7}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value7}</h3>' +
-        '    <br>' +
-        '    <br>' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type9}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value9}</h3>' +
-        '    <br>' +
-        '    <br>' +
-        '  </div>' +
-        '  <div class="stat-right">' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type2}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value2}</h3>' +
-        '    <br>' +
-        '    <br>' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type4}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value4}</h3>' +
-        '    <br>' +
-        '    <br>' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type6}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value6}</h3>' +
-        '    <br>' +
-        '    <br>' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type8}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value8}</h3>' +
-        '    <br>' +
-        '    <br>' +
-        '    <h3 class="item-ip item-left white inline">${' + modeList[i] + 'type10}</h3>' +
-        '    <h3 class="item-ip item-left green inline">${' + modeList[i] + 'value10}</h3>' +
+      let scoreTemplate = '' +
+              '<div class="wrapper">' +
+              '  <div class="stat-left">';
+      if (1 <= scoreList[i].length) {
+          t0 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][0] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][0] + '</h3>' +
+          '    <br>' +
+          '    <br>';
+          scoreTemplate += t0;
+        } if (3 <= scoreList[i].length) {
+          t2 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][2] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][2] + '</h3>' +
+          '    <br>' +
+          '    <br>';
 
-        '  </div>' +
+          scoreTemplate += t2;
+        } if (5 <= scoreList[i].length) {
+          t4 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][4] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][4] + '</h3>' +
+          '    <br>' +
+          '    <br>';
+
+          scoreTemplate += t4;
+        } if (7 <= scoreList[i].length) {
+          t6 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][6] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][6] + '</h3>' +
+          '    <br>' +
+          '    <br>';
+
+          scoreTemplate += t6;
+        } if (9 <= scoreList[i].length) {
+          t8 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][8] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][8] + '</h3>' +
+          '    <br>' +
+          '    <br>';
+
+          scoreTemplate += t8;
+        }
+
+
+        scoreTemplate += '  </div>' +
+        '  <div class="stat-right">';
+
+
+        if (2 <= scoreList[i].length) {
+          t1 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][1] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][1] + '</h3>' +
+          '    <br>' +
+          '    <br>';
+
+          scoreTemplate += t1;
+        } if (4 <= scoreList[i].length) {
+          t3 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][3] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][3] + '</h3>' +
+          '    <br>' +
+          '    <br>';
+
+          scoreTemplate += t3;
+        } if (6 <= scoreList[i].length) {
+          t5 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][5] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][5] + '</h3>' +
+          '    <br>' +
+          '    <br>';
+
+          scoreTemplate += t5;
+        } if (8 <= scoreList[i].length) {
+          t7 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][7] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][7] + '</h3>' +
+          '    <br>' +
+          '    <br>';
+
+          scoreTemplate += t7;
+        } if (10 <= scoreList[i].length) {
+          t9 = '    <h3 class="item-ip item-left white inline size-score">' + scoreList[i][9] + '</h3>' +
+          '    <h3 class="item-ip item-left green inline size-score">' + valueList[i][9] + '</h3>' +
+          '    <br>' +
+          '    <br>';
+
+          scoreTemplate += t9;
+        }
+
+         scoreTemplate += '  </div>' +
         '</div>' +
         '';
 

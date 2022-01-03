@@ -40,6 +40,8 @@
   margin: auto;
 }
 
+
+
 .showitem {
   height: calc(600px - 30px - (50px * 3));
   margin: 50px 50px 75px 20px;

@@ -1,4 +1,131 @@
-servername: CraftBukkit
+servername: Plugin Test Server
 domain:
-announcement: Please take a look around
-modes: Skywars, Bedwars, Minigames, Hide & Seek, TTT
+announcements:
+  home: Please take a look around
+  profile: Take a look at your game stats
+
+modes:
+  Overview:
+    # can either be player names (name) or player uuids (uuid)
+    StoredAs: name
+    StoredInColumn: playername
+
+    # Please input a relative path from the SmartManaging folder
+    # yourServerLocation/data/games/dbfile.db would be
+    # ../../data/games/dbfile.db
+    DatabaseFile: testdata.db
+    TableName: overview
+    values:
+      # input an arbitrary value behind the names
+      # max. 10
+      Points: 1
+      Kills: 1
+      Deaths: 1
+      Podiums: 1
+      DailyRank: 1
+      MonthlyRank: 1
+      Rank: 1
+
+  Skywars:
+    # can either be player names (name) or player uuids (uuid)
+    StoredAs: name
+    StoredInColumn: playername
+
+    # Please input a relative path from the SmartManaging folder
+    # yourServerLocation/data/games/dbfile.db would be
+    # ../../data/games/dbfile.db
+    DatabaseFile: testdata.db
+    TableName: skywars
+    values:
+      # input an arbitrary value behind the names
+      # max. 10
+      Points: 1
+      Kills: 1
+      MostKills: 1
+      Fastest: 1
+      Deaths: 1
+      ChestsFound: 1
+      Podiums: 1
+      DailyRank: 1
+      MonthlyRank: 1
+      Rank: 1
+
+  Bedwars:
+    # can either be player names (name) or player uuids (uuid)
+    StoredAs: uuid
+    StoredInColumn: playername
+
+    # Please input a relative path from the SmartManaging folder
+    # yourServerLocation/data/games/dbfile.db would be
+    # ../../data/games/dbfile.db
+    DatabaseFile: testdata.db
+    TableName: bedwars
+    values:
+      # input an arbitrary value behind the names
+      # max. 10
+      Points: 1
+      Kills: 1
+      Deaths: 1
+      DailyRank: 1
+      MonthlyRank: 1
+      Rank: 1
+
+  Minigames:
+    # can either be player names (name) or player uuids (uuid)
+    StoredAs: name
+    StoredInColumn: playername
+
+    # Please input a relative path from the SmartManaging folder
+    # yourServerLocation/data/games/dbfile.db would be
+    # ../../data/games/dbfile.db
+    DatabaseFile: testdata.db
+    TableName: minigames
+    values:
+      # input an arbitrary value behind the names
+      # max. 10
+      Points: 1
+      Kills: 1
+      Deaths: 1
+      Rank: 1
+
+  Hide & Seek:
+    # can either be player names (name) or player uuids (uuid)
+    StoredAs: name
+    StoredInColumn: playername
+
+    # Please input a relative path from the SmartManaging folder
+    # yourServerLocation/data/games/dbfile.db would be
+    # ../../data/games/dbfile.db
+    DatabaseFile: testdata.db
+    TableName: hideaseek
+    values:
+      # input an arbitrary value behind the names
+      # max. 10
+      Points: 1
+      Kills: 1
+      Deaths: 1
+      FavouriteProp: 1
+      DailyRank: 1
+      MonthlyRank: 1
+      Rank: 1
+
+  TTT:
+    # can either be player names (name) or player uuids (uuid)
+    StoredAs: uuid
+    StoredInColumn: playername
+
+    # Please input a relative path from the SmartManaging folder
+    # yourServerLocation/data/games/dbfile.db would be
+    # ../../data/games/dbfile.db
+    DatabaseFile: testdata.db
+    TableName: ttt
+    values:
+      # input an arbitrary value behind the names
+      # max. 10
+      Points: 1
+      Kills: 1
+      Deaths: 1
+      Podiums: 1
+      DailyRank: 1
+      MonthlyRank: 1
+      Rank: 1

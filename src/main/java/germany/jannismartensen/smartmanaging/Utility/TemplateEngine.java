@@ -54,6 +54,7 @@ public class TemplateEngine {
 
         } catch (IOException e) {
             //e.printStackTrace();
+            log(e.getMessage());
             log("Could not find or open the template: '" + template + "'", 2);
 
         } catch (TemplateException e) {

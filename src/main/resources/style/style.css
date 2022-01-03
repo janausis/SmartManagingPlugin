@@ -382,13 +382,6 @@ html {
   color: white;
 }
 
-.background-blue {
-	 background-color: linear-gradient(rgba(32,144,248,0.8), rgba(32,144,248,0.8));
-}
-.background-gray {
-	 background-color: linear-gradient(rgba(125, 125, 125,0.7), rgba(125, 125, 125,0.7));
-}
-
 .overlay {
     background: rgba(39,62,84,0.82);
     overflow: hidden;
@@ -408,7 +401,9 @@ html {
 
 
 
-
+.size-score {
+	font-size: 25px;
+}
 
 .noshadow {
 	box-shadow: 0px 0px 0px 0px #000;
@@ -506,4 +501,4 @@ html {
     width: 0%;
   }
 
-}
+}}
