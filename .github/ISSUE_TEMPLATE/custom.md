@@ -1,18 +1,15 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Custom issue template
+about: default issue
 title: ''
 labels: ''
-assignees: janausis
+assignees: ''
 
 ---
 
 ## What Happened
 
 ## How to reproduce
-- step 1
-- step 2
-...
 
 ## Additional Context
 
