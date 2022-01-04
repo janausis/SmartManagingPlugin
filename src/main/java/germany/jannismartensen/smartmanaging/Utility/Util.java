@@ -309,11 +309,12 @@ public class Util {
         try {
             tick = Integer.parseInt(ticks);
             int seconds = tick/20;
+            int days = (int) Math.floor(seconds/60.0/60.0/24.0);
 
             Date d = new Date(seconds * 1000L);
-            SimpleDateFormat df = new SimpleDateFormat("DD-HH:mm:ss"); // HH for 0-23
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss"); // HH for 0-23
             df.setTimeZone(TimeZone.getTimeZone("GMT"));
-            return df.format(d);
+            return days + "-" + df.format(d);
 
         } catch (NumberFormatException e) {
             log(e.getMessage(), 3);
