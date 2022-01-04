@@ -74,8 +74,6 @@
     //valueList = [["a", "a", "a", "a", "a"], ["a", "a", "a", "a", "a"]]
     //modeList = ["Skywars", "Bedwars"];
 
-    var main = "Overview";
-
     for(var i = 0; i < modeList.length; i++) {
       let scoreTemplate = '' +
               '<div class="wrapper">' +
@@ -164,19 +162,19 @@
 
         var style = document.createElement('style');
         style.type = 'text/css';
-        style.innerHTML = '.selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + ' { background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url(../images/modes/' + modeList[i] + '.png);}';
-        style.innerHTML += '.selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + ':hover { background-image: linear-gradient(rgba(125, 125, 125, 0.6), rgba(125, 125, 125, 0.4)), url(../images/modes/' + modeList[i] + '.png);}';
+        style.innerHTML = '.selectable-' + modeList[i].replace(/[^a-zA-Z]/g, "") + ' { background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url(../images/modes/' + modeList[i].replace(/[^a-zA-Z]/g, "") + '.png);}';
+        style.innerHTML += '.selectable-' + modeList[i].replace(/[^a-zA-Z]/g, "") + ':hover { background-image: linear-gradient(rgba(125, 125, 125, 0.6), rgba(125, 125, 125, 0.4)), url(../images/modes/' + modeList[i].replace(/[^a-zA-Z]/g, "") + '.png);}';
 
         document.getElementsByTagName('head')[0].appendChild(style);
 
-        if (modeList[i] === main) {
-          list.innerHTML += '<li class="selected selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + '">' + modeList[i] + '</li>'
+        if (modeList[i] === modeList[0]) {
+          list.innerHTML += '<li class="selected selectable-' + modeList[i].replace(/[^a-zA-Z]/g, "") + '">' + modeList[i] + '</li>'
         } else {
-            list.innerHTML += '<li class="selectable selectable-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + '">' + modeList[i] + '</li>'
+            list.innerHTML += '<li class="selectable selectable-' + modeList[i].replace(/[^a-zA-Z]/g, "") + '">' + modeList[i] + '</li>'
         }
 
-        outList.innerHTML += '<li class="showitem" id="out-' + modeList[i].replace(/[^a-zA-Z ]/g, "") + '">' + modeList[i] + '</li>'
-        scores = document.getElementById('out-' + modeList[i].replace(/[^a-zA-Z ]/g, ""));
+        outList.innerHTML += '<li class="showitem" id="out-' + modeList[i].replace(/[^a-zA-Z]/g, "") + '">' + modeList[i] + '</li>'
+        scores = document.getElementById('out-' + modeList[i].replace(/[^a-zA-Z]/g, ""));
 
         scores.innerHTML += scoreTemplate;
     }
@@ -195,7 +193,7 @@
         e.target.classList.add('selected');
 
         //Scroll target
-        var tar = document.getElementById('out-' + e.target.textContent.replace(/[^a-zA-Z ]/g, ""));
+        var tar = document.getElementById('out-' + e.target.textContent.replace(/[^a-zA-Z]/g, ""));
         tar.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
@@ -209,15 +207,6 @@
       } else {
         x.style.display = "block";
       }
-    }
-
-    var nav;
-    if(${loggedin}) {
-      nav = document.getElementById('notloggedin');
-      nav.parentNode.removeChild(nav);
-    } else {
-      nav = document.getElementById('logged');
-      nav.parentNode.removeChild(nav);
     }
 
   </script>

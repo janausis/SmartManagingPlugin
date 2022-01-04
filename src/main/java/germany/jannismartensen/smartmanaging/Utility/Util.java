@@ -7,6 +7,7 @@ import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -226,7 +227,7 @@ public class Util {
         StringBuilder valueString = new StringBuilder("[");
         for (ArrayList<String> value : valueList) {
             valueString.append("[");
-            for (String va : value) valueString.append('\"').append(va.replace(" ", "")).append("\",");
+            for (String va : value) valueString.append('\"').append(va).append("\",");
             valueString.deleteCharAt(valueString.length() - 1);
             valueString.append("],");
         }
@@ -236,22 +237,71 @@ public class Util {
         return valueString.toString();
     }
 
-    public static String getPlayTime(ManagingPlayer user) {
-        String playtime = "";
+    public static ArrayList<String> getWorldList(SmartManaging plugin) {
+
+        FileConfiguration config = plugin.getConfig();
+        String l = Objects.requireNonNull(config.getString("worldName")).replace(" ","");
+
+        return new ArrayList<>(Arrays.asList(l.split(",")));
+    }
+
+    public static ArrayList<String> getWorldList(SmartManaging plugin, String stat) {
+
+        FileConfiguration config = plugin.getConfig();
+        ConfigurationSection section = config.getConfigurationSection("stats." + stat);
+        String l = Objects.requireNonNull(Objects.requireNonNull(section).getString("worldName"));
+
+        ArrayList<String> out = new ArrayList<>();
+        for (String s : l.split(",")) {
+            log(s.trim());
+            out.add(s.trim());
+        }
+        return out;
+    }
+
+    public static String getPlayTime(SmartManaging plugin, ManagingPlayer user) {
+
+        int tick = 0;
+        for (String world : Objects.requireNonNull(getWorldList(plugin))) {
+            try {
+                tick += Integer.parseInt(readStats(user, world, "minecraft:custom;minecraft:play_time"));
+            } catch (NumberFormatException e) {
+                log(e.getMessage(), 3);
+                log("(Util.getPlayTime) Tick value wasn't convertible to integer!", 3);
+                return "";
+            }
+        }
+
+        return tickBeautifier(String.valueOf(tick));
+    }
+
+    // @Param stat: type;stat
+    public static String readStats(ManagingPlayer user, String worldName, String stat) {
+        String statOut = "";
         String uuid = user.getUUID();
+        String type = stat.split(";")[0].trim();
+        String st = stat.split(";")[1].trim();
+
 
         JSONParser parser = new JSONParser();
         try {
-            JSONObject main = (JSONObject) parser.parse(new FileReader("world/stats/" + uuid + ".json"));
+            JSONObject main = (JSONObject) parser.parse(new FileReader(worldName + "/stats/" + uuid + ".json"));
             JSONObject stats = (JSONObject) main.get("stats");
-            JSONObject custom = (JSONObject) stats.get("minecraft:custom");
-            playtime = tickBeautifier(custom.get("minecraft:play_time").toString());
+            if (!stats.containsKey(type)) {
+                return "0";
+            }
+            JSONObject custom = (JSONObject) stats.get(type);
+            if (!custom.containsKey(st)) {
+                return "0";
+            }
+
+            statOut = custom.get(st).toString();
 
         } catch (IOException | ParseException e) {
             log(e.getMessage(), 3);
         }
 
-        return playtime;
+        return statOut;
     }
 
     public static String tickBeautifier(String ticks) {
@@ -261,7 +311,7 @@ public class Util {
             int seconds = tick/20;
 
             Date d = new Date(seconds * 1000L);
-            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss"); // HH for 0-23
+            SimpleDateFormat df = new SimpleDateFormat("DD-HH:mm:ss"); // HH for 0-23
             df.setTimeZone(TimeZone.getTimeZone("GMT"));
             return df.format(d);
 

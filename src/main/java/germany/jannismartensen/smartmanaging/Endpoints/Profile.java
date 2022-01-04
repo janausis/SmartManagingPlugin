@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static germany.jannismartensen.smartmanaging.Utility.Util.log;
 import static germany.jannismartensen.smartmanaging.Utility.Util.redirect;
 
 public class Profile implements HttpHandler {
@@ -59,14 +60,11 @@ public class Profile implements HttpHandler {
 
         map.put("username", user.getName());
         map.put("announcement", config.getString("announcements.profile"));
-        map.put("playtime", Util.getPlayTime(user));
+        map.put("playtime", Util.getPlayTime(plugin, user));
 
 
         // Populate modeScores
         map = populateModes(map, user);
-        map.put("loggedin", String.valueOf(Util.loggedIn(he, connect, plugin)));
-
-
 
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect, plugin), he);
 
@@ -88,19 +86,33 @@ public class Profile implements HttpHandler {
         ArrayList<String> modes = new ArrayList<>();
         StringBuilder modeString = new StringBuilder("[");
 
+        // Check if minecraft stats should be displayed
+        ConfigurationSection stats = config.getConfigurationSection("stats");
+        for (String entry : Objects.requireNonNull(stats).getKeys(true)) if (!entry.contains(".")) modes.add(entry);
+
+        // Add modes
         for (String entry : Objects.requireNonNull(section).getKeys(true)) if (!entry.contains(".")) modes.add(entry);
-        for (String e : modes) modeString.append('\"').append(e.replace(" ", "")).append("\",");
+        for (String e : modes) modeString.append('\"').append(e).append("\",");
 
         modeString.append("]");
 
         map.put("modes", modeString.toString());
 
 
+        // Init arrays
         ArrayList<ArrayList<String>> scoreList = new ArrayList<>();
         ArrayList<ArrayList<String>> valueList = new ArrayList<>();
 
-
+        // Set values for each mode
         for (String mode : modes) {
+            // Special for minecraft stats
+            if (stats.contains(mode)) {
+                ArrayList<ArrayList<String>> out = readStats(user, mode);
+                scoreList.add(out.get(1));
+                valueList.add(out.get(0));
+                continue;
+            }
+
             ArrayList<String> tmpScoreList = new ArrayList<>();
             ArrayList<String> tmpValueList = new ArrayList<>();
 
@@ -147,7 +159,46 @@ public class Profile implements HttpHandler {
         return map;
     }
 
+    public ArrayList<ArrayList<String>> readStats(ManagingPlayer user, String mode) {
 
 
+        FileConfiguration config = plugin.getConfig();
+        ConfigurationSection section = config.getConfigurationSection("stats." + mode + ".stats");
 
+        ArrayList<String> scores = new ArrayList<>();
+        ArrayList<String> values = new ArrayList<>();
+
+        ArrayList<String> stats = new ArrayList<>();
+        for (String entry : Objects.requireNonNull(section).getKeys(true)) if (!entry.contains(".")) stats.add(entry);
+
+        for (String stat : stats) {
+
+            int tmpScore = 0;
+            for (String world: Util.getWorldList(plugin, mode)) {
+                try {
+                    tmpScore += Integer.parseInt(Util.readStats(user, world, Objects.requireNonNull(section.getString(stat))));
+
+                } catch (NumberFormatException e) {
+                    log(e.getMessage(), 3);
+                }
+            }
+
+            if (Objects.requireNonNull(section.getString(stat)).contains("time")) {
+                scores.add(Util.tickBeautifier(String.valueOf(tmpScore)));
+            } else if (Objects.requireNonNull(section.getString(stat)).contains("cm")) {
+                scores.add(String.valueOf((double)tmpScore/100.0));
+            } else {
+                scores.add(String.valueOf(tmpScore));
+            }
+
+            values.add(stat + ": ");
+        }
+
+
+        ArrayList<ArrayList<String>> out = new ArrayList<>();
+        out.add(scores);
+        out.add(values);
+
+        return out;
+    }
 }

@@ -4,7 +4,45 @@ announcements:
   home: Please take a look around
   profile: Take a look at your game stats
 
+# this will add a mode which list some general stuff from the ingame statistics tab
+# Replace Minecraft Stats with false if you want to deactivate this
+
+# list of the worlds to read the playtime from
+# if you use a normal spigot server set this to the main world and not the nether or end
+# if on an multiworld server, please check what world contain the stats folder after playing on the world once
+worldName: world
+
+# exact names of minecraft stats to display, only work if showMinecraftStats is not set to false
+# max (10)
+stats:
+  Minecraft Stats:
+    # list of the worlds to read the stats from
+    # this does not affect the playtime
+    # if you use a normal spigot server set this to the main world and not the nether or end
+    # if on an multiworld server, please check what world contain the stats folder after playing on the world once
+    worldName: world
+
+    # pattern: (display name : stat type; stat name)
+    stats:
+      Player Kills: minecraft:custom;minecraft:player_kills
+      Walked Blocks: minecraft:custom;minecraft:walk_one_cm
+      Mob Kills: minecraft:custom;minecraft:mob_kills
+      Jumps: minecraft:custom;minecraft:jump
+      Deaths: minecraft:custom;minecraft:deaths
+      Sneak Time: minecraft:custom;minecraft:sneak_time
+      Damage Dealt: minecraft:custom;minecraft:damage_dealt
+      Items Dropped: minecraft:custom;minecraft:drop
+      Damage Taken: minecraft:custom;minecraft:damage_taken
+      Items Enchanted: minecraft:custom;minecraft:enchant_item
+
+
+# For each mode there is an image in the images/modes folder
+# the image name must be the same name as the mode,
+# but without the spaces or special characters
+# e.g: Hide & Seek > HideSeek.png
 modes:
+  # The order will stay the same and the first one, will be the default opened
+
   Overview:
     # can either be player names (name) or player uuids (uuid)
     StoredAs: name
@@ -15,9 +53,10 @@ modes:
     # ../../data/games/dbfile.db
     DatabaseFile: testdata.db
     TableName: overview
+
+    # max. 10
     values:
       # input an arbitrary value behind the names
-      # max. 10
       Points: 1
       Kills: 1
       Deaths: 1
@@ -36,9 +75,10 @@ modes:
     # ../../data/games/dbfile.db
     DatabaseFile: testdata.db
     TableName: skywars
+
+    # max. 10
     values:
       # input an arbitrary value behind the names
-      # max. 10
       Points: 1
       Kills: 1
       MostKills: 1
@@ -60,9 +100,10 @@ modes:
     # ../../data/games/dbfile.db
     DatabaseFile: testdata.db
     TableName: bedwars
+
+    # max. 10
     values:
       # input an arbitrary value behind the names
-      # max. 10
       Points: 1
       Kills: 1
       Deaths: 1
@@ -80,9 +121,10 @@ modes:
     # ../../data/games/dbfile.db
     DatabaseFile: testdata.db
     TableName: minigames
+
+    # max. 10
     values:
       # input an arbitrary value behind the names
-      # max. 10
       Points: 1
       Kills: 1
       Deaths: 1
@@ -98,34 +140,14 @@ modes:
     # ../../data/games/dbfile.db
     DatabaseFile: testdata.db
     TableName: hideaseek
+
+    # max. 10
     values:
       # input an arbitrary value behind the names
-      # max. 10
       Points: 1
       Kills: 1
       Deaths: 1
       FavouriteProp: 1
-      DailyRank: 1
-      MonthlyRank: 1
-      Rank: 1
-
-  TTT:
-    # can either be player names (name) or player uuids (uuid)
-    StoredAs: uuid
-    StoredInColumn: playername
-
-    # Please input a relative path from the SmartManaging folder
-    # yourServerLocation/data/games/dbfile.db would be
-    # ../../data/games/dbfile.db
-    DatabaseFile: testdata.db
-    TableName: ttt
-    values:
-      # input an arbitrary value behind the names
-      # max. 10
-      Points: 1
-      Kills: 1
-      Deaths: 1
-      Podiums: 1
       DailyRank: 1
       MonthlyRank: 1
       Rank: 1

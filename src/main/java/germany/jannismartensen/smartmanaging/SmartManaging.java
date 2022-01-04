@@ -127,6 +127,7 @@ public class SmartManaging extends JavaPlugin {
         server.createContext("/logout", new Logout(engine, this, Database));
         server.createContext("/profile", new Profile(engine, this, Database));
         server.createContext("/favicon.ico", new ServeFile(this, "favicon.ico"));
+        server.createContext("/robots.txt", new ServeFile(this, "robots.txt"));
         server.createContext("/style", new FileServer(this, "/style"));
         server.createContext("/images", new FileServer(this, "/images"));
         server.createContext("/images/modes", new FileServer(this, "/images/modes"));
