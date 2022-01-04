@@ -78,6 +78,12 @@ public class TestDataGenerator {
                 // create a connection to the database
                 conn = DriverManager.getConnection(url);
 
+                String playerName;
+                if (Objects.equals(playerStoredAs, "uuid")) {
+                    playerName = player.getUUID();
+                } else {
+                    playerName = player.getName();
+                }
 
                 try {
                     Statement stmt = conn.createStatement();
@@ -87,6 +93,20 @@ public class TestDataGenerator {
                     log(e, 3);
                     log("(TestDataGenerator.generate) SqlException whilst creating test database " + databaseFile.getPath(), 3, true);
                 }
+
+
+                String SecondSQL = "DELETE FROM " + tableName + " WHERE " + playerStoreName + " = ?";
+                try {
+                    PreparedStatement pstmt = conn.prepareStatement(SecondSQL);
+                    pstmt.setString(1, playerName);
+                    pstmt.executeUpdate();
+
+                } catch (SQLException e) {
+                    log(e, 3);
+                    log("(TestDataGenerator.generate) Could not delete player " + player.getName() + " from " + mode, 3, true);
+                }
+
+
 
                 StringBuilder columns = new StringBuilder();
                 StringBuilder marks = new StringBuilder();
@@ -99,13 +119,6 @@ public class TestDataGenerator {
                         columns.append(value).append(", ");
                         marks.append("?").append(", ");
                     }
-                }
-
-                String playerName;
-                if (Objects.equals(playerStoredAs, "uuid")) {
-                    playerName = player.getUUID();
-                } else {
-                    playerName = player.getName();
                 }
 
                 String create = "INSERT INTO " + tableName + "(" + columns + ") VALUES(" + marks + ")";

@@ -7,6 +7,7 @@ import germany.jannismartensen.smartmanaging.Utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.Utility.TabCompleter;
 import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.Utility.TestDataGenerator;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -42,7 +43,7 @@ public class SmartManaging extends JavaPlugin {
         engine = new TemplateEngine(this);
         Objects.requireNonNull(getCommand("managing")).setTabCompleter(new TabCompleter());
         setPort();
-        //startServer();
+        startServer();
     }
 
     @Override
@@ -56,74 +57,92 @@ public class SmartManaging extends JavaPlugin {
                              @NonNull String label,
                              @NonNull String[] args) {
         if (command.getName().equalsIgnoreCase("managing")) {
+            if (sender.hasPermission("managing.serveruser") || sender.hasPermission("managing.servermanager")) {
 
-            if (args != null) {
-                if (args[0].equalsIgnoreCase("server")) {
-                    if (args[1].equalsIgnoreCase("start")) {
-                        startServer(sender);
-
-                    } else if (args[1].equalsIgnoreCase("stop")) {
-                        stopServer(sender);
-
-                    } else if (args[1].equalsIgnoreCase("generateTestData")) {
-                        Player p = sender.getServer().getPlayer(sender.getName());
-
-                        assert p != null;
-                        TestDataGenerator.generate(this, new ManagingPlayer( p.getName(), p.getUniqueId().toString(), null, null));
-
-                    } else if(args[1].equalsIgnoreCase("reload")) {
-                        reloadConfig();
-                        log("Reloaded SmartManaging config!", 1, true);
-                        if (!sender.getName().equals("CONSOLE")) sender.sendMessage("Reloaded SmartManaging config!");
-
-                        if (serverRunning) {
-                            stopServer(sender);
-                            setPort();
-                            startServer(sender);
-                        } else {
-                            setPort();
+                if (args != null) {
+                    if (args[0].equalsIgnoreCase("server")) {
+                        if (!sender.hasPermission("managing.servermanager")) {
+                            sender.sendMessage(ChatColor.RED + "You do not have the permission managing.servermanager to use this command!" + ChatColor.RESET);
+                            return true;
                         }
 
+
+                        if (args[1].equalsIgnoreCase("start")) {
+                            startServer(sender);
+
+                        } else if (args[1].equalsIgnoreCase("stop")) {
+                            stopServer(sender);
+
+                        } else if (args[1].equalsIgnoreCase("generateTestData")) {
+                            Player p = sender.getServer().getPlayer(sender.getName());
+
+                            assert p != null;
+                            TestDataGenerator.generate(this, new ManagingPlayer(p.getName(), p.getUniqueId().toString(), null, null));
+
+                        } else if (args[1].equalsIgnoreCase("reload")) {
+                            reloadConfig();
+                            log("Reloaded SmartManaging config!", 1, true);
+                            if (!sender.getName().equals("CONSOLE"))
+                                sender.sendMessage(ChatColor.GREEN + "Reloaded SmartManaging config!");
+
+                            if (serverRunning) {
+                                stopServer(sender);
+                                setPort();
+                                startServer(sender);
+                            } else {
+                                setPort();
+                            }
+
+                        } else {
+                            sender.sendMessage("Unknown action");
+                        }
+                    } else if (args[0].equalsIgnoreCase("register")) {
+                        if (Connect.userExists(Database, sender.getName())) {
+                            sender.sendMessage(ChatColor.RED + "You are already registered!");
+                            return true;
+                        }
+                        if (args.length <= 1) {
+                            sender.sendMessage(ChatColor.RED + "Please provide a password!");
+                            return true;
+                        }
+                        registerUser(getServer().getIp(), Database, sender, args[1]);
+
+                    } else if (args[0].equalsIgnoreCase("unregister")) {
+                        if (!Connect.userExists(Database, sender.getName())) {
+                            sender.sendMessage(ChatColor.RED + "You are not registered!");
+                            return true;
+                        }
+                        if (args.length <= 1) {
+                            sender.sendMessage(ChatColor.RED + "Please provide a password!");
+                            return true;
+                        }
+                        deleteUser(Database, sender, args[1]);
+
+                    } else if (args[0].equalsIgnoreCase("changepassword")) {
+                        if (!Connect.userExists(Database, sender.getName())) {
+                            sender.sendMessage(ChatColor.RED + "You are not registered!");
+                            return true;
+                        }
+                        if (args.length <= 1) {
+                            sender.sendMessage(ChatColor.RED + "Please provide the old password!");
+                            return true;
+                        }
+                        if (args.length <= 2) {
+                            sender.sendMessage(ChatColor.RED + "Please provide the new password as well!");
+                            return true;
+                        }
+                        changeUserPassword(Database, sender, args[2], args[1]);
                     } else {
                         sender.sendMessage("Unknown action");
                     }
+
+
+                } else {
+                    sender.sendMessage(ChatColor.RED + "syntax: managing <action>");
                 }
-
-                else if (args[0].equalsIgnoreCase("register")) {
-                    if (Connect.userExists(Database, sender.getName())) {sender.sendMessage("You are already registered!"); return true;}
-                    if (args.length <= 1) { sender.sendMessage("Please provide a password!"); return true;}
-                    registerUser(getServer().getIp(), Database, sender, args[1]);
-
-                } else if (args[0].equalsIgnoreCase("unregister")) {
-                    if (!Connect.userExists(Database, sender.getName())) {sender.sendMessage("You are not registered!"); return true;}
-                    if (args.length <= 1) { sender.sendMessage("Please provide a password!"); return true;}
-                    deleteUser(Database, sender, args[1]);
-
-                } else if (args[0].equalsIgnoreCase("changepassword")) {
-                    if (!Connect.userExists(Database, sender.getName())) {sender.sendMessage("You are not registered!"); return true;}
-                    if (args.length <= 1) {
-                        sender.sendMessage("Please provide the old password!");
-                        return true;
-                    }
-                    if (args.length <= 2) {
-                        sender.sendMessage("Please provide the new password as well!");
-                        return true;
-                    }
-                    changeUserPassword(Database, sender, args[2], args[1]);
-                }
-
-
-
-
-                else {
-                    sender.sendMessage("Unknown action");
-                }
-
-
             } else {
-                sender.sendMessage("syntax: managing <action>");
+                sender.sendMessage(ChatColor.RED + "You do not have the permission managing.serveruser to use this command!" + ChatColor.RESET);
             }
-
 
             return true;
         }
@@ -176,7 +195,7 @@ public class SmartManaging extends JavaPlugin {
         } catch (IOException e) {
             log(e, 3);
             log("Server could not start at port " + port, 3, true);
-            if (!sender.getName().equals("CONSOLE")) sender.sendMessage("Server could not start at port " + port);
+            if (!sender.getName().equals("CONSOLE")) sender.sendMessage(ChatColor.RED + "Server could not start at port " + port);
         }
     }
 
