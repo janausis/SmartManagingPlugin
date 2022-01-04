@@ -11,6 +11,13 @@ domain:
 port: 9000
 
 
+httpsServer: true
+# put .keystore into the sslCert folder
+keystorePassword: Jannis
+certPassword: Jannis
+certAlias: mcserver
+
+
 # can either be "file", "console" or "both"
 # critical errors will always be logged to the console
 # defaults to console

@@ -40,7 +40,7 @@ public class Root implements HttpHandler {
         map.put("announcement", config.getString("announcements.home"));
         map.put("playercount", String.valueOf(plugin.getServer().getOnlinePlayers().size()));
         map.put("accountNumber", String.valueOf(Connect.getPlayerCount(connect)));
-        map.put("version", plugin.getServer().getBukkitVersion());
+        map.put("version", plugin.getServer().getBukkitVersion().split("-")[0]);
         map.put("ip", Util.getIpOrDomain(plugin));
         map.put("loggedin", String.valueOf(Util.loggedIn(he, connect)));
 
