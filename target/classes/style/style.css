@@ -13,7 +13,7 @@ html {
   z-index: 10000;
   width: 100%;
   height: 75px;
-  box-shadow: 0px -15px 100px 0px black;
+  box-shadow: 0 -15px 100px 0 black;
   background-color: rgba(32,144,248,1);
   display: table-row;
   overflow: visible;
@@ -22,19 +22,16 @@ html {
   position: fixed;
   top: 0;
   opacity: 100%;
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
   font-weight: Bold;
   font-size: 20px;
   color: white;
   width: 25%;
   height: 75px;
-  border: 0px solid rgba(142,194,242,1);
-  border-radius: 0px;
+  border: 0 solid rgba(142,194,242,1);
+  border-radius: 0;
   background-color: rgba(32,144,248,1);
   display: table-cell;
-}
-.navbar-span {
-  visibility: hidden;
 }
 
 .navbar-button:hover {
@@ -59,28 +56,28 @@ html {
   position: absolute;
   width: 100%;
   height: 35px;
-  box-shadow: 0px -15px 100px 0px black;
+  box-shadow: 0 -15px 100px 0 black;
   background-color: #A4ABBD;
   display: block;
 }
 .navbar-button-small {
   position: relative;
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
   font-weight: Bold;
   text-decoration: none;
   font-size: 20px;
   color: white;
   width: 50%;
   height: 100%;
-  border: 0px solid rgba(142,194,242,1);
-  border-radius: 0px;
+  border: 0 solid rgba(142,194,242,1);
+  border-radius: 0;
   background-color: #A4ABBD;
   display: table-cell;
 }
 .scrollbutton {
   width: 30px;
   background-color: rgba(101, 168, 230,1);
-  border-radius: 0px;
+  border-radius: 0;
   display: inline-block;
 }
 .scrollleft {
@@ -103,11 +100,11 @@ html {
   background-color: #7C91BC;
 }
 [class*='b2'] {width: 50%;}
-.b2-1 {margin-left: 0%;}
+.b2-1 {margin-left: 0;}
 .b2-2 {margin-left: 50%;}
 
 [class*='b3'] {width: 33.3%;}
-.b3-1 {margin-left: 0%;}
+.b3-1 {margin-left: 0;}
 .b3-2 {margin-left: 33.3%;}
 .b3-3 {margin-left: 66.6%;}
 
@@ -117,7 +114,7 @@ html {
 .b4-4 {margin-left: 75%;}
 
 [class*='b5'] {width: 16.6%;}
-.b5-1 {margin-left: 0%;}
+.b5-1 {margin-left: 0;}
 .b5-2 {margin-left: 16.6%;}
 .b5-3 {margin-left: 33.2%;}
 .b5-4 {margin-left: 49.8%;}
@@ -144,7 +141,7 @@ html {
   background-color: #444;
   display: table-cell;
   vertical-align: middle;
-  box-shadow: -5px 0px 150px 0px black;
+  box-shadow: -5px 0 150px 0 black;
 }
 
 .item-column-home {
@@ -163,9 +160,9 @@ html {
   width: 90%;
   color: rgba(32,144,248,1);
   position: relative;
-  top: 0px;
-  left: 0px;
-  font-family: Montserrat;
+  top: 0;
+  left: 0;
+  font-family: Montserrat, serif;
   font-weight: Bold;
   font-size: 40px;
   opacity: 1;
@@ -178,7 +175,7 @@ html {
   position: relative;
   padding-top: 15px;
   padding-bottom: 20px;
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
   font-weight: Normal;
   font-size: 18px;
   opacity: 1;
@@ -190,7 +187,7 @@ html {
   color: rgba(255,255,255,1);
   position: relative;
   padding-top: 7px;
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
   font-weight: Bold;
   font-size: 18px;
   opacity: 1;
@@ -202,15 +199,15 @@ html {
   color: rgba(255,255,255 ,1);
   position: relative;
   padding-top: 20px;
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
   font-weight: Normal;
   font-size: 18px;
   opacity: 1;
   text-align: center;
 }
 .item-image {
-  width: 0%;
-  height: 0%;
+  width: 0;
+  height: 0;
   display: table-cell;
   object-fit: cover;
   overflow: hidden;
@@ -229,9 +226,9 @@ html {
   padding: 50px 20px 20px 20px;
   margin: auto;
   background-color: #444;
-  border: 0px solid rgba(142,194,242,1);
+  border: 0 solid rgba(142,194,242,1);
   border-radius: 25px;
-  box-shadow: 5px 5px 150px 0px black;
+  box-shadow: 5px 5px 150px 0 black;
 
 }
 .item-subbox {
@@ -240,9 +237,9 @@ html {
   min-height: 50%;
   margin: 10% auto auto auto;
   background-color: #333;
-  border: 0px solid rgba(142,194,242,1);
+  border: 0 solid rgba(142,194,242,1);
   border-radius: 25px;
-  box-shadow: 5px 5px 50px 0px #333;
+  box-shadow: 5px 5px 50px 0 #333;
 
 }
 
@@ -255,7 +252,6 @@ html {
   text-align: left;
 }
 .item-vertical-center {
-
   position: relative;
   top: 50%;
   -ms-transform: translateY(-50%);
@@ -267,7 +263,7 @@ html {
   margin: auto;
   text-align: left;
   position: relative;
-  font-family: Roboto;
+  font-family: Roboto, serif;
   font-weight: Normal;
   border: 2px solid rgba(142,194,242,1);
   border-radius: 7px;
@@ -278,14 +274,14 @@ html {
   color: rgba(255,255,255 ,1);
   position: relative;
   padding-top: 50px;
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
   font-weight: Normal;
   font-size: 18px;
   opacity: 1;
   text-align: left;
 }
 .item-inputdiv-checkbox {
-	font-family: Montserrat;
+	font-family: Montserrat, serif;
   font-weight: Bold;
   font-size: 15px;
   width: 70%;
@@ -308,7 +304,7 @@ html {
   width: 100%;
   height: 50px;
   margin: auto;
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
   font-weight: Bold;
   font-size: 15px;
   border-radius: 7px;
@@ -331,7 +327,7 @@ html {
   overflow: hidden;
   position: relative;
   visibility: hidden;
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 .burger {
@@ -343,7 +339,7 @@ html {
 }
 
 .topnav #myLinks {
-  margin-top: 0px;
+  margin-top: 0;
   display: none;
 }
 
@@ -352,7 +348,7 @@ html {
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
-  font-family: Montserrat;
+  font-family: Montserrat, serif;
   font-weight: Bold;
   display: block;
   background-color: rgba(130, 171, 209,1);
@@ -406,7 +402,7 @@ html {
 }
 
 .noshadow {
-	box-shadow: 0px 0px 0px 0px #000;
+	box-shadow: 0 0 0 0 #000;
 }
 .inline {
   display: inline;
@@ -432,7 +428,7 @@ html {
   /* For squished displays: */
   [class*="item-formbox"] {
     width: 90%;
-    top: 0%;
+    top: 0;
     padding-top: 15px;
     transform: translateY(-0%);
     margin: auto;
@@ -485,10 +481,10 @@ html {
     width: 80%;
     margin: auto;
     padding: 30px;
-    border: 0px solid rgba(142,194,242,1);
+    border: 0 solid rgba(142,194,242,1);
     border-radius: 15px;
     background-color: #444;
-    box-shadow: 5px 5px 50px 0px #444;
+    box-shadow: 5px 5px 50px 0 #444;
   }
   [class*="item-column-text"] {
     width: 100%;
@@ -498,7 +494,7 @@ html {
     background-repeat: no-repeat;
   }
   [class*="item-column-image"] {
-    width: 0%;
+    width: 0;
   }
 
 }}

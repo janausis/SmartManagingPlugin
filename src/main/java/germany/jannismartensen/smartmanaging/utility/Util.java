@@ -1,10 +1,10 @@
-package germany.jannismartensen.smartmanaging.Utility;
+package germany.jannismartensen.smartmanaging.utility;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import germany.jannismartensen.smartmanaging.Endpoints.Cookie;
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
+import germany.jannismartensen.smartmanaging.endpoints.Cookie;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -24,20 +24,22 @@ import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class Util {
-    public static String PREFIX = "[SmartManaging] ";
-    public static String PREFIXINFO =    "[SmartManaging/INFO]    ";
-    public static String PREFIXDEBUG =   "[SmartManaging/DEBUG]   ";
-    public static String PREFIXWARNING = "[SmartManaging/WARNING] ";
-    public static String PREFIXERROR =   "[SmartManaging/ERROR]   ";
+    public static final String PREFIX = "[SmartManaging] ";
+    public static final String PREFIXINFO =    "[SmartManaging/INFO]    ";
+    public static final String PREFIXDEBUG =   "[SmartManaging/DEBUG]   ";
+    public static final String PREFIXWARNING = "[SmartManaging/WARNING] ";
+    public static final String PREFIXERROR =   "[SmartManaging/ERROR]   ";
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
 
-    public static String[] logTypes = {"file", "console", "both"};
+    public static final String[] logTypes = {"file", "console", "both"};
 
     public static void log (String message) {
         log(message, 0);
@@ -461,5 +463,58 @@ public class Util {
             log("(Util.tickBeautifier) Tick value wasn't convertible to integer!", 3);
             return ticks;
         }
+    }
+
+    public static void zipLog(SmartManaging plugin, String logFolder) {
+        File f = new File(plugin.getDataFolder() + "/logs/" + logFolder);
+
+        FilenameFilter textFilter = (dir, name) -> name.toLowerCase().endsWith(".txt");
+        String identifier;
+        if (logFolder.equals("")) {
+            identifier = "";
+        } else {
+            identifier = logFolder.replace("/", "") + "-";
+        }
+
+        File[] files = f.listFiles(textFilter);
+        if (files != null) {
+            String fileStamp = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+            for (File file : files) {
+                if (file.isFile() && !file.getName().equals(identifier + fileStamp + ".txt")) {
+                    Util.zipLog(logFolder + file.getName(), plugin);
+                }
+            }
+        }
+    }
+
+    public static void zipLog(String filename, SmartManaging plugin) {
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(plugin.getDataFolder() + "/logs/" + filename.substring(0, filename.length()-4) + ".zip");
+
+            ZipOutputStream zipOut = new ZipOutputStream(fos);
+            File fileToZip = new File(plugin.getDataFolder() + "/logs/" + filename);
+            FileInputStream fis = new FileInputStream(fileToZip);
+            ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+            zipOut.putNextEntry(zipEntry);
+            byte[] bytes = new byte[1024];
+            int length;
+            while((length = fis.read(bytes)) >= 0) {
+                zipOut.write(bytes, 0, length);
+            }
+            zipOut.close();
+            fis.close();
+            fos.close();
+
+            fileToZip.delete();
+
+        } catch (FileNotFoundException e) {
+            log(e, 3);
+            log("(Util.zipLog) Could not find the file " + plugin.getDataFolder() + "/logs/" + filename + ".zip", 3);
+        } catch (IOException e) {
+            log(e, 3);
+            log("(Util.zipLog) There was an error whilst compressing the file " + plugin.getDataFolder() + "/logs/" + filename + ".zip", 3);
+        }
+
     }
 }

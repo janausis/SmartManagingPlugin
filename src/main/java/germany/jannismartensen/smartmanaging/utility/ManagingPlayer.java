@@ -1,4 +1,4 @@
-package germany.jannismartensen.smartmanaging.Utility;
+package germany.jannismartensen.smartmanaging.utility;
 
 public class ManagingPlayer {
 

@@ -1,4 +1,4 @@
-package germany.jannismartensen.smartmanaging.Utility;
+package germany.jannismartensen.smartmanaging.utility;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

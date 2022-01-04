@@ -1,7 +1,7 @@
-package germany.jannismartensen.smartmanaging.Utility.Database;
+package germany.jannismartensen.smartmanaging.utility.database;
 
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.Utility.ManagingPlayer;
+import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Objects;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
+import static germany.jannismartensen.smartmanaging.utility.Util.log;
 
 public class Connect {
     public static Connection connect(SmartManaging plugin) {

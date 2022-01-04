@@ -1,4 +1,4 @@
-package germany.jannismartensen.smartmanaging.Utility;
+package germany.jannismartensen.smartmanaging.utility;
 
 import germany.jannismartensen.smartmanaging.SmartManaging;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
+import static germany.jannismartensen.smartmanaging.utility.Util.log;
 
 public class TestDataGenerator {
 
@@ -94,7 +94,7 @@ public class TestDataGenerator {
                     log("(TestDataGenerator.generate) SqlException whilst creating test database " + databaseFile.getPath(), 3, true);
                 }
 
-
+                // Delete old data from user
                 String SecondSQL = "DELETE FROM " + tableName + " WHERE " + playerStoreName + " = ?";
                 try {
                     PreparedStatement pstmt = conn.prepareStatement(SecondSQL);

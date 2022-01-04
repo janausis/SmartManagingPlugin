@@ -1,11 +1,11 @@
-package germany.jannismartensen.smartmanaging.Utility.Database;
+package germany.jannismartensen.smartmanaging.utility.database;
 
 import germany.jannismartensen.smartmanaging.SmartManaging;
 
 import java.io.File;
 import java.sql.*;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
+import static germany.jannismartensen.smartmanaging.utility.Util.log;
 
 public class GameModesDatabaseConnector {
     public static Connection connect(SmartManaging plugin, String dbName) {

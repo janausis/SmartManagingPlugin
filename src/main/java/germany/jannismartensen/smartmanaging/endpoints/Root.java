@@ -1,12 +1,12 @@
-package germany.jannismartensen.smartmanaging.Endpoints;
+package germany.jannismartensen.smartmanaging.endpoints;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
-import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
-import germany.jannismartensen.smartmanaging.Utility.Util;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
+import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
+import germany.jannismartensen.smartmanaging.utility.Util;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
@@ -17,9 +17,9 @@ import java.util.Map;
 
 public class Root implements HttpHandler {
 
-    TemplateEngine engine;
-    SmartManaging plugin;
-    Connection connect;
+    final TemplateEngine engine;
+    final SmartManaging plugin;
+    final Connection connect;
 
     public Root(TemplateEngine e, SmartManaging m, Connection c) {
         this.plugin = m;

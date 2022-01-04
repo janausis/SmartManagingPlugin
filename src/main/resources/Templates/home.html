@@ -93,7 +93,7 @@
 
 <script>
   function myFunction() {
-    var x = document.getElementById("myLinks");
+    const x = document.getElementById("myLinks");
     if (x.style.display === "block") {
       x.style.display = "none";
     } else {
@@ -101,7 +101,7 @@
     }
   }
 
-  var nav;
+  let nav;
   if(${loggedin}) {
     nav = document.getElementById('notloggedin');
     nav.parentNode.removeChild(nav);

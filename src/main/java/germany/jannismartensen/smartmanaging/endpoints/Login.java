@@ -1,12 +1,12 @@
-package germany.jannismartensen.smartmanaging.Endpoints;
+package germany.jannismartensen.smartmanaging.endpoints;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
-import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
-import germany.jannismartensen.smartmanaging.Utility.Util;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
+import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
+import germany.jannismartensen.smartmanaging.utility.Util;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
@@ -15,13 +15,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
+import static germany.jannismartensen.smartmanaging.utility.Util.log;
 
 public class Login implements HttpHandler {
 
-    TemplateEngine engine;
-    SmartManaging plugin;
-    Connection connect;
+    final TemplateEngine engine;
+    final SmartManaging plugin;
+    final Connection connect;
     String playerName = "";
 
     public Login(TemplateEngine e, SmartManaging m, Connection c) {

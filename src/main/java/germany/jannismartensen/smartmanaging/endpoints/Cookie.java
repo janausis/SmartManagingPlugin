@@ -1,19 +1,19 @@
-package germany.jannismartensen.smartmanaging.Endpoints;
+package germany.jannismartensen.smartmanaging.endpoints;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class Cookie     {
-    private String name;
-    private String value;
-    private Date expires;
-    private Integer maxAge;
-    private String domain;
-    private String path;
-    private boolean secure;
-    private boolean httpOnly;
-    private String sameSite;
+    private final String name;
+    private final String value;
+    private final Date expires;
+    private final Integer maxAge;
+    private final String domain;
+    private final String path;
+    private final boolean secure;
+    private final boolean httpOnly;
+    private final String sameSite;
 
     public Cookie(String name,
                   String value,
@@ -36,25 +36,25 @@ public class Cookie     {
     }
 
     public String toString()        {
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
 
-        s.append(name + "=" + value);
+        s.append(name).append("=").append(value);
 
         if (expires != null)    {
             SimpleDateFormat fmt = new SimpleDateFormat("EEE, dd-MMM-yyyy HH:mm:ss", Locale.US);
-            s.append("; Expires=" + fmt.format(expires).replace(".", "") + " GMT");
+            s.append("; Expires=").append(fmt.format(expires).replace(".", "")).append(" GMT");
         }
 
         if (maxAge != null)     {
-            s.append("; Max-Age=" + maxAge);
+            s.append("; Max-Age=").append(maxAge);
         }
 
         if (domain != null)     {
-            s.append("; Domain=" + domain);
+            s.append("; Domain=").append(domain);
         }
 
         if (path != null)       {
-            s.append("; Path=" + path);
+            s.append("; Path=").append(path);
         }
 
         if (secure)     {
@@ -66,7 +66,7 @@ public class Cookie     {
         }
 
         if (sameSite != null)   {
-            s.append("; SameSite=" + sameSite);
+            s.append("; SameSite=").append(sameSite);
         }
 
         return s.toString();

@@ -1,14 +1,14 @@
-package germany.jannismartensen.smartmanaging.Endpoints;
+package germany.jannismartensen.smartmanaging.endpoints;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
-import germany.jannismartensen.smartmanaging.Utility.Database.GameModesDatabaseConnector;
-import germany.jannismartensen.smartmanaging.Utility.ManagingPlayer;
-import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
-import germany.jannismartensen.smartmanaging.Utility.Util;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
+import germany.jannismartensen.smartmanaging.utility.database.GameModesDatabaseConnector;
+import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
+import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
+import germany.jannismartensen.smartmanaging.utility.Util;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -20,14 +20,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
-import static germany.jannismartensen.smartmanaging.Utility.Util.redirect;
+import static germany.jannismartensen.smartmanaging.utility.Util.log;
+import static germany.jannismartensen.smartmanaging.utility.Util.redirect;
 
 public class Profile implements HttpHandler {
 
-    TemplateEngine engine;
-    SmartManaging plugin;
-    Connection connect;
+    final TemplateEngine engine;
+    final SmartManaging plugin;
+    final Connection connect;
     String playerName = "";
 
     public Profile(TemplateEngine e, SmartManaging m, Connection c) {

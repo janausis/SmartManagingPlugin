@@ -7,3 +7,19 @@ commands:
   managing:
     description: main command for smart managing
     usage: /managing
+
+permissions:
+  managing.*:
+    description: gives all managing plugin permissions
+    children:
+      managing.servermanager: true
+      managing.serveruser: true
+    default: op
+
+  managing.servermanager:
+    description: allows to manage the server (turning it on/off, reloading config)
+    default: op
+
+  managing.serveruser:
+    description: allows to register an account for the webview and manage it
+    default: true

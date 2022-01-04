@@ -30,7 +30,7 @@ announcements:
 
 # list of the worlds to read the playtime from
 # if you use a normal spigot server set this to the main world and not the nether or end
-# if on an multiworld server, please check what world contain the stats folder after playing on the world once
+# if on a multi world server, please check what world contain the stat's folder after playing on the world once
 worldName: world
 
 # exact names of minecraft stats to display, only work if showMinecraftStats is not set to false
@@ -40,7 +40,7 @@ stats:
     # list of the worlds to read the stats from
     # this does not affect the playtime
     # if you use a normal spigot server set this to the main world and not the nether or end
-    # if on an multiworld server, please check what world contain the stats folder after playing on the world once
+    # if on a multi world server, please check what world contain the stat's folder after playing on the world once
     worldName: world
 
     # pattern: (display name : stat type; stat name)

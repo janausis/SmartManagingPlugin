@@ -74,7 +74,7 @@
     //valueList = [["a", "a", "a", "a", "a"], ["a", "a", "a", "a", "a"]]
     //modeList = ["Skywars", "Bedwars"];
 
-    for(var i = 0; i < modeList.length; i++) {
+    for(let i = 0; i < modeList.length; i++) {
       let scoreTemplate = '' +
               '<div class="wrapper">' +
               '  <div class="stat-left">';
@@ -160,8 +160,8 @@
         '</div>' +
         '';
 
-        var style = document.createElement('style');
-        style.type = 'text/css';
+      const style = document.createElement('style');
+      style.type = 'text/css';
         style.innerHTML = '.selectable-' + modeList[i].replace(/[^a-zA-Z]/g, "") + ' { background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url(../images/modes/' + modeList[i].replace(/[^a-zA-Z]/g, "") + '.png);}';
         style.innerHTML += '.selectable-' + modeList[i].replace(/[^a-zA-Z]/g, "") + ':hover { background-image: linear-gradient(rgba(125, 125, 125, 0.6), rgba(125, 125, 125, 0.4)), url(../images/modes/' + modeList[i].replace(/[^a-zA-Z]/g, "") + '.png);}';
 
@@ -180,7 +180,7 @@
     }
 
     document.querySelector('ul').addEventListener('click', function(e) {
-      var selected;
+      let selected;
 
       if(e.target.tagName === 'LI') {
         selected = document.querySelector('li.selected');
@@ -193,7 +193,7 @@
         e.target.classList.add('selected');
 
         //Scroll target
-        var tar = document.getElementById('out-' + e.target.textContent.replace(/[^a-zA-Z]/g, ""));
+        const tar = document.getElementById('out-' + e.target.textContent.replace(/[^a-zA-Z]/g, ""));
         tar.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
@@ -201,7 +201,7 @@
   </script>
   <script>
     function myFunction() {
-      var x = document.getElementById("myLinks");
+      const x = document.getElementById("myLinks");
       if (x.style.display === "block") {
         x.style.display = "none";
       } else {

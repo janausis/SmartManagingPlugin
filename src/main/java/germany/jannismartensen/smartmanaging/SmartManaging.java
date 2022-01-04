@@ -1,12 +1,9 @@
 package germany.jannismartensen.smartmanaging;
 
 import com.sun.net.httpserver.HttpServer;
-import germany.jannismartensen.smartmanaging.Endpoints.*;
-import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
-import germany.jannismartensen.smartmanaging.Utility.ManagingPlayer;
-import germany.jannismartensen.smartmanaging.Utility.TabCompleter;
-import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
-import germany.jannismartensen.smartmanaging.Utility.TestDataGenerator;
+import germany.jannismartensen.smartmanaging.endpoints.*;
+import germany.jannismartensen.smartmanaging.utility.*;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,7 +18,7 @@ import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.util.Objects;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.*;
+import static germany.jannismartensen.smartmanaging.utility.Util.*;
 
 public class SmartManaging extends JavaPlugin {
 
@@ -39,9 +36,19 @@ public class SmartManaging extends JavaPlugin {
         createSourceFolder("Templates");
         this.saveDefaultConfig();
 
+        // Convert old log file to zip
+        zipLog(this, "");
+        zipLog(this, "access/");
+
+        Objects.requireNonNull(getCommand("managing")).setTabCompleter(new TabCompleter());
+        if (!Util.getLogStatus(this, "logLocation").equals("console")) {
+            logToFile("Activating Plugin...", 0, this, "");
+        }
+
+
         Database = Connect.connect(this);
         engine = new TemplateEngine(this);
-        Objects.requireNonNull(getCommand("managing")).setTabCompleter(new TabCompleter());
+
         setPort();
         startServer();
     }
@@ -49,6 +56,10 @@ public class SmartManaging extends JavaPlugin {
     @Override
     public void onDisable() {
         stopServer();
+
+        if (!Util.getLogStatus(this, "logLocation").equals("console")) {
+            logToFile("Deactivating Plugin... \n\n\n", 0, this, "");
+        }
     }
 
     @Override

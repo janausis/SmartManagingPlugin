@@ -1,11 +1,11 @@
-package germany.jannismartensen.smartmanaging.Endpoints;
+package germany.jannismartensen.smartmanaging.endpoints;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
-import germany.jannismartensen.smartmanaging.Utility.Util;
+import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
+import germany.jannismartensen.smartmanaging.utility.Util;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,9 +13,9 @@ import java.sql.Connection;
 
 public class Logout implements HttpHandler {
 
-    TemplateEngine engine;
-    SmartManaging plugin;
-    Connection connect;
+    final TemplateEngine engine;
+    final SmartManaging plugin;
+    final Connection connect;
     String playerName = "";
 
     public Logout(TemplateEngine e, SmartManaging m, Connection c) {

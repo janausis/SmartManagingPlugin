@@ -1,4 +1,4 @@
-package germany.jannismartensen.smartmanaging.Utility;
+package germany.jannismartensen.smartmanaging.utility;
 
 import freemarker.template.*;
 import germany.jannismartensen.smartmanaging.SmartManaging;
@@ -6,12 +6,12 @@ import germany.jannismartensen.smartmanaging.SmartManaging;
 import java.util.*;
 import java.io.*;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
+import static germany.jannismartensen.smartmanaging.utility.Util.log;
 
 public class TemplateEngine {
 
-    Configuration cfg;
-    SmartManaging plugin;
+    final Configuration cfg;
+    final SmartManaging plugin;
 
     public TemplateEngine(SmartManaging managing) {
         this.plugin = managing;

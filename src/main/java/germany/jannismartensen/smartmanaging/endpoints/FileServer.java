@@ -1,9 +1,9 @@
-package germany.jannismartensen.smartmanaging.Endpoints;
+package germany.jannismartensen.smartmanaging.endpoints;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.Utility.Util;
+import germany.jannismartensen.smartmanaging.utility.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.nio.file.Files;
 
 public class FileServer implements HttpHandler {
 
-    SmartManaging plugin;
-    String filepath;
+    final SmartManaging plugin;
+    final String filepath;
 
     public FileServer(SmartManaging m, String path) {
         this.plugin = m;
