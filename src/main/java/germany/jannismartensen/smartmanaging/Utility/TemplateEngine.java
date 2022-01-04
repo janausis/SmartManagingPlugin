@@ -27,7 +27,8 @@ public class TemplateEngine {
             try {
                 cfg.setDirectoryForTemplateLoading(new File(plugin.getDataFolder() + "/Templates"));
             } catch (IOException ex) {
-                log("Template folder still could not be found! Stopping server...", 3);
+                log(ex, 3);
+                log("(TemplateEngine.TemplateEngine) Template folder still could not be created! Stopping server...", 3, true);
                 plugin.stopServer();
             }
         }
@@ -53,13 +54,12 @@ public class TemplateEngine {
 
 
         } catch (IOException e) {
-            //e.printStackTrace();
-            log(e.getMessage());
-            log("Could not find or open the template: '" + template + "'", 2);
+            log(e, 3);
+            log("(TemplateEngine.renderTemplate) Could not find or open the template: '" + template + "'", 3, true);
 
         } catch (TemplateException e) {
-            //e.printStackTrace();
-            log("Error whilst rendering template: '" + template + "'", 2);
+            log(e, 3);
+            log("(TemplateEngine.renderTemplate) Error whilst rendering template: '" + template + "'", 3, true);
         }
         return "Error";
 

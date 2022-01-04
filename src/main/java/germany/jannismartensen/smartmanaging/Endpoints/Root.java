@@ -42,9 +42,9 @@ public class Root implements HttpHandler {
         map.put("accountNumber", String.valueOf(Connect.getPlayerCount(connect)));
         map.put("version", plugin.getServer().getBukkitVersion());
         map.put("ip", Util.getIpOrDomain(plugin));
-        map.put("loggedin", String.valueOf(Util.loggedIn(he, connect, plugin)));
+        map.put("loggedin", String.valueOf(Util.loggedIn(he, connect)));
 
-        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect, plugin), he);
+        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 
         SmartManaging.copyResources("Templates/home.html", plugin, false);
         String response = engine.renderTemplate("home.html", map);

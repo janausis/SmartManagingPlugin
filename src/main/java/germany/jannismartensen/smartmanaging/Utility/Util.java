@@ -5,10 +5,12 @@ import com.sun.net.httpserver.HttpExchange;
 import germany.jannismartensen.smartmanaging.Endpoints.Cookie;
 import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.Utility.Database.Connect;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -25,21 +27,153 @@ import java.util.logging.Level;
 
 public class Util {
     public static String PREFIX = "[SmartManaging] ";
+    public static String PREFIXINFO =    "[SmartManaging/INFO]    ";
+    public static String PREFIXDEBUG =   "[SmartManaging/DEBUG]   ";
+    public static String PREFIXWARNING = "[SmartManaging/WARNING] ";
+    public static String PREFIXERROR =   "[SmartManaging/ERROR]   ";
+
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+
+    public static String[] logTypes = {"file", "console", "both"};
 
     public static void log (String message) {
-        Bukkit.getLogger().log(Level.INFO, PREFIX + message);
+        log(message, 0);
     }
+
     public static void log (String message, int status) {
+        SmartManaging plugin = JavaPlugin.getPlugin(SmartManaging.class);
+
+        String logType = getLogStatus(plugin, "logLocation");
+        if (logType.equals("file")) {
+            logToFile(message, status, plugin, "");
+        } else if (logType.equals("both")) {
+            logToConsole(message, status, true);
+            logToFile(message, status, plugin, "");
+        } else {
+            logToConsole(message, status, true);
+        }
+    }
+
+    public static void log (Exception e, int status) {
+        SmartManaging plugin = JavaPlugin.getPlugin(SmartManaging.class);
+
+        String logType = getLogStatus(plugin, "logLocation");
+        if (logType.equals("file")) {
+            logToFile(e.getMessage(), status, plugin, "");
+            logToFile("\n\n" + ExceptionUtils.getStackTrace(e), status, plugin, "");
+        } else if (logType.equals("both")) {
+            logToFile(e.getMessage(), status, plugin, "");
+            logToFile("\n\n" + ExceptionUtils.getStackTrace(e), status, plugin, "");
+
+            logToConsole(e.getMessage(), status, true);
+            logToConsole("\n\n" + ExceptionUtils.getStackTrace(e), status);
+        } else {
+            logToConsole(e.getMessage(), status, true);
+            logToConsole("\n\n" + ExceptionUtils.getStackTrace(e), status);
+        }
+    }
+
+    public static void log (String message, int status, boolean forceConsole) {
+        SmartManaging plugin = JavaPlugin.getPlugin(SmartManaging.class);
+
+        if (forceConsole && getLogStatus(plugin, "logLocation").equals("file")) {
+            logToConsole(message, status);
+        }
+        log(message, status);
+    }
+
+    public static void logToConsole(String message, int status) {
         switch (status) {
             case 1 -> Bukkit.getLogger().log(Level.CONFIG, PREFIX + message);
             case 2 -> Bukkit.getLogger().log(Level.WARNING, PREFIX + message);
             case 3 -> Bukkit.getLogger().log(Level.SEVERE, PREFIX + message);
             default -> Bukkit.getLogger().log(Level.INFO, PREFIX + message);
         }
-
     }
+
+    public static void logToConsole(String message, int status, boolean color) {
+        if (color) {
+            switch (status) {
+                case 1 -> Bukkit.getLogger().log(Level.CONFIG, PREFIX + message);
+                case 2 -> Bukkit.getLogger().log(Level.WARNING, PREFIX + ANSI_YELLOW + message + ANSI_RESET);
+                case 3 -> Bukkit.getLogger().log(Level.SEVERE, PREFIX + ANSI_RED + message + ANSI_RESET);
+                default -> Bukkit.getLogger().log(Level.INFO, PREFIX + message);
+            }
+        } else {
+            logToConsole(message, status);
+        }
+    }
+
+    public static void logToFile(String message, int status, SmartManaging plugin, String FileName) {
+        String ogName = FileName;
+        String msg;
+        switch (status) {
+            case 1 -> msg = PREFIXDEBUG + message;
+            case 2 -> msg = PREFIXWARNING + message;
+            case 3 -> msg = PREFIXERROR + message;
+            default -> msg = PREFIXINFO + message;
+        }
+        if (!FileName.equals("")) {
+            FileName = "/" + FileName + "/";
+        }
+
+        String timeStamp = new SimpleDateFormat("[HH:mm:ss]").format(new Date());
+        String fileStamp = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        msg = timeStamp + " " + msg + "\n";
+        File logFolder = new File(plugin.getDataFolder() + "/logs" + FileName);
+        if (!logFolder.exists()) {
+            logFolder.mkdirs();
+        }
+
+        try {
+            BufferedWriter output;
+            if (ogName.equals("")) {
+                output = new BufferedWriter(new FileWriter(plugin.getDataFolder() + "/logs/" + FileName + fileStamp + ".txt", true));
+            } else {
+                output = new BufferedWriter(new FileWriter(plugin.getDataFolder() + "/logs/" + FileName + ogName + "-" +fileStamp + ".txt", true));
+            }
+
+            output.append(msg);
+            output.close();
+
+        } catch (IOException e) {
+            logToConsole("(Util.logToFile) The logger is unable to open the log file, logging to console instead.", 3);
+            if (getLogStatus(plugin, "logLocation").equals("file")) {
+                logToConsole(message, status);
+            }
+        }
+    }
+
     public static void logAccess(HttpExchange he) {
-        log(he.getRemoteAddress().toString().replace("/", "") + " accessed " + he.getRequestURI() + ": " + he.getRequestMethod());
+        SmartManaging plugin = JavaPlugin.getPlugin(SmartManaging.class);
+        FileConfiguration config = plugin.getConfig();
+
+        String message = he.getRemoteAddress().toString().replace("/", "") + " accessed " + he.getRequestURI() + ": " + he.getRequestMethod();
+        int status = 0;
+
+        if (config.contains("logAccess") && Objects.equals(config.getString("logAccess"), "true")) {
+            String logType = getLogStatus(plugin, "accessLogLocation");
+            if (logType.equals("file")) {
+                logToFile(message, status, plugin, "access");
+            } else if (logType.equals("both")) {
+                logToFile(message, status, plugin, "access");
+                logToConsole(message, status);
+            } else {
+                logToConsole(message, status);
+            }
+        }
+    }
+
+    public static String getLogStatus(SmartManaging plugin, String logType) {
+        FileConfiguration config = plugin.getConfig();
+        String logTo = config.getString(logType);
+        if (logTo == null || Arrays.stream(logTypes).noneMatch(logTo::equals)) {
+            logTo = "console";
+        }
+        return logTo;
     }
 
     public static void registerUser (String m, Connection conn, CommandSender user, String password) {
@@ -74,27 +208,25 @@ public class Util {
     public static String readAllBytes(String filePath)
     {
         String content = "";
-
-        try
-        {
+        try {
             content = new String ( Files.readAllBytes( Paths.get(filePath) ) );
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             e.printStackTrace();
         }
-
         return content;
     }
 
-    public static boolean loggedIn(HttpExchange he, Connection connect, SmartManaging plugin) {
+    public static boolean loggedIn(HttpExchange he, Connection connect) {
         if (hasCookie(he)) {
             Headers reqHeaders = he.getRequestHeaders();
-            List<String> cookies = null;
+            List<String> cookies;
             try {
                 cookies = reqHeaders.get("Cookie");
             } catch (Exception e) {
-                log(e.getMessage(), 3);
+                log(e, 3);
+                log("(Util.loggedIn) Could not find Cookie in headers", 2);
+                return false;
             }
 
             for (String c : cookies) {
@@ -134,11 +266,12 @@ public class Util {
 
     public static boolean hasCookie(HttpExchange he) {
         Headers reqHeaders = he.getRequestHeaders();
-        List<String> cookies = null;
+        List<String> cookies;
         try {
             cookies = reqHeaders.get("Cookie");
         } catch (Exception e) {
-            log(e.getMessage(), 3);
+            log("(Util.hasCookie) Could not find Cookie in headers, logging user out", 2);
+            return false;
         }
 
         return cookies != null;
@@ -146,11 +279,12 @@ public class Util {
 
     public static String getCookie(HttpExchange he) {
         Headers reqHeaders = he.getRequestHeaders();
-        List<String> cookies = null;
+        List<String> cookies;
         try {
             cookies = reqHeaders.get("Cookie");
         } catch (Exception e) {
-            log(e.getMessage(), 3);
+            log("(Util.getCookie) Could not find Cookie in headers, logging user out", 2);
+            return "";
         }
 
         if (cookies == null) {
@@ -253,7 +387,6 @@ public class Util {
 
         ArrayList<String> out = new ArrayList<>();
         for (String s : l.split(",")) {
-            log(s.trim());
             out.add(s.trim());
         }
         return out;
@@ -266,7 +399,7 @@ public class Util {
             try {
                 tick += Integer.parseInt(readStats(user, world, "minecraft:custom;minecraft:play_time"));
             } catch (NumberFormatException e) {
-                log(e.getMessage(), 3);
+                log(e, 3);
                 log("(Util.getPlayTime) Tick value wasn't convertible to integer!", 3);
                 return "";
             }
@@ -298,14 +431,18 @@ public class Util {
             statOut = custom.get(st).toString();
 
         } catch (IOException | ParseException e) {
-            log(e.getMessage(), 3);
+            log(e, 3);
+            log("(Util.readStats) Could not parse JSON, returning empty string", 3);
+        } catch (Exception a) {
+            log(a, 3);
+            log("(Util.readStats) There was an unusual error, please have a look into the logs.", 3, true);
         }
 
         return statOut;
     }
 
     public static String tickBeautifier(String ticks) {
-        int tick = 0;
+        int tick;
         try {
             tick = Integer.parseInt(ticks);
             int seconds = tick/20;
@@ -314,10 +451,14 @@ public class Util {
             Date d = new Date(seconds * 1000L);
             SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss"); // HH for 0-23
             df.setTimeZone(TimeZone.getTimeZone("GMT"));
-            return days + "-" + df.format(d);
+            if (days != 0) {
+                return days + ":" + df.format(d);
+            } else {
+                return df.format(d);
+            }
 
         } catch (NumberFormatException e) {
-            log(e.getMessage(), 3);
+            log(e, 3);
             log("(Util.tickBeautifier) Tick value wasn't convertible to integer!", 3);
             return ticks;
         }

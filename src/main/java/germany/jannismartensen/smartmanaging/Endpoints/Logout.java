@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
 
-import static germany.jannismartensen.smartmanaging.Utility.Util.log;
-
 public class Logout implements HttpHandler {
 
     TemplateEngine engine;
@@ -33,7 +31,7 @@ public class Logout implements HttpHandler {
         Headers headers = he.getResponseHeaders();
         headers.add("Location", "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
 
-        if (Util.loggedIn(he, connect, plugin)) {
+        if (Util.loggedIn(he, connect)) {
             // Remove login cookie
             headers.add("Set-Cookie", Util.invalidCookie().toString());
         }
