@@ -1,5 +1,26 @@
 servername: Plugin Test Server
+
+# Set your custom domain name here, if not set the ip value from the server.properties will be used
+# If you don't have a domain but want players from other networks to access the web interface,
+# set the domain to your public ip. Other can then access it on http://yourip:9000
 domain:
+
+# Please remember to port forward the port your set in your router if players from outside your network
+# should be able to access the web interface
+# defaults to 9000
+port: 9000
+
+
+# can either be "file", "console" or "both"
+# critical errors will always be logged to the console
+# defaults to console
+logLocation: both
+accessLogLocation: file
+
+# Will log website access
+logAccess: true
+
+# Announcements displayed in the routes
 announcements:
   home: Please take a look around
   profile: Take a look at your game stats
@@ -41,7 +62,7 @@ stats:
 # but without the spaces or special characters
 # e.g: Hide & Seek > HideSeek.png
 modes:
-  # The order will stay the same and the first one, will be the default opened
+  # The order will stay the same and the first one, will be the default opened one
 
   Overview:
     # can either be player names (name) or player uuids (uuid)
@@ -65,20 +86,13 @@ modes:
       MonthlyRank: 1
       Rank: 1
 
+
   Skywars:
-    # can either be player names (name) or player uuids (uuid)
     StoredAs: name
     StoredInColumn: playername
-
-    # Please input a relative path from the SmartManaging folder
-    # yourServerLocation/data/games/dbfile.db would be
-    # ../../data/games/dbfile.db
     DatabaseFile: testdata.db
     TableName: skywars
-
-    # max. 10
     values:
-      # input an arbitrary value behind the names
       Points: 1
       Kills: 1
       MostKills: 1
@@ -91,19 +105,11 @@ modes:
       Rank: 1
 
   Bedwars:
-    # can either be player names (name) or player uuids (uuid)
     StoredAs: uuid
     StoredInColumn: playername
-
-    # Please input a relative path from the SmartManaging folder
-    # yourServerLocation/data/games/dbfile.db would be
-    # ../../data/games/dbfile.db
     DatabaseFile: testdata.db
     TableName: bedwars
-
-    # max. 10
     values:
-      # input an arbitrary value behind the names
       Points: 1
       Kills: 1
       Deaths: 1
@@ -112,38 +118,22 @@ modes:
       Rank: 1
 
   Minigames:
-    # can either be player names (name) or player uuids (uuid)
     StoredAs: name
     StoredInColumn: playername
-
-    # Please input a relative path from the SmartManaging folder
-    # yourServerLocation/data/games/dbfile.db would be
-    # ../../data/games/dbfile.db
     DatabaseFile: testdata.db
     TableName: minigames
-
-    # max. 10
     values:
-      # input an arbitrary value behind the names
       Points: 1
       Kills: 1
       Deaths: 1
       Rank: 1
 
   Hide & Seek:
-    # can either be player names (name) or player uuids (uuid)
     StoredAs: name
     StoredInColumn: playername
-
-    # Please input a relative path from the SmartManaging folder
-    # yourServerLocation/data/games/dbfile.db would be
-    # ../../data/games/dbfile.db
     DatabaseFile: testdata.db
     TableName: hideaseek
-
-    # max. 10
     values:
-      # input an arbitrary value behind the names
       Points: 1
       Kills: 1
       Deaths: 1

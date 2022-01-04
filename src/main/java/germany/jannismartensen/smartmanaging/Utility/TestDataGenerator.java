@@ -62,7 +62,7 @@ public class TestDataGenerator {
 
 
                 // db parameters
-                File databaseFile = new File(plugin.getDataFolder(), dbPath);
+                File databaseFile = new File(plugin.getDataFolder(), Objects.requireNonNull(dbPath));
                 if (!plugin.getDataFolder().exists()) {
                     plugin.getDataFolder().mkdirs();
                 }
@@ -84,7 +84,8 @@ public class TestDataGenerator {
                     // create a new table
                     stmt.execute(sql.toString());
                 } catch (SQLException e) {
-                    log(e.getMessage(), 3);
+                    log(e, 3);
+                    log("(TestDataGenerator.generate) SqlException whilst creating test database " + databaseFile.getPath(), 3, true);
                 }
 
                 StringBuilder columns = new StringBuilder();
@@ -100,7 +101,7 @@ public class TestDataGenerator {
                     }
                 }
 
-                String playerName = "";
+                String playerName;
                 if (Objects.equals(playerStoredAs, "uuid")) {
                     playerName = player.getUUID();
                 } else {
@@ -126,7 +127,8 @@ public class TestDataGenerator {
 
 
                 } catch (SQLException e) {
-                    log(e.getMessage(), 3);
+                    log(e, 3);
+                    log("(TestDataGenerator.generate) SqlException inserting into test database " + databaseFile.getPath(), 3, true);
                 }
 
                 conn.close();
@@ -135,9 +137,11 @@ public class TestDataGenerator {
             log("Creation of Database successful");
 
         } catch (SQLException e) {
-            log(e.getMessage(), 3);
+            log(e, 3);
+            log("(TestDataGenerator.generate) SqlException whilst handling test databases", 3, true);
         } catch (IOException e) {
-            e.printStackTrace();
+            log(e, 3);
+            log("(TestDataGenerator.generate) Could not open a test database file", 3, true);
         }
     }
 

@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 
 import static germany.jannismartensen.smartmanaging.Utility.Util.log;
 
@@ -43,18 +44,21 @@ public class Connect {
                 // create a new table
                 stmt.execute(sql);
             } catch (SQLException e) {
-                log(e.getMessage(), 3);
+                log(e, 3);
+                log("(Connect.connect) SQLException whilst creating player database", 3, true);
             }
 
 
-            log("Connection to Database successful.");
+            log("Connection to Database successful");
 
             return conn;
 
         } catch (SQLException e) {
-            log(e.getMessage(), 3);
+            log(e, 3);
+            log("(Connect.connect) SQLException whilst connecting to player database", 3, true);
         } catch (IOException e) {
-            e.printStackTrace();
+            log(e, 3);
+            log("(Connect.connect) Could not open player database file", 3, true);
         }
         return null;
     }
@@ -65,7 +69,7 @@ public class Connect {
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, user.getName());
-            pstmt.setString(2, user.getServer().getPlayer(user.getName()).getUniqueId().toString());
+            pstmt.setString(2, Objects.requireNonNull(user.getServer().getPlayer(user.getName())).getUniqueId().toString());
             pstmt.setString(3, password);
             pstmt.executeUpdate();
 
@@ -76,8 +80,9 @@ public class Connect {
             user.sendMessage("Welcome! Lookup your profile under http://" + server + ":" + SmartManaging.port);
 
         } catch (SQLException e) {
-            user.sendMessage("You could not be registered! Please try again later.");
-            log(e.getMessage(), 3);
+            user.sendMessage("You could not be registered! Please try again later and try contacting a server admin.");
+            log(e, 3);
+            log("(Connect.insertUser) Could not register player " + user.getName(), 3, true);
         }
     }
 
@@ -112,11 +117,13 @@ public class Connect {
                 return new ManagingPlayer(name, uuid, password, cookie);
 
             } catch (SQLException ex) {
-                log(ex.getMessage(), 3);
+                log(ex, 3);
+                log("(Connect.getPlayerFromCookie) Could not get player from cookie " + cookie, 3, true);
             }
 
         } catch (SQLException e) {
-            log(e.getMessage(), 3);
+            log(e, 3);
+            log("(Connect.getPlayerFromCookie) Could not get player from cookie " + cookie, 3, true);
         }
         return null;
     }
@@ -133,11 +140,13 @@ public class Connect {
                     return (rs.getInt(1) != 0);
                 }
             } catch (SQLException ex) {
-                log(ex.getMessage(), 3);
+                log(ex, 3);
+                log("(Connect.userExists) Could not check existence for " + name, 3, true);
             }
 
         } catch (SQLException e) {
-            log(e.getMessage(), 3);
+            log(e, 3);
+            log("(Connect.userExists) Could not check existence for " + name, 3, true);
         }
         return false;
     }
@@ -154,11 +163,14 @@ public class Connect {
                     return (rs.getInt(1) != 0);
                 }
             } catch (SQLException ex) {
-                log(ex.getMessage(), 3);
+                log(ex, 3);
+                log("(Connect.correctPassword) Could not execute sql for password check for user " + name, 3, true);
+
             }
 
         } catch (SQLException e) {
-            log(e.getMessage(), 3);
+            log(e, 3);
+            log("(Connect.correctPassword) Could not execute sql for password check for user " + name, 3, true);
         }
         return false;
     }
@@ -178,11 +190,13 @@ public class Connect {
                 }
 
             } catch (SQLException ex) {
-                log(ex.getMessage(), 3);
+                log(ex, 3);
+                log("(Connect.getPlayerCount) Could execute sql for getting playercount", 3, true);
             }
 
         } catch (SQLException e) {
-            log(e.getMessage(), 3);
+            log(e, 3);
+            log("(Connect.getPlayerCount) Could execute sql for getting playercount", 3, true);
         }
         return count;
     }
@@ -207,7 +221,8 @@ public class Connect {
 
         } catch (SQLException e) {
             user.sendMessage("Your password could not be updated! Please try again later.");
-            log(e.getMessage(), 3);
+            log(e, 3);
+            log("(Connect.updatePassword) Could not update password for player " + user.getName(), 3, true);
         }
     }
     public static void deleteUser(Connection conn, CommandSender user, String password) {
@@ -229,7 +244,8 @@ public class Connect {
 
         } catch (SQLException e) {
             user.sendMessage("Your account could not be deleted! Please try again later.");
-            log(e.getMessage(), 3);
+            log(e, 3);
+            log("(Connect.updatePassword) Could not delete account for player " + user.getName(), 3, true);
         }
     }
 }

@@ -34,9 +34,9 @@ public class Login implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         Util.logAccess(he);
 
-        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect, plugin), he);
+        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 
-        if (Util.loggedIn(he, connect, plugin)) {
+        if (Util.loggedIn(he, connect)) {
             Util.redirect(plugin, he, "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
             return;
         }
@@ -112,7 +112,8 @@ public class Login implements HttpHandler {
                 try {
                     Connect.insertCookie(connect, playerName, cookieString);
                 } catch (SQLException e) {
-                    log(e.getMessage(), 3);
+                    log(e, 3);
+                    log("(Login.template) Could not insert cookie into database", 3, true);
 
                     message = "There has been an error, try again later!";
                     Headers headers = he.getResponseHeaders();

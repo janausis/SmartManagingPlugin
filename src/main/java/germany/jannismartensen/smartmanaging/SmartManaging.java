@@ -9,8 +9,10 @@ import germany.jannismartensen.smartmanaging.Utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.Utility.TestDataGenerator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +42,11 @@ public class SmartManaging extends JavaPlugin {
         engine = new TemplateEngine(this);
         Objects.requireNonNull(getCommand("managing")).setTabCompleter(new TabCompleter());
 
+        FileConfiguration config = getConfig();
+        if (config.contains("port")) {
+            port = config.getInt("port");
+        }
+
         //startServer();
     }
 
@@ -49,10 +56,10 @@ public class SmartManaging extends JavaPlugin {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender,
+    public boolean onCommand(@NonNull CommandSender sender,
                              Command command,
-                             String label,
-                             String[] args) {
+                             @NonNull String label,
+                             @NonNull String[] args) {
         if (command.getName().equalsIgnoreCase("managing")) {
 
             if (args != null) {
@@ -140,10 +147,10 @@ public class SmartManaging extends JavaPlugin {
         if (serverRunning) return;
         try {
             start();
-            log("Server started at port " + port);
+            log("Server started at port " + port, 0, true);
         } catch (IOException e) {
-            e.printStackTrace();
-            log("Server could not start at port " + port, 3);
+            log(e, 3);
+            log("Server could not start at port " + port, 3, true);
         }
     }
 
@@ -151,11 +158,11 @@ public class SmartManaging extends JavaPlugin {
         if (serverRunning) return;
         try {
             start();
-            log("Server started at port " + port);
+            log("Server started at port " + port, 0, true);
             if (!sender.getName().equals("CONSOLE")) sender.sendMessage("Server started at port " + port);
         } catch (IOException e) {
-            e.printStackTrace();
-            log("Server could not start at port " + port, 3);
+            log(e, 3);
+            log("Server could not start at port " + port, 3, true);
             if (!sender.getName().equals("CONSOLE")) sender.sendMessage("Server could not start at port " + port);
         }
     }
@@ -164,14 +171,15 @@ public class SmartManaging extends JavaPlugin {
         if (serverRunning) {
             serverRunning = false;
             server.stop(0);
-            log("Server stopped at port " + port);
+            log("Server stopped at port " + port, 0, true);
         }
     }
 
     public void stopServer (CommandSender sender) {
         if (serverRunning) {
             serverRunning = false;
-            log("Server stopped at port " + port);
+            server.stop(0);
+            log("Server stopped at port " + port, 0, true);
             if (!sender.getName().equals("CONSOLE")) sender.sendMessage("Server stopped at port " + port);
         }
     }

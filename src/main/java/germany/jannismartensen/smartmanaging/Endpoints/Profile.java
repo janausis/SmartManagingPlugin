@@ -40,7 +40,7 @@ public class Profile implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         Util.logAccess(he);
 
-        if (!Util.loggedIn(he, connect, plugin)) {
+        if (!Util.loggedIn(he, connect)) {
             redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
             return;
         }
@@ -66,7 +66,7 @@ public class Profile implements HttpHandler {
         // Populate modeScores
         map = populateModes(map, user);
 
-        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect, plugin), he);
+        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 
         SmartManaging.copyResources("Templates/profile.html", plugin, false);
         String response = engine.renderTemplate("profile.html", map);
@@ -79,7 +79,6 @@ public class Profile implements HttpHandler {
     }
 
     public Map<String, String> populateModes(Map<String, String> map, ManagingPlayer user) {
-        Map<String, String> outMap = new HashMap<>();
         FileConfiguration config = plugin.getConfig();
         ConfigurationSection section = config.getConfigurationSection("modes");
 
@@ -132,7 +131,7 @@ public class Profile implements HttpHandler {
 
 
             Connection conn = GameModesDatabaseConnector.connect(plugin, dbPath);
-            String playerName = "";
+            String playerName;
             if (Objects.equals(playerStoredAs, "uuid")) {
                 playerName = user.getUUID();
             } else {
@@ -179,7 +178,11 @@ public class Profile implements HttpHandler {
                     tmpScore += Integer.parseInt(Util.readStats(user, world, Objects.requireNonNull(section.getString(stat))));
 
                 } catch (NumberFormatException e) {
-                    log(e.getMessage(), 3);
+                    log(e, 3);
+                    log("(Profile.readStats) Could not format score into integer " + Util.readStats(user, world, Objects.requireNonNull(section.getString(stat))), 3, true);
+                } catch (NullPointerException r) {
+                    log(r, 3);
+                    log("(Profile.readStats) You might be missing the exact definition of the stat " + stat + " for mode " + mode + " in your config", 3, true);
                 }
             }
 
