@@ -105,9 +105,9 @@ public class Login implements HttpHandler {
 
                 Cookie cookie;
                 if (remember) {
-                    cookie = new Cookie("login", cookieString, nextYear, null, "192.168.1.25", "/", false, false, null);
+                    cookie = new Cookie("login", cookieString, nextYear, null, map.get("ip"), "/", false, false, null);
                 } else {
-                    cookie = new Cookie("login", cookieString, null, null, "192.168.1.25", "/", false, false, null);
+                    cookie = new Cookie("login", cookieString, null, null, map.get("ip"), "/", false, false, null);
                 }
                 try {
                     Connect.insertCookie(connect, playerName, cookieString);
