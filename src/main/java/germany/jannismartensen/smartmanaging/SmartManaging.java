@@ -41,12 +41,7 @@ public class SmartManaging extends JavaPlugin {
         Database = Connect.connect(this);
         engine = new TemplateEngine(this);
         Objects.requireNonNull(getCommand("managing")).setTabCompleter(new TabCompleter());
-
-        FileConfiguration config = getConfig();
-        if (config.contains("port")) {
-            port = config.getInt("port");
-        }
-
+        setPort();
         //startServer();
     }
 
@@ -76,8 +71,19 @@ public class SmartManaging extends JavaPlugin {
                         assert p != null;
                         TestDataGenerator.generate(this, new ManagingPlayer( p.getName(), p.getUniqueId().toString(), null, null));
 
-                    } else if (args[1].equalsIgnoreCase("deleteTestData")) {
-                        new File(getDataFolder(), "testdata.db").delete();
+                    } else if(args[1].equalsIgnoreCase("reload")) {
+                        reloadConfig();
+                        log("Reloaded SmartManaging config!", 1, true);
+                        if (!sender.getName().equals("CONSOLE")) sender.sendMessage("Reloaded SmartManaging config!");
+
+                        if (serverRunning) {
+                            stopServer(sender);
+                            setPort();
+                            startServer(sender);
+                        } else {
+                            setPort();
+                        }
+
                     } else {
                         sender.sendMessage("Unknown action");
                     }
@@ -141,6 +147,13 @@ public class SmartManaging extends JavaPlugin {
         server.setExecutor(null);
         server.start();
 
+    }
+
+    public void setPort () {
+        FileConfiguration config = getConfig();
+        if (config.contains("port")) {
+            port = config.getInt("port");
+        }
     }
 
     public void startServer (){

@@ -80,14 +80,13 @@ public class Util {
         SmartManaging plugin = JavaPlugin.getPlugin(SmartManaging.class);
 
         if (forceConsole && getLogStatus(plugin, "logLocation").equals("file")) {
-            logToConsole(message, status);
+            logToConsole(message, status, true);
         }
         log(message, status);
     }
 
     public static void logToConsole(String message, int status) {
         switch (status) {
-            case 1 -> Bukkit.getLogger().log(Level.CONFIG, PREFIX + message);
             case 2 -> Bukkit.getLogger().log(Level.WARNING, PREFIX + message);
             case 3 -> Bukkit.getLogger().log(Level.SEVERE, PREFIX + message);
             default -> Bukkit.getLogger().log(Level.INFO, PREFIX + message);
@@ -97,7 +96,7 @@ public class Util {
     public static void logToConsole(String message, int status, boolean color) {
         if (color) {
             switch (status) {
-                case 1 -> Bukkit.getLogger().log(Level.CONFIG, PREFIX + message);
+                case 1 -> Bukkit.getLogger().log(Level.INFO, PREFIX + ANSI_GREEN + message + ANSI_RESET);
                 case 2 -> Bukkit.getLogger().log(Level.WARNING, PREFIX + ANSI_YELLOW + message + ANSI_RESET);
                 case 3 -> Bukkit.getLogger().log(Level.SEVERE, PREFIX + ANSI_RED + message + ANSI_RESET);
                 default -> Bukkit.getLogger().log(Level.INFO, PREFIX + message);

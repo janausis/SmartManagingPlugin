@@ -2,13 +2,14 @@ package germany.jannismartensen.smartmanaging.Utility;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TabCompleter implements org.bukkit.command.TabCompleter {
     @Override
-    public List<String> onTabComplete (CommandSender sender, Command cmd, String label, String[] args) {
+    public List<String> onTabComplete (@NonNull CommandSender sender,@NonNull Command cmd,@NonNull String label, String[] args) {
         if(args.length == 1) {
             List<String> completions = new ArrayList<>();
             completions.add("register");
@@ -22,6 +23,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
             List<String> completions = new ArrayList<>();
             completions.add("start");
             completions.add("stop");
+            completions.add("reload");
             completions.add("generateTestData");
 
             return completions;
