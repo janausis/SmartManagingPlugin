@@ -1,6 +1,5 @@
 package germany.jannismartensen.smartmanaging;
 
-import com.dosse.upnp.UPnP;
 import com.sun.net.httpserver.HttpServer;
 import germany.jannismartensen.smartmanaging.endpoints.*;
 import germany.jannismartensen.smartmanaging.utility.*;
@@ -34,6 +33,7 @@ public class SmartManaging extends JavaPlugin {
     public void onEnable() {
         createSourceFolder("images");
         createSourceFolder("style");
+        createSourceFolder("scripts");
         createSourceFolder("Templates");
         this.saveDefaultConfig();
 
@@ -45,12 +45,11 @@ public class SmartManaging extends JavaPlugin {
         if (!Util.getLogStatus(this, "logLocation").equals("console")) {
             logToFile("Activating Plugin...", 0, this, "");
         }
-
+        setPort();
 
         Database = Connect.connect(this);
         engine = new TemplateEngine(this);
 
-        setPort();
         startServer();
     }
 
@@ -163,19 +162,25 @@ public class SmartManaging extends JavaPlugin {
 
     public void start () throws IOException {
 
-        UPnP.openPortTCP(port);
+        //
         serverRunning = true;
 
 
         server = HttpServer.create(new InetSocketAddress(port), 5);
+        // Routes
         server.createContext("/", new Root(engine, this, Database));
         server.createContext("/login", new Login(engine, this, Database));
         server.createContext("/logout", new Logout(engine, this, Database));
         server.createContext("/profile", new Profile(engine, this, Database));
+        server.createContext("/players", new Players(engine, this, Database));
+        server.createContext("/players/search", new PlayerSearch(engine, this, Database));
+
+        // Static Files
         server.createContext("/favicon.ico", new ServeFile(this, "favicon.ico"));
         server.createContext("/robots.txt", new ServeFile(this, "robots.txt"));
         server.createContext("/style", new FileServer(this, "/style"));
         server.createContext("/images", new FileServer(this, "/images"));
+        server.createContext("/scripts", new FileServer(this, "/scripts"));
         server.createContext("/images/modes", new FileServer(this, "/images/modes"));
         server.setExecutor(null);
         server.start();
@@ -217,7 +222,6 @@ public class SmartManaging extends JavaPlugin {
         if (serverRunning) {
             serverRunning = false;
             server.stop(0);
-            UPnP.closePortTCP(port);
             log("Server stopped at port " + port, 0, true);
         }
     }
@@ -226,7 +230,6 @@ public class SmartManaging extends JavaPlugin {
         if (serverRunning) {
             serverRunning = false;
             server.stop(0);
-            UPnP.closePortTCP(port);
             log("Server stopped at port " + port, 0, true);
             if (!sender.getName().equals("CONSOLE")) sender.sendMessage("Server stopped at port " + port);
         }

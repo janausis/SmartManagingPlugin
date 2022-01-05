@@ -517,4 +517,20 @@ public class Util {
         }
 
     }
+
+    public static ManagingPlayer getUser(Connection connect, HttpExchange he, SmartManaging plugin) {
+        ManagingPlayer user = Connect.getPlayerFromCookie(connect, Util.getCookie(he));
+        try {
+            if (user == null) {
+                redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/logout");
+            } else if (user.getUUID() == null || user.getName() == null || user.getCookie() == null || user.getPassword() == null) {
+                redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/logout");
+            }
+        } catch (IOException e) {
+            log(e, 3);
+            log("(Util.getUser) Unable to redirect user to logout", 3);
+        }
+
+        return user;
+    }
 }

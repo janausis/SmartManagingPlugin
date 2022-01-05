@@ -1,0 +1,197 @@
+.player {
+  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url("../images/players.webp");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.playernav {
+  box-shadow: 0 0 5px 15 #333;
+}
+
+.playerhomes {
+  box-shadow: 0 0 0px 0 black;
+}
+
+.player-header {
+  color: #FFF;
+  font-size: 55px;
+}
+
+.players-inputdiv {
+  width: 95%;
+  max-width: 600px;
+  margin: auto;
+  padding-top: 10px;
+}
+
+.players-submitdiv {
+  width: 27%;
+  margin: auto;
+  margin-top: 20px;
+}
+.players-submitbutton {
+  width: 45%;
+  height: 50px;
+  margin: auto;
+  font-family: Montserrat, serif;
+  font-weight: Bold;
+  font-size: 15px;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #888;
+  border: none;
+  display: inline-block;
+  border: 0.3px solid #000;
+}
+
+.players-submitbutton:hover {
+  background-color: #555;
+}
+
+.players-submitbutton:focus {
+  background-color: #333;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.player-top-margin {
+  margin: auto auto auto auto;
+}
+
+.boundbox {
+  width: 100%;
+  margin: 150px auto 30% auto;
+
+}
+
+.players-inputtext {
+  width: calc(100% - 90px);
+  height: 50px;
+  margin: 15px auto auto auto;
+  text-align: left;
+  position: relative;
+  font-family: Montserrat, serif;
+  font-weight: Bold;
+  background-color: #AAA;
+  color: #FFF;
+  border: 1.2px solid #777;
+  border-radius: 30px;
+  font-size: 20px;
+  opacity: 1;
+  background: url("../images/search2.png")no-repeat;
+  background-size: 20px;
+  padding-right: 45px;
+  padding-left: 45px;
+  background-position: 15px;
+}
+
+.players-inputtext:hover {
+  box-shadow: 0 0 5px 0 black;
+  background-color: #777;
+}
+
+.players-inputtext:focus {
+  box-shadow: 0 0 5px 0 black;
+  background-color: #777;
+}
+
+/* autocompletion */
+.autocomplete {
+  position: relative;
+
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 2px solid #777;
+  z-index: 99;
+  color: #FFF;
+  font-size: 20px;
+  background-color: #777;
+  font-family: Montserrat, serif;
+  font-weight: normal;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+  border-radius: 0 0 27px 27px;
+}
+
+.autocomplete-items div {
+  padding-left: 45px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  cursor: pointer;
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #555;
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: #484848;
+}
+
+.found {
+  border-radius: 27px 27px 0 0;
+}
+
+.found-bottom {
+  border-radius: 0 0 27px 27px;
+}
+
+.found-bottom div:hover {
+  border-radius: 0 0 27px 27px;
+}
+
+
+
+
+@media only screen and (max-width: 850px) {
+  [class="players-submitdiv"] {
+    width: 40%;
+  }
+}
+@media only screen and (max-width: 750px) {
+  [class="players-submitdiv"] {
+    width: 50%;
+  }
+}
+@media only screen and (max-width: 650px) {
+  [class="players-submitdiv"] {
+    width: 60%;
+  }
+}
+@media only screen and (max-width: 550px) {
+  [class="players-submitdiv"] {
+    width: 70%;
+  }
+  [class="player"] {
+		padding-top: 75px;
+		min-height: calc(100vh - 75px);
+	}
+}
+@media only screen and (max-width: 450px) {
+  [class="players-submitdiv"] {
+    width: 80%;
+  }
+}
+@media only screen and (max-width: 350px) {
+  [class="players-submitdiv"] {
+    width: 90%;
+  }
+}
+@media only screen and (max-width: 250px) {
+  [class="players-submitdiv"] {
+    width: 100%;
+  }
+}

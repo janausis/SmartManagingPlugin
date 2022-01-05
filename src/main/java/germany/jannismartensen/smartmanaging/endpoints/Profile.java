@@ -4,11 +4,10 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.utility.database.Connect;
-import germany.jannismartensen.smartmanaging.utility.database.GameModesDatabaseConnector;
 import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.utility.Util;
+import germany.jannismartensen.smartmanaging.utility.database.GameModesDatabaseConnector;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -45,18 +44,13 @@ public class Profile implements HttpHandler {
             return;
         }
 
-        Map<String, String> map = new HashMap<>();
-        FileConfiguration config = plugin.getConfig();
-
-        ManagingPlayer user = Connect.getPlayerFromCookie(connect, Util.getCookie(he));
+        ManagingPlayer user = Util.getUser(connect, he, plugin);
         if (user == null) {
-            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/logout");
-            return;
-        } else if (user.getUUID() == null || user.getName() == null || user.getCookie() == null || user.getPassword() == null) {
-            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/logout");
             return;
         }
 
+        Map<String, String> map = new HashMap<>();
+        FileConfiguration config = plugin.getConfig();
 
         map.put("username", user.getName());
         map.put("announcement", config.getString("announcements.profile"));

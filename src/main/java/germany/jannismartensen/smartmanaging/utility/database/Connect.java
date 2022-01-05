@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static germany.jannismartensen.smartmanaging.utility.Util.log;
@@ -199,6 +200,36 @@ public class Connect {
             log("(Connect.getPlayerCount) Could execute sql for getting playercount", 3, true);
         }
         return count;
+    }
+
+    public static ArrayList<String> getTopSuggestions(Connection conn, String searchString) {
+        ArrayList<String> out = new ArrayList<>();
+
+        if (searchString.equals("")) {
+            return out;
+        }
+
+        String sql = "SELECT name FROM player WHERE name LIKE '" + searchString + "%' LIMIT 5";
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                while (rs.next()) {
+                    out.add(rs.getString(1));
+                }
+            } catch (SQLException ex) {
+                log(ex, 3);
+                log("(Connect.getTopSuggestions) Could not get users for " + searchString, 3, true);
+            }
+
+        } catch (SQLException e) {
+            log(e, 3);
+            log("(Connect.getTopSuggestions) Could not get users for " + searchString, 3, true);
+        }
+
+        return out;
+
     }
 
 

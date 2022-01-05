@@ -31,6 +31,7 @@ logAccess: true
 announcements:
   home: Please take a look around
   profile: Take a look at your game stats
+  players: Search for other players with an account
 
 # this will add a mode which list some general stuff from the ingame statistics tab
 # Replace Minecraft Stats with false if you want to deactivate this
