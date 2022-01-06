@@ -19,7 +19,7 @@
   opacity: 1;
   text-align: center;
   margin: auto, auto, auto, auto;
-  padding-bottom: 15px;
+  padding-top: 15px;
 }
 
 .results-center {
@@ -31,8 +31,7 @@
 }
 
 .input-margin {
-  margin-right: 50px;
-  width: calc(100% - 170px);
+  width: 80%;
 }
 
 .button-margin {
@@ -45,55 +44,24 @@
   margin: auto;
 }
 
-.result-list {
-  list-style-type: none
-}
-
-.result-list-item {
-  width: calc(100% - 125px);
-  padding: 30px 40px 30px 40px;
-  min-height: 50px;
-  background-color: #333;
-  border: 1px solid #777;
-  border-radius: 25px;
-}
-
-.size-search {
-  font-size: 20px;
-}
-
-.stat-left {
-  width: 49.5%;
-  display: inline-block;
-  text-align: center;
-}
-
-.stat-right {
-  width: 49.5%;
-  display: inline-block;
-  text-align: center;
-}
-
 .divider-90 {
 	outline: none;
+	width: 90%;
+  max-width: 90%;
 	background-color: #444;
 	border:none;
   height: 20px;
  	width: 90%;
-	height: 90px;
+	height: 100px;
 	margin-top: 0;
-  /*
-  box-shadow: 0 5px 50px #333;
-  border-radius: 25px;
-  */
-  border-bottom: 1px solid #777;
+	box-shadow: 0 5px 50px #333;
   margin: 0px auto 10px;
   padding-top: 10px;
-
+	border-radius: 25px;
 }
 
 .players-submitbutton {
-  min-width: 100px;
+  min-width: 120px;
   height: 60px;
   font-family: Montserrat, serif;
   font-weight: Bold;
@@ -101,8 +69,7 @@
   border-radius: 10px;
   text-align: center;
   background-color: #888;
-  display: block;
-  margin-left: -40px;
+  display: inline-block;
   border: 0.3px solid #000;
 }
 

@@ -218,6 +218,16 @@ html {
   margin: auto;
 
 }
+
+.divider {
+	outline: none;
+	width: 75%;
+	border: 1px solid #777;
+	background-color: #777;
+}
+
+
+
 .item-homebox {
   width: 90%;
   max-width: 900px;

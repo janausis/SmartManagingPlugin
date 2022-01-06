@@ -10,8 +10,6 @@
   <link href="../style/players.css" rel="stylesheet" />
   <link href="../style/scrollbar.css" rel="stylesheet" />
   <script src="../scripts/autocomplete.js"></script>
-  <script src="../scripts/navbar.js"></script>
-  <script>autocomplete(document.getElementById("playername"), ${ip});</script>
 
 </head>
 <body style="margin: 0;">
@@ -60,6 +58,19 @@
       </form>
     </div>
   </div>
+
+<script>
+  function myFunction() {
+    const x = document.getElementById("myLinks");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
+  }
+
+  autocomplete(document.getElementById("playername"), ${ip});
+</script>
 
 </body>
 </html>

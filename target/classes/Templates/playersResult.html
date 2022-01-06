@@ -11,8 +11,6 @@
   <link href="../style/playerResults.css" rel="stylesheet" />
   <link href="../style/scrollbar.css" rel="stylesheet" />
   <script src="../scripts/autocomplete.js"></script>
-  <script src="../scripts/searchResultDisplay.js"></script>
-  <script src="../scripts/navbar.js"></script>
 
 </head>
 <body style="margin: 0;">
@@ -59,46 +57,22 @@
         </ul>
       </form>
 
-      <ul class="result-list">
-        <li class="result-list-item">
-          <h1 class="item-bigtitle item-center player-top-margin results-bigtitle">Janausis</h1>
-          <div class="stat-left">
-            <h3 class="item-ip item-left white inline size-search">Name: </h3>
-            <h3 class="item-ip item-left green inline size-search">Janausis</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Playtime: </h3>
-            <h3 class="item-ip item-left green inline size-search">10:23:32</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Kills: </h3>
-            <h3 class="item-ip item-left green inline size-search">4168</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Deaths: </h3>
-            <h3 class="item-ip item-left green inline size-search">23</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Blocks Walked: </h3>
-            <h3 class="item-ip item-left green inline size-search">45614.5</h3>
-            <br><br>
-          </div>
-          <div class="stat-right">
-            <h3 class="item-ip item-left white inline size-search">Name: </h3>
-            <h3 class="item-ip item-left green inline size-search">Janausis</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Playtime: </h3>
-            <h3 class="item-ip item-left green inline size-search">10:23:32</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Kills: </h3>
-            <h3 class="item-ip item-left green inline size-search">4168</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Deaths: </h3>
-            <h3 class="item-ip item-left green inline size-search">23</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Blocks Walked: </h3>
-            <h3 class="item-ip item-left green inline size-search">45614.5</h3>
-            <br><br>
-          </div>
-        </li>
-      </ul>
+
     </div>
   </div>
+
+<script>
+  function myFunction() {
+    const x = document.getElementById("myLinks");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
+  }
+
+  autocomplete(document.getElementById("playername"), ${ip});
+</script>
+
 </body>
 </html>
