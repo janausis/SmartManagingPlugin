@@ -1,0 +1,83 @@
+.top {
+  margin: 50px auto 30% auto;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.home-padding {
+  padding: 20px 20px 20px 20px;
+}
+
+.results-bigtitle {
+  width: 100%;
+  color: #FFF;
+  font-family: Montserrat, serif;
+  font-weight: Bold;
+  font-size: 25px;
+  opacity: 1;
+  text-align: center;
+  margin: auto, auto, auto, auto;
+  padding-top: 15px;
+}
+
+.results-center {
+  margin: auto;
+}
+
+.bigtitle-margin {
+  min-width: 120px;
+}
+
+.input-margin {
+  width: 80%;
+}
+
+.button-margin {
+  width: 15%;
+}
+
+
+.results-boundbox {
+  width: 100%;
+  margin: auto;
+}
+
+.divider-90 {
+	outline: none;
+	width: 90%;
+  max-width: 90%;
+	background-color: #444;
+	border:none;
+  height: 20px;
+ 	width: 90%;
+	height: 100px;
+	margin-top: 0;
+	box-shadow: 0 5px 50px #333;
+  margin: 0px auto 10px;
+  padding-top: 10px;
+	border-radius: 25px;
+}
+
+.players-submitbutton {
+  min-width: 120px;
+  height: 60px;
+  font-family: Montserrat, serif;
+  font-weight: Bold;
+  font-size: 15px;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #888;
+  display: inline-block;
+  border: 0.3px solid #000;
+}
+
+
+
+.results-inputdiv {
+  width: 95%;
+  list-style: none;
+  max-width: 800px;
+  margin: auto, auto, auto, auto;
+}
