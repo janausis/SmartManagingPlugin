@@ -1,18 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
+<html><head>
   <title>Players</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="../style/style.css" rel="stylesheet" />
-  <link href="../style/players.css" rel="stylesheet" />
-  <link href="../style/playerResults.css" rel="stylesheet" />
-  <link href="../style/scrollbar.css" rel="stylesheet" />
-  <script src="../scripts/autocomplete.js"></script>
-  <script src="../scripts/searchResultDisplay.js"></script>
-  <script src="../scripts/navbar.js"></script>
+  <link href="../../style/style.css" rel="stylesheet">
+  <link href="../../style/players.css" rel="stylesheet">
+  <link href="../../style/playerResults.css" rel="stylesheet">
+  <link href="../../style/scrollbar.css" rel="stylesheet">
+  <script src="../../scripts/autocomplete.js"></script>
+  <script src="../../scripts/navbar.js"></script>
 
 </head>
 <body style="margin: 0;">
@@ -46,59 +43,28 @@
       </div>
     </div>
 
-  <div class="item-column-home player">
-    <div class="item-homebox playerhome home-padding" >
-      <form autocomplete="off" class="results-boundbox divider-90" href="/players/results" id="searchForm">
-        <ul class="results-inputdiv results-center">
-          <li class="inline-block input-margin">
-            <input class="players-inputtext autocomplete" type="text" id="playername" name="playername" placeholder="" value="${query}">
-          </li>
-          <li class="inline-block button-margin">
-            <button class="players-submitbutton" type="submit" value="search">Search</button>
-          </li>
-        </ul>
+  <div class="item-column-home player-results results-column-home">
+    <div class="item-homebox playerhome home-padding home-results">
+      <form autocomplete="off" class="results-boundbox divider-90 results-center" action="/players/results" id="searchForm">
+
+        <div class="players-inputdiv results-center autocomplete inline-block input-margin">
+            <input class="players-inputtext results-inputtext" type="text" id="playername2" name="playername" placeholder="" value="${query}">
+        </div>
+
+        <div class="players-submitdiv inline-block button-margin">
+          <button class="players-submitbutton" type="submit" value="search">Search</button>
+        </div>
+
       </form>
 
-      <ul class="result-list">
-        <li class="result-list-item">
-          <h1 class="item-bigtitle item-center player-top-margin results-bigtitle">Janausis</h1>
-          <div class="stat-left">
-            <h3 class="item-ip item-left white inline size-search">Name: </h3>
-            <h3 class="item-ip item-left green inline size-search">Janausis</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Playtime: </h3>
-            <h3 class="item-ip item-left green inline size-search">10:23:32</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Kills: </h3>
-            <h3 class="item-ip item-left green inline size-search">4168</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Deaths: </h3>
-            <h3 class="item-ip item-left green inline size-search">23</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Blocks Walked: </h3>
-            <h3 class="item-ip item-left green inline size-search">45614.5</h3>
-            <br><br>
-          </div>
-          <div class="stat-right">
-            <h3 class="item-ip item-left white inline size-search">Name: </h3>
-            <h3 class="item-ip item-left green inline size-search">Janausis</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Playtime: </h3>
-            <h3 class="item-ip item-left green inline size-search">10:23:32</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Kills: </h3>
-            <h3 class="item-ip item-left green inline size-search">4168</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Deaths: </h3>
-            <h3 class="item-ip item-left green inline size-search">23</h3>
-            <br><br>
-            <h3 class="item-ip item-left white inline size-search">Blocks Walked: </h3>
-            <h3 class="item-ip item-left green inline size-search">45614.5</h3>
-            <br><br>
-          </div>
-        </li>
-      </ul>
+      <ul class="result-list" id="result-list"></ul>
     </div>
   </div>
-</body>
-</html>
+
+  <script src="../../scripts/searchResultDisplay.js"></script>
+  <script>searchResultDisplay(${playerList}, ${dataList})</script>
+  <script src="../../scripts/autocomplete.js"></script>
+  <script>autocomplete(document.getElementById("playername2"), 'http://192.168.1.25:9000');</script>
+
+
+</body></html>

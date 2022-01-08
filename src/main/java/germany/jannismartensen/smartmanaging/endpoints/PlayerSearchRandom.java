@@ -8,26 +8,21 @@ import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.utility.Util;
 import germany.jannismartensen.smartmanaging.utility.database.Connect;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Map;
 
+import static germany.jannismartensen.smartmanaging.utility.Util.log;
 import static germany.jannismartensen.smartmanaging.utility.Util.redirect;
 
-
-// Get 5 Player suggestions
-public class PlayerSearch implements HttpHandler {
+public class PlayerSearchRandom implements HttpHandler {
 
     final TemplateEngine engine;
     final SmartManaging plugin;
     final Connection connect;
 
-    public PlayerSearch(TemplateEngine e, SmartManaging m, Connection c) {
+    public PlayerSearchRandom(TemplateEngine e, SmartManaging m, Connection c) {
         this.plugin = m;
         this.engine = e;
         this.connect = c;
@@ -38,7 +33,7 @@ public class PlayerSearch implements HttpHandler {
         Util.logAccess(he);
 
         if (!Util.loggedIn(he, connect)) {
-            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
+            redirect(plugin, he, Util.root());
             return;
         }
 
@@ -47,24 +42,16 @@ public class PlayerSearch implements HttpHandler {
             return;
         }
 
-        Map<String, String> params = Util.queryToMap(he.getRequestURI().getQuery());
+        try {
+            Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
+            ArrayList<String> allPlayers = Connect.getTopSuggestions(connect, "", 0, "false");
+            int index = (int)(Math.random() * ((allPlayers.size() - 1) + 1));
 
-        Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
-        ArrayList<String> suggestions = Connect.getTopSuggestions(connect, params.getOrDefault("search", ""), 5, "false");
-
-        JSONArray jsArray = new JSONArray();
-        jsArray.addAll(suggestions);
-
-        JSONObject data = new JSONObject();
-        data.put("data", jsArray);
-        String response = data.toJSONString();
-
-        he.sendResponseHeaders(200, response.length());
-        OutputStream os = he.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-
+            redirect(plugin, he, Util.root() + "players/results?playername=" + allPlayers.get(index) + "&exactMatch=true");
+        } catch (Exception e) {
+            log(e, 3);
+            log("PlayerSearchRandom.handle) There was an unexpected error whilst getting random player");
+            redirect(plugin, he, Util.root() + "players");
+        }
     }
-
-
 }

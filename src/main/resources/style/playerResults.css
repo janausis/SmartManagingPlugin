@@ -1,9 +1,22 @@
+.player-results {
+  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url("../images/players.webp");
+    background-position: center;
+    background-size: cover;
+    background-repeat: repeat;
+}
+
 .top {
   margin: 50px auto 30% auto;
 }
 
 .inline-block {
   display: inline-block;
+}
+
+.home-results {
+  max-height: calc(60vh - 50px);
+  min-height: 350px;
+  overflow-y: hidden;
 }
 
 .home-padding {
@@ -18,9 +31,17 @@
   font-size: 25px;
   opacity: 1;
   text-align: center;
-  margin: auto, auto, auto, auto;
-  padding-bottom: 15px;
+  border-bottom: 1px solid #777;
+  margin: auto auto auto auto;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
 }
+
+.results-column-home {
+  padding-bottom: 100px;
+  min-height: calc(100vh - 275px);
+}
+
 
 .results-center {
   margin: auto;
@@ -46,16 +67,27 @@
 }
 
 .result-list {
-  list-style-type: none
+  list-style-type: none;
+  max-height: calc(50vh - 70px);
+  padding-left: 0px;
+  overflow-y: scroll;
+  margin-top: auto;
+  margin-right: 45px;
+  margin-left: 45px;
+  border-bottom: 1px solid #777;
 }
 
 .result-list-item {
-  width: calc(100% - 125px);
+  width: calc(100% - 100px);
   padding: 30px 40px 30px 40px;
   min-height: 50px;
   background-color: #333;
   border: 1px solid #777;
   border-radius: 25px;
+  margin-bottom: 15px;
+  margin-right: 5px;
+  margin-top: 15px;
+  margin-left: 9px;
 }
 
 .size-search {
@@ -73,23 +105,51 @@
   display: inline-block;
   text-align: center;
 }
+@media only screen and (max-width: 550px) {
+  [class*="item-column-home"] {
+    padding-top: 75px;
+    min-height: calc(100vh - 75px);
+    border-radius: 0;
+    width: auto;
+    background-image: none;
+    background-color: #444;
+    padding-bottom: 0;
+  }
+  [class*="home-results"] {
+    max-height: calc(100vh - 275px);
+    min-height: calc(100vh - 125px);
+    border-radius: 0;
+    width: auto;
+    box-shadow: none;
+
+    overflow-y: hidden;
+  }
+  [class="result-list"] {
+    max-height: calc(80vh - 70px);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  [class="stat-left"] {
+    width: 100%;
+    display: block;
+  }
+  [class="stat-right"] {
+    width: 100%;
+    display: block;
+  }
+}
 
 .divider-90 {
 	outline: none;
 	background-color: #444;
 	border:none;
-  height: 20px;
- 	width: 90%;
+	height: 20px;
+	width: 90%;
 	height: 90px;
 	margin-top: 0;
-  /*
-  box-shadow: 0 5px 50px #333;
-  border-radius: 25px;
-  */
-  border-bottom: 1px solid #777;
-  margin: 0px auto 10px;
-  padding-top: 10px;
-
+	border-bottom: 1px solid #777;
+	padding-top: 10px;
 }
 
 .players-submitbutton {
@@ -101,16 +161,22 @@
   border-radius: 10px;
   text-align: center;
   background-color: #888;
-  display: block;
-  margin-left: -40px;
+  margin-left: 35px;
   border: 0.3px solid #000;
 }
 
+.autocomplete-results {
+  margin-right: -75px;
+}
+
+.results-inputtext {
+    width: calc(100% - -75px);
+}
 
 
 .results-inputdiv {
   width: 95%;
   list-style: none;
   max-width: 800px;
-  margin: auto, auto, auto, auto;
+  margin: auto auto auto auto;
 }

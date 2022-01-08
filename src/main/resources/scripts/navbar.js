@@ -7,13 +7,27 @@ function myFunction() {
   }
 }
 
+function myFunction() {
+  const x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+
 function checkLogin(loggedin) {
-  let nav;
+  window.onload = (event) => {
+    init(loggedin);
+  };
+}
+
+function init(loggedin) {
   if(loggedin) {
-    nav = document.getElementById('notloggedin');
+    let nav = document.getElementById('notloggedin');
     nav.parentNode.removeChild(nav);
   } else {
-    nav = document.getElementById('logged');
+    let nav = document.getElementById('logged');
     nav.parentNode.removeChild(nav);
   }
 }

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.util.Objects;
+import java.util.UUID;
 
 import static germany.jannismartensen.smartmanaging.utility.Util.*;
 
@@ -85,10 +86,14 @@ public class SmartManaging extends JavaPlugin {
                             stopServer(sender);
 
                         } else if (args[1].equalsIgnoreCase("generateTestData")) {
-                            Player p = sender.getServer().getPlayer(sender.getName());
+                            if (args.length <= 3) {
+                                TestDataGenerator.generate(this, new ManagingPlayer(args[2], UUID.randomUUID().toString(), null, null));
+                            } else {
+                                Player p = sender.getServer().getPlayer(sender.getName());
 
-                            assert p != null;
-                            TestDataGenerator.generate(this, new ManagingPlayer(p.getName(), p.getUniqueId().toString(), null, null));
+                                assert p != null;
+                                TestDataGenerator.generate(this, new ManagingPlayer(p.getName(), p.getUniqueId().toString(), null, null));
+                            }
 
                         } else if (args[1].equalsIgnoreCase("reload")) {
                             reloadConfig();
@@ -174,6 +179,8 @@ public class SmartManaging extends JavaPlugin {
         server.createContext("/profile", new Profile(engine, this, Database));
         server.createContext("/players", new Players(engine, this, Database));
         server.createContext("/players/search", new PlayerSearch(engine, this, Database));
+        server.createContext("/players/results", new PlayerSearchResults(engine, this, Database));
+        server.createContext("/players/random", new PlayerSearchRandom(engine, this, Database));
 
         // Static Files
         server.createContext("/favicon.ico", new ServeFile(this, "favicon.ico"));

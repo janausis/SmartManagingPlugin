@@ -9,7 +9,7 @@
   <link href="../style/style.css" rel="stylesheet" />
   <link href="../style/players.css" rel="stylesheet" />
   <link href="../style/scrollbar.css" rel="stylesheet" />
-  <script src="../scripts/autocomplete.js"></script>
+  <script src="../scripts/navbar.js"></script>
 
 </head>
 <body style="margin: 0;">
@@ -43,34 +43,27 @@
       </div>
     </div>
 
-  <div class="item-column-home player">
+  <div class="item-column-home player-column">
     <div class="item-homebox playerhome" >
-      <form autocomplete="off" class="boundbox" href="/players/results" id="searchForm">
+      <form autocomplete="off" method="get" class="boundbox" action="/players/results" id="searchForm">
         <h1 class="item-bigtitle item-center player-top-margin player-header">User Search</h1>
         <div class="players-inputdiv autocomplete">
             <input class="players-inputtext" type="text" id="playername" name="playername" placeholder="">
         </div>
         <div class="players-submitdiv">
           <button class="players-submitbutton left" type="submit" value="search">Search</button>
-          <button class="players-submitbutton right" type="submit" value="random">Random</button>
+          <button class="players-submitbutton right" type="button" value="random" id="random">Random</button>
 
         </div>
       </form>
     </div>
   </div>
-
-<script>
-  function myFunction() {
-    const x = document.getElementById("myLinks");
-    if (x.style.display === "block") {
-      x.style.display = "none";
-    } else {
-      x.style.display = "block";
-    }
-  }
-
-  autocomplete(document.getElementById("playername"), ${ip});
-</script>
-
+  <script src="../scripts/autocomplete.js"></script>
+  <script>
+      autocomplete(document.getElementById("playername"), ${ip});
+      document.getElementById("random").onclick = function () {
+          location.href = "/players/random";
+      };
+  </script>
 </body>
 </html>

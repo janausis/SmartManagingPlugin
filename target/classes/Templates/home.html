@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="../style/style.css" rel="stylesheet" />
   <link href="../style/scrollbar.css" rel="stylesheet" />
+  <script src="../scripts/navbar.js"></script>
+  <script>checkLogin(${loggedin});</script>
 
 </head>
 <body style="margin: 0;">
@@ -90,27 +92,6 @@
       </div>
     </div>
   </div>
-
-<script>
-  function myFunction() {
-    const x = document.getElementById("myLinks");
-    if (x.style.display === "block") {
-      x.style.display = "none";
-    } else {
-      x.style.display = "block";
-    }
-  }
-
-  let nav;
-  if(${loggedin}) {
-    nav = document.getElementById('notloggedin');
-    nav.parentNode.removeChild(nav);
-  } else {
-    nav = document.getElementById('logged');
-    nav.parentNode.removeChild(nav);
-  }
-
-</script>
 
 </body>
 </html>

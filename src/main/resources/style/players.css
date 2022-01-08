@@ -1,4 +1,4 @@
-.player {
+.player-column {
   background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url("../images/players.webp");
     background-position: center;
     background-size: cover;
@@ -6,7 +6,7 @@
 }
 
 .playernav {
-  box-shadow: 0 0 5px 15 #333;
+  box-shadow: 0 0 5px #333;
 }
 
 .playerhomes {
@@ -61,6 +61,7 @@
   float: left;
 }
 
+
 .player-top-margin {
   margin: auto auto auto auto;
 }
@@ -109,15 +110,22 @@
 
 }
 
+.playerhome{}
+
+.autocomplete-correct {
+  color: #fff;
+  font-weight: normal;
+}
+
 .autocomplete-items {
   position: absolute;
   border: 1.2px solid #777;
   z-index: 99;
-  color: #FFF;
+  color: #333;
   font-size: 20px;
   background-color: #777;
   font-family: Montserrat, serif;
-  font-weight: normal;
+  font-weight: bold;
   /*position the autocomplete items to be the same width as the container:*/
   top: 100%;
   left: 0;
@@ -162,6 +170,25 @@
 @media only screen and (max-width: 850px) {
   [class="players-submitdiv"] {
     width: 40%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  [class*="player-column"] {
+    background: none;
+    overflow-y: auto;
+    min-height: calc(100vh - 100px);
+    padding-top: 75px;
+  }
+  [class*="boundbox"] {
+    margin: 10px auto 30% auto;
+  }
+  [class*="playerhome"] {
+    max-height: calc(100vh - 275px);
+    min-height: calc(100vh - 145px);
+    border-radius: 0;
+    width: auto;
+    box-shadow: none;
+    overflow-y: auto;
   }
 }
 @media only screen and (max-width: 750px) {

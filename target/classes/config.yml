@@ -52,7 +52,9 @@ stats:
     worldName: world
 
     # pattern: (display name : stat type; stat name)
+    # There is a custom plugin stat: minecraft:custom;minecraft:total_kills to display total kills
     stats:
+      Kills: minecraft:custom;minecraft:total_kills
       Player Kills: minecraft:custom;minecraft:player_kills
       Walked Blocks: minecraft:custom;minecraft:walk_one_cm
       Mob Kills: minecraft:custom;minecraft:mob_kills
@@ -62,8 +64,21 @@ stats:
       Damage Dealt: minecraft:custom;minecraft:damage_dealt
       Items Dropped: minecraft:custom;minecraft:drop
       Damage Taken: minecraft:custom;minecraft:damage_taken
-      Items Enchanted: minecraft:custom;minecraft:enchant_item
 
+
+
+playerSearch:
+  # These are the stats that are displayed on a player quick search
+  # The plugin stat: minecraft:custom;minecraft:total_kills works here too
+  worldName: world
+  # max: unlimited
+  stats:
+    Kills: minecraft:custom;minecraft:total_kills
+    Deaths: minecraft:custom;minecraft:deaths
+    Walked Blocks: minecraft:custom;minecraft:walk_one_cm
+    Playtime: minecraft:custom;minecraft:play_time
+    Damage Dealt: minecraft:custom;minecraft:damage_dealt
+    Damage Taken: minecraft:custom;minecraft:damage_taken
 
 # For each mode there is an image in the images/modes folder
 # the image name must be the same name as the mode,

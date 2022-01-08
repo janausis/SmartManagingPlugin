@@ -11,16 +11,8 @@
 </head>
 <body style="margin: 0; background-color: #444;">
 
-<div class="row">
-  <div class="item-column-image">
-    <img
-            src="../images/scenic.png"
-            class="item-image"
-            alt="Minecraft Landscape"
-    />
-  </div>
-  <div class="item-column-text">
-    <div class="item-formbox" >
+  <div class="item-column-login">
+    <div class="item-homebox" >
 
       <h1 class="item-bigtitle item-center">Login to ${name}</h1>
       <h3 class="item-ip item-center">${ip}</h3>
@@ -32,11 +24,11 @@
 
       <form action="/login" method="post">
         <div class="item-inputdiv">
-          <input class="item-inputtext" type="text" id="playername" name="playername" placeholder=" Playername" required>
+          <input class="item-inputtext" type="text" id="playername" name="playername" placeholder="Playername" required>
         </div>
         <br>
         <div class="item-inputdiv">
-          <input class="item-inputtext" type="password" id="password" name="password" placeholder=" Password" required>
+          <input class="item-inputtext" type="password" id="password" name="password" placeholder="Password" required>
         </div>
 
         <div class="item-inputdiv-checkbox">
@@ -49,7 +41,6 @@
       </form>
     </div>
   </div>
-</div>
 
 </body>
 </html>

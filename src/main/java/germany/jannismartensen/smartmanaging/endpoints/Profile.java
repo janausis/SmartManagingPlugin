@@ -46,6 +46,7 @@ public class Profile implements HttpHandler {
 
         ManagingPlayer user = Util.getUser(connect, he, plugin);
         if (user == null) {
+            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
             return;
         }
 
@@ -167,7 +168,7 @@ public class Profile implements HttpHandler {
         for (String stat : stats) {
 
             int tmpScore = 0;
-            for (String world: Util.getWorldList(plugin, mode)) {
+            for (String world: Util.getWorldList(plugin, "stats." + mode)) {
                 try {
                     tmpScore += Integer.parseInt(Util.readStats(user, world, Objects.requireNonNull(section.getString(stat))));
 

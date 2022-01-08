@@ -148,6 +148,10 @@ public class Util {
         }
     }
 
+    public static String root() {
+        return "http://" + Util.getIpOrDomain(JavaPlugin.getPlugin(SmartManaging.class)) + ":" + SmartManaging.port + "/";
+    }
+
     public static void logAccess(HttpExchange he) {
         SmartManaging plugin = JavaPlugin.getPlugin(SmartManaging.class);
         FileConfiguration config = plugin.getConfig();
@@ -314,7 +318,7 @@ public class Util {
     }
 
     public static void redirect(SmartManaging plugin, HttpExchange he, String location) throws IOException {
-        Headers headers = Util.deleteInvalidCookies(false, he);
+        Headers headers = he.getResponseHeaders();
         headers.add("Location", location);
         String response = "";
         he.sendResponseHeaders(302, 0);
@@ -372,6 +376,32 @@ public class Util {
         return valueString.toString();
     }
 
+    public static String getStringFromArray3(ArrayList<ArrayList<ArrayList<String>>> valueList) {
+        try {
+        StringBuilder valueString = new StringBuilder("[");
+        for (ArrayList<ArrayList<String>> value : valueList) {
+            valueString.append("[");
+
+            for (ArrayList<String> subvalue : value) {
+                valueString.append("[");
+                for (String va : subvalue) valueString.append('\"').append(va).append("\",");
+                valueString.deleteCharAt(valueString.length() - 1);
+                valueString.append("],");
+            }
+            valueString.deleteCharAt(valueString.length() - 1);
+            valueString.append("],");
+        }
+        valueString.deleteCharAt(valueString.length() - 1);
+        valueString.append("]");
+
+        return valueString.toString();
+        } catch (Exception e) {
+            log(e, 3);
+            log("(Util.getStringFromArray3) There was an error converting an array to string!", 3);
+            return "";
+        }
+    }
+
     public static ArrayList<String> getWorldList(SmartManaging plugin) {
 
         FileConfiguration config = plugin.getConfig();
@@ -380,10 +410,10 @@ public class Util {
         return new ArrayList<>(Arrays.asList(l.split(",")));
     }
 
-    public static ArrayList<String> getWorldList(SmartManaging plugin, String stat) {
+    public static ArrayList<String> getWorldList(SmartManaging plugin, String path) {
 
         FileConfiguration config = plugin.getConfig();
-        ConfigurationSection section = config.getConfigurationSection("stats." + stat);
+        ConfigurationSection section = config.getConfigurationSection(path);
         String l = Objects.requireNonNull(Objects.requireNonNull(section).getString("worldName"));
 
         ArrayList<String> out = new ArrayList<>();
@@ -411,6 +441,19 @@ public class Util {
 
     // @Param stat: type;stat
     public static String readStats(ManagingPlayer user, String worldName, String stat) {
+        if (stat.equals("minecraft:custom;minecraft:total_kills")) {
+            try {
+                String player = readStats(user, worldName, "minecraft:custom;minecraft:player_kills");
+                String mob = readStats(user, worldName, "minecraft:custom;minecraft:mob_kills");
+                return String.valueOf(Integer.parseInt(player) + Integer.parseInt(mob));
+
+            } catch (NumberFormatException e) {
+                log(e, 3);
+                log("(Util.readStats) Kill stat value wasn't convertible to integer!", 3);
+                return "";
+            }
+        }
+
         String statOut = "";
         String uuid = user.getUUID();
         String type = stat.split(";")[0].trim();

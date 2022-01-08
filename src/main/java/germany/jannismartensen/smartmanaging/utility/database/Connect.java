@@ -2,11 +2,13 @@ package germany.jannismartensen.smartmanaging.utility.database;
 
 import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -38,7 +40,8 @@ public class Connect {
                     name text NOT NULL UNIQUE,
                     uuid text NOT NULL,
                     password text NOT NULL,
-                    cookie text UNIQUE );""";
+                    cookie text UNIQUE,
+                    expires Integer);""";
 
             try {
                 Statement stmt = conn.createStatement();
@@ -50,7 +53,7 @@ public class Connect {
             }
 
 
-            log("Connection to Database successful");
+            log("(Connect.connect)  Connection to Database successful");
 
             return conn;
 
@@ -81,19 +84,83 @@ public class Connect {
             user.sendMessage("Welcome! Lookup your profile under http://" + server + ":" + SmartManaging.port);
 
         } catch (SQLException e) {
-            user.sendMessage("You could not be registered! Please try again later and try contacting a server admin.");
+            user.sendMessage(ChatColor.RED + "You could not be registered! Please try again later and try contacting a server admin.");
             log(e, 3);
             log("(Connect.insertUser) Could not register player " + user.getName(), 3, true);
         }
     }
 
-    public static void insertCookie(Connection conn, String username, String cookieString) throws SQLException {
-        String sql = "UPDATE player SET cookie = ? WHERE name = ?";
+    public static void insertCookie(Connection conn, String username, String cookieString, int expires) throws SQLException {
+        String sql = "UPDATE player SET cookie = ?, expires = ? WHERE name = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, cookieString);
-        pstmt.setString(2, username);
+        pstmt.setInt(2, expires);
+        pstmt.setString(3, username);
         pstmt.executeUpdate();
+    }
+
+    public static boolean isCookieValid(Connection conn, String cookie) {
+        String sql = "SELECT expires FROM player WHERE cookie = ?";
+        int expires = 0;
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, cookie);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Only expecting a single result
+
+                if (rs.next()) {
+                    expires = rs.getInt(1);
+                    // Get data from the current row and use it
+                }
+
+                return expires >= Math.round(Instant.now().getEpochSecond());
+
+            } catch (SQLException ex) {
+                log(ex, 3);
+                log("(Connect.isCookieValid) Could not get expire time from cookie " + cookie, 3, true);
+            }
+
+        } catch (SQLException e) {
+            log(e, 3);
+            log("(Connect.isCookieValid) Could not get expire time from cookie " + cookie, 3, true);
+        }
+        return false;
+    }
+
+    public static ManagingPlayer getPlayerByName(Connection conn, String player) {
+        String sql = "SELECT name, uuid, password, cookie FROM player WHERE name = ?";
+        String name = null;
+        String uuid = null;
+        String password = null;
+        String cookie = null;
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, player);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Only expecting a single result
+
+                if (rs.next()) {
+                    name = rs.getString(1);
+                    uuid = rs.getString(2);
+                    password = rs.getString(3);
+                    cookie = rs.getString(4);
+                    // Get data from the current row and use it
+                }
+                return new ManagingPlayer(name, uuid, password, cookie);
+
+            } catch (SQLException ex) {
+                log(ex, 3);
+                log("(Connect.getPlayerByName) Could not get player from name " + player, 3, true);
+            }
+
+        } catch (SQLException e) {
+            log(e, 3);
+            log("(Connect.getPlayerByName) Could not get player from name " + player, 3, true);
+        }
+        return null;
     }
 
     public static ManagingPlayer getPlayerFromCookie(Connection conn, String cookie) {
@@ -202,14 +269,20 @@ public class Connect {
         return count;
     }
 
-    public static ArrayList<String> getTopSuggestions(Connection conn, String searchString) {
+    public static ArrayList<String> getTopSuggestions(Connection conn, String searchString, int amount, String exact) {
         ArrayList<String> out = new ArrayList<>();
 
-        if (searchString.equals("")) {
-            return out;
+        String sql;
+
+        if (exact.equals("true")) {
+            sql = "SELECT name FROM player WHERE name = '" + searchString + "'";
+        } else {
+            sql = "SELECT name FROM player WHERE name LIKE '" + searchString + "%'";
         }
 
-        String sql = "SELECT name FROM player WHERE name LIKE '" + searchString + "%' LIMIT 5";
+        if (amount != 0) {
+            sql += "LIMIT " + amount;
+        }
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);

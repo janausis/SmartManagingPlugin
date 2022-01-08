@@ -1,9 +1,9 @@
-function loadJSON(path, success, error, th, inp, ip, closeAllLists) {
+function loadJSON(path, success, error, th, inp, ip, closeAllLists, typedValue) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
-        success(JSON.parse(xhr.responseText), th, inp, ip, closeAllLists);
+        success(JSON.parse(xhr.responseText), th, inp, ip, closeAllLists, typedValue);
       }
       else {
         console.log(xhr.responseText);
@@ -16,7 +16,7 @@ function loadJSON(path, success, error, th, inp, ip, closeAllLists) {
 
 
 
-function myData(Data, th, inp, ip, closeAllLists)
+function myData(Data, th, inp, ip, closeAllLists, typedValue)
 {
   closeAllLists();
 
@@ -34,6 +34,11 @@ function myData(Data, th, inp, ip, closeAllLists)
   a = document.createElement("DIV");
   a.setAttribute("id", th.id + "autocomplete-list");
   a.setAttribute("class", "autocomplete-items");
+
+  if (inp.getAttribute("id") == "playername2") {
+    a.setAttribute("class", "autocomplete-items autocomplete-results");
+  }
+
   /*append the DIV element as a child of the autocomplete container:*/
   th.parentNode.appendChild(a);
   /*for each item in the array...*/
@@ -45,16 +50,30 @@ function myData(Data, th, inp, ip, closeAllLists)
       /*create a DIV element for each matching element:*/
       b = document.createElement("DIV");
       /*make the matching letters bold:*/
-      b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+      b.innerHTML = "<strong class='autocomplete-correct'>" + arr[i].substr(0, val.length) + "</strong>";
       b.innerHTML += arr[i].substr(val.length);
       /*insert a input field that will hold the current array item's value:*/
-      b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+      b.innerHTML += "<input id='" + arr[i] + "' type='hidden' value='" + arr[i] + "'>";
       /*execute a function when someone clicks on the item value (DIV element):*/
+
+      b.addEventListener("mouseover", function(evt) {
+        inp.value = this.getElementsByTagName("input")[0].value;
+      });
+      b.addEventListener("mouseout", function(evt) {
+        inp.value = typedValue;
+      });
+
       b.addEventListener("click", function(e) {
           /*insert the value for the autocomplete text field:*/
-          inp.value = this.getElementsByTagName("input")[0].value;
 
-          document.getElementById("searchForm").submit();
+          form = document.getElementById("searchForm");
+
+          var input = document.createElement('input');
+          input.setAttribute("name", 'exactMatch');
+          input.setAttribute('value', "true");
+          input.setAttribute('type', "text")
+          form.appendChild(input);
+          form.submit();
           /*close the list of autocompleted values,
           (or any other open lists of autocompleted values:*/
           closeAllLists();
@@ -78,18 +97,20 @@ function myData(Data, th, inp, ip, closeAllLists)
 var arr = [];
 
 function autocomplete(inp, ip) {
+  var typedValue = "";
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
   var currentFocus;
   /*execute a function when someone writes in the text field:*/
   inp.addEventListener("input", function(e) {
       var a, b, i, val = this.value;
+      typedValue = val;
       /*close any already open lists of autocompleted values*/
 
       if (!val) {closeAllLists(); return false;}
 
       currentFocus = -1;
-      loadJSON(ip + '/players/search?search=' + val, myData,'jsonp', this, inp, ip, closeAllLists);
+      loadJSON(ip + '/players/search?search=' + val, myData,'jsonp', this, inp, ip, closeAllLists, typedValue);
 
   });
   /*execute a function presses a key on the keyboard:*/
@@ -122,12 +143,16 @@ function autocomplete(inp, ip) {
     if (!x) return false;
     /*start by removing the "active" class on all items:*/
     removeActive(x);
-    if (currentFocus >= x.length) currentFocus = 0;
-    if (currentFocus < 0) currentFocus = (x.length - 1);
-    /*add class "autocomplete-active":*/
+
+    if (currentFocus >= x.length) currentFocus = -1;
+    if (currentFocus < -1) currentFocus = (x.length - 1);
+
+    if (currentFocus == -1) {return;}
+    inp.value = x[currentFocus].querySelector('input').value;
     x[currentFocus].classList.add("autocomplete-active");
   }
   function removeActive(x) {
+    inp.value = typedValue;
     /*a function to remove the "active" class from all autocomplete items:*/
     for (var i = 0; i < x.length; i++) {
       x[i].classList.remove("autocomplete-active");
