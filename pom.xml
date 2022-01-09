@@ -35,9 +35,23 @@
             <version>1.1.1</version>
         </dependency>
 
+        <!-- NBT Reader -->
+        <dependency>
+            <groupId>com.github.Querz</groupId>
+            <artifactId>NBT</artifactId>
+            <version>6.1</version>
+        </dependency>
+
 
 
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

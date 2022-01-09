@@ -181,6 +181,7 @@ public class SmartManaging extends JavaPlugin {
         server.createContext("/players/search", new PlayerSearch(engine, this, Database));
         server.createContext("/players/results", new PlayerSearchResults(engine, this, Database));
         server.createContext("/players/random", new PlayerSearchRandom(engine, this, Database));
+        server.createContext("/inventory", new Inventory(engine, this, Database));
 
         // Static Files
         server.createContext("/favicon.ico", new ServeFile(this, "favicon.ico"));
@@ -255,8 +256,8 @@ public class SmartManaging extends JavaPlugin {
         }
     }
 
-    public void createSourceFolder (String folder) {
-        File a = new File(getDataFolder() + "/" + folder);
+    public static void createSourceFolder(String folder) {
+        File a = new File(JavaPlugin.getPlugin(SmartManaging.class).getDataFolder() + "/" + folder);
         if (!a.exists()) {
             log("Created source folder '" + folder + "'");
             a.mkdirs();

@@ -138,6 +138,10 @@
     width: 100%;
     display: block;
   }
+  [class="result-list"] {
+    margin-right: -3px;
+    margin-left: 12px;
+  }
 }
 
 .divider-90 {

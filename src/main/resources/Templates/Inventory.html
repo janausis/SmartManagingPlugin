@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inventory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+  <link href='https://fonts.googleapis.com/css?family=Press Start 2P' rel="stylesheet">
+  <link href="../style/style.css" rel="stylesheet" />
+  <link href="../style/scrollbar.css" rel="stylesheet" />
+  <link href="../style/inventory.css" rel="stylesheet" />
+  <script src="../scripts/navbar.js"></script>
+  <script src="../scripts/inventory.js"></script>
+
+</head>
+<body style="margin: 0; background-color: #444;">
+  <div class="navbar" id="logged">
+    <a href="/">          <button class="navbar-button b5-1">Home</button></a>
+    <a href="/profile">   <button class="navbar-button b5-2">Profile</button></a>
+    <a href="/map">       <button class="navbar-button b5-3">Map</button></a>
+    <a href="/inventory"> <button class="navbar-button b5-4">Inventory</button></a>
+    <a href="/players">     <button class="navbar-button b5-5">Players</button></a>
+    <a href="/logout">    <button class="navbar-button b5-6">Logout</button></a>
+
+    <div class="topnav">
+      <a class="active">
+      </a>
+        <div id="myLinks">
+          <a class="tab" href="/">Home</a>
+          <a class="tab" href="/profile">Profile</a>
+          <a class="tab" href="/map">Map</a>
+          <a class="tab" href="/inventory">Inventory</a>
+          <a class="tab" href="/players">Players</a>
+          <a class="tab" href="/logout">Logout</a>
+        </div>
+
+      <div href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <div class="burger"></div>
+          <div class="burger"></div>
+          <div class="burger"></div>
+      </div>
+    </div>
+  </div>
+
+<!-- Main content -->
+
+    <div class="item-column-login inventory-back">
+      <div class="item-homebox inventoryHome" >
+        <div class="headerWrapper">
+          <h1 class="minecraft-title white header-size">Inventory</h1>
+          <h1 class="minecraft-name white header-size">${playername}</h1>
+        </div>
+        <div class="inventoryWrapper">
+          <div class="inventory" id="inventory">
+            <div class="slotspace" id="slotspace">
+
+            </div>
+            <div class="slotspace" id="slotspace2">
+
+            </div>
+
+            <div class="slotspace inline-block" id="slotspace3">
+              <button class="minecraft-button">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script> minecraftInventory(${data}); </script>
+</body>
+</html>

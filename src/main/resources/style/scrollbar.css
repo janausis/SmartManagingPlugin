@@ -16,3 +16,6 @@
   border-radius: 9999px;
   background-color: #888;
 }
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}

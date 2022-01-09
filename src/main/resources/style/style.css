@@ -334,6 +334,20 @@ html {
   background-color: rgba(27, 115, 196,1);
 }
 
+.scrollbox {
+	font-family: Montserrat, serif;
+  font-weight: Normal;
+	font-size: 15px;
+	outline: none;
+	width: calc(100% - 40px);
+	padding: 20px;
+	height: 315px;
+	overflow: scroll;
+	resize: none;
+	border-radius: 15px;
+	border: 2px solid #777;
+	background-color: #555;
+}
 
 
 

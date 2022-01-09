@@ -38,7 +38,7 @@ public class Root implements HttpHandler {
 
         map.put("name", config.getString("servername"));
         map.put("announcement", config.getString("announcements.home"));
-        map.put("playercount", String.valueOf(plugin.getServer().getOnlinePlayers().size()));
+        map.put("playercount", String.valueOf(plugin.getServer().getOnlinePlayers().size()) + " / " + plugin.getServer().getMaxPlayers());
         map.put("accountNumber", String.valueOf(Connect.getPlayerCount(connect)));
         map.put("version", plugin.getServer().getBukkitVersion().split("-")[0]);
         map.put("ip", Util.getIpOrDomain(plugin));

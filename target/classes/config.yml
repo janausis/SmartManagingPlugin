@@ -41,12 +41,15 @@ announcements:
 # if on a multi world server, please check what world contain the stat's folder after playing on the world once
 worldName: world
 
+# The world the player inventory will be read from, can currently only be one
+inventoryWorld: world
+
 # exact names of minecraft stats to display, only work if showMinecraftStats is not set to false
 # max (10)
 stats:
   Minecraft Stats:
     # list of the worlds to read the stats from
-    # this does not affect the playtime
+    # this does affect the playtime
     # if you use a normal spigot server set this to the main world and not the nether or end
     # if on a multi world server, please check what world contain the stat's folder after playing on the world once
     worldName: world
