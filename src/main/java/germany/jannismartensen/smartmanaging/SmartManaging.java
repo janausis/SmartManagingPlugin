@@ -1,5 +1,6 @@
 package germany.jannismartensen.smartmanaging;
 
+import com.jogamp.opengl.GLCapabilities;
 import com.sun.net.httpserver.HttpServer;
 import germany.jannismartensen.smartmanaging.endpoints.*;
 import germany.jannismartensen.smartmanaging.utility.*;
@@ -12,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -262,6 +264,36 @@ public class SmartManaging extends JavaPlugin {
             log("Created source folder '" + folder + "'");
             a.mkdirs();
         }
+    }
+
+    public void renderItems() {
+        JFrame window = new JFrame("SmartManagingRenderer");
+        GLCapabilities caps = new GLCapabilities(null);
+        caps.setHardwareAccelerated(true);
+        window.setLocation(0, 0);
+        window.setResizable(false);
+        window.setVisible(true);
+
+        long total = 0;
+        int tests = 10;
+        for (int i = 0; i < tests; i++) {
+            CubeRenderer panel = new CubeRenderer(caps, window, "grass_block_side", "grass_block_top", "grass_block_side", "render", i==tests-1);
+
+            window.setContentPane(panel);
+            window.pack();
+            panel.requestFocusInWindow();
+
+            while (!panel.getDone()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            total += panel.getRenderTime();
+            System.out.println( i+1 + ": " + panel.getRenderTime() + "ms");
+        }
+        System.out.println("Total: " + total/1000.0 + "s");
     }
 
 }
