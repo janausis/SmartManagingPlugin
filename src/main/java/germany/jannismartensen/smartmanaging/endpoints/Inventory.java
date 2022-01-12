@@ -12,21 +12,17 @@ import net.querz.nbt.io.NamedTag;
 import net.querz.nbt.io.SNBTUtil;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Material;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
-import static germany.jannismartensen.smartmanaging.utility.Util.log;
-import static germany.jannismartensen.smartmanaging.utility.Util.redirect;
+import static germany.jannismartensen.smartmanaging.utility.Util.*;
 
 public class Inventory implements HttpHandler {
 
@@ -46,7 +42,7 @@ public class Inventory implements HttpHandler {
         Util.logAccess(he);
 
 
-        if (!Util.loggedIn(he, connect)) {
+        if (!Util.loggedIn(he, connect) || !plugin.getConfig().getBoolean("onlineInventory")) {
             redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
             return;
         }
@@ -59,26 +55,13 @@ public class Inventory implements HttpHandler {
 
         SmartManaging.createSourceFolder("resources");
         try {
-            if (isEmpty(Path.of(plugin.getDataFolder() + "/resources"))) {
+            if (Util.isEmpty(Path.of(plugin.getDataFolder() + "/resources"))) {
                 Util.unzip(plugin.getDataFolder() + "/resources.zip", plugin.getDataFolder() + "/resources");
             }
         } catch (IOException e) {
             log(e, 3);
             log("(Inventory.handle) Couldn't find a file called resources.zip, please add a resource pack if you want to use the web inventory", 3, true);
-
-            Map<String, String> map = new HashMap<>();
-            map.put("errorText", "Couldn't find a resource pack, please ask the staff to add one as resources.zip if you want to use the web inventory");
-            map.put("stackTrace", "\n\n" + ExceptionUtils.getStackTrace(e).replace("at ", "<br>at "));
-            map.put("loggedin", "true");
-
-            SmartManaging.copyResources("Templates/error.html", plugin, false);
-            String response = engine.renderTemplate("error.html", map);
-
-            he.sendResponseHeaders(200, 0);
-            OutputStream os = he.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-
+            Util.showErrorPage(he, engine, e, true, "Couldn't find a resource pack, please ask the staff to add one as resources.zip if you want to use the web inventory");
             return;
 
         }
@@ -101,15 +84,7 @@ public class Inventory implements HttpHandler {
 
     }
 
-    public boolean isEmpty(Path path) throws IOException {
-        if (Files.isDirectory(path)) {
-            try (Stream<Path> entries = Files.list(path)) {
-                return entries.findFirst().isEmpty();
-            }
-        }
 
-        return false;
-    }
 
     public Map<String,String> readNBT(Map<String,String> map, ManagingPlayer user) {
         try {

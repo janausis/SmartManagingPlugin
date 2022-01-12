@@ -1,6 +1,6 @@
 main: germany.jannismartensen.smartmanaging.SmartManaging
 name: SmartManaging
-version: 1.0
+version: 1.8
 api-version: 1.18
 author: Jannis Martensen
 description: Manage players and the server via an external app

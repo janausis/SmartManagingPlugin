@@ -4,12 +4,17 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
+import germany.jannismartensen.smartmanaging.SmartManaging;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -123,8 +128,9 @@ public class CubeRenderer extends GLJPanel implements GLEventListener {
 
         try {
             BufferedImage screenshot = makeScreenshot(gl, width, height);
-            ImageIO.write(screenshot, "png", new File("./"  + outName +  ".png"));
-            outFile = new File("./" + outName + ".png");
+
+
+            ImageIO.write(screenshot, "png", new File(JavaPlugin.getPlugin(SmartManaging.class).getDataFolder() + "/renders/" + outName +  ".png"));
             inst2 = System.currentTimeMillis();
             done = true;
         } catch (IOException ex) {
@@ -169,11 +175,10 @@ public class CubeRenderer extends GLJPanel implements GLEventListener {
 
         try{
 
-            try (InputStream in = getClass().getResourceAsStream("/"+t1name+".png")) {
-                assert in != null;
+            try (InputStream in = new FileInputStream(t1name)) {
 
                 BufferedImage subImage = rotateImage(resizeImage(ImageIO.read(in), width, height), -90);
-                File rotatedImageFile = new File("./"+t1name+"_rotated.png");
+                File rotatedImageFile = new File("./rotated.png");
                 ImageIO.write(subImage, "png", rotatedImageFile);
                 Texture t = TextureIO.newTexture(rotatedImageFile, true);
                 texture= t.getTextureObject(gl);
@@ -181,11 +186,10 @@ public class CubeRenderer extends GLJPanel implements GLEventListener {
 
             }
 
-            try (InputStream in = getClass().getResourceAsStream("/"+t2name+".png")) {
-                assert in != null;
+            try (InputStream in = new FileInputStream(t2name)) {
 
                 BufferedImage subImage = rotateImage(resizeImage(ImageIO.read(in), width, height), 0);
-                File rotatedImageFile = new File("./"+t2name+"_rotated.png");
+                File rotatedImageFile = new File("./rotated.png");
                 ImageIO.write(subImage, "png", rotatedImageFile);
                 Texture t = TextureIO.newTexture(rotatedImageFile, true);
                 texture2 = t.getTextureObject(gl);
@@ -193,11 +197,10 @@ public class CubeRenderer extends GLJPanel implements GLEventListener {
 
             }
 
-            try (InputStream in = getClass().getResourceAsStream("/"+t3name+".png")) {
-                assert in != null;
+            try (InputStream in = new FileInputStream(t3name)) {
 
                 BufferedImage subImage = rotateImage(resizeImage(ImageIO.read(in), width, height), -90);
-                File rotatedImageFile = new File("./"+t3name+"_rotated.png");
+                File rotatedImageFile = new File("./rotated.png");
                 ImageIO.write(subImage, "png", rotatedImageFile);
                 Texture t = TextureIO.newTexture(rotatedImageFile, true);
                 texture3 = t.getTextureObject(gl);
@@ -234,7 +237,7 @@ public class CubeRenderer extends GLJPanel implements GLEventListener {
         return newImageFromBuffer;
     }
 
-    BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+    public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
         if (targetHeight == originalImage.getHeight() && targetWidth == originalImage.getWidth()) {
             return originalImage;
         }
@@ -246,6 +249,28 @@ public class CubeRenderer extends GLJPanel implements GLEventListener {
         graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
         graphics2D.dispose();
         return resizedImage;
+    }
+
+    public static boolean hasMoreThanThirdAlpha(BufferedImage image) {
+        final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final boolean hasAlphaChannel = image.getAlphaRaster() != null;
+
+        if (hasAlphaChannel) {
+            final int pixelLength = 4;
+            int total = 0;
+            for (int pixel = 0; pixel + 3 < pixels.length; pixel += pixelLength) {
+                int alpha = (pixels[pixel] >> 24) & 0xff;
+                // Includes glass
+                if(alpha < 100) {
+                   total += 1;
+                }
+            }
+            return total > (width*height)/3;
+        } else {
+            return false;
+        }
     }
 
     public BufferedImage makeScreenshot(GL2 gl, int width, int height) {

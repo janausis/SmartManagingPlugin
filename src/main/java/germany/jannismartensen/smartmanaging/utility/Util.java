@@ -18,12 +18,15 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -102,6 +105,7 @@ public class Util {
                 case 1 -> Bukkit.getLogger().log(Level.INFO, PREFIX + ANSI_GREEN + message + ANSI_RESET);
                 case 2 -> Bukkit.getLogger().log(Level.WARNING, PREFIX + ANSI_YELLOW + message + ANSI_RESET);
                 case 3 -> Bukkit.getLogger().log(Level.SEVERE, PREFIX + ANSI_RED + message + ANSI_RESET);
+                case 4 -> Bukkit.getLogger().log(Level.INFO, PREFIX + ANSI_YELLOW + message + ANSI_RESET);
                 default -> Bukkit.getLogger().log(Level.INFO, PREFIX + message);
             }
         } else {
@@ -363,6 +367,16 @@ public class Util {
         return map;
     }
 
+    public static String getStringFromArray1(ArrayList<String> valueList) {
+        StringBuilder valueString = new StringBuilder("[");
+
+        for (String va : valueList) valueString.append('\"').append(va).append("\",");
+        valueString.deleteCharAt(valueString.length() - 1);
+        valueString.append("]");
+
+        return valueString.toString();
+    }
+
     public static String getStringFromArray(ArrayList<ArrayList<String>> valueList) {
         StringBuilder valueString = new StringBuilder("[");
         for (ArrayList<String> value : valueList) {
@@ -614,6 +628,16 @@ public class Util {
         zis.close();
     }
 
+    public static boolean isEmpty(Path path) throws IOException {
+        if (Files.isDirectory(path)) {
+            try (Stream<Path> entries = Files.list(path)) {
+                return entries.findFirst().isEmpty();
+            }
+        }
+
+        return false;
+    }
+
     public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
         File destFile = new File(destinationDir, zipEntry.getName());
 
@@ -625,5 +649,130 @@ public class Util {
         }
 
         return destFile;
+    }
+
+    public static Set<String> listFolders(String dir, int depth) throws IOException {
+        try (Stream<Path> stream = Files.walk(Paths.get(dir), depth)) {
+            return stream
+                    .filter(Files::isDirectory)
+                    .map(Path::toAbsolutePath)
+                    .map(Path::toString)
+                    .collect(Collectors.toSet());
+        }
+    }
+
+    public static Set<String> listFiles(String dir, int depth) throws IOException {
+        try (Stream<Path> stream = Files.walk(Paths.get(dir), depth)) {
+            return stream
+                    .filter(file -> !Files.isDirectory(file))
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .collect(Collectors.toSet());
+        }
+    }
+
+    public static String getAssetsPath(SmartManaging plugin) throws IOException {
+        String assetsPath = plugin.getDataFolder() + "/resources/";
+        assetsPath = assetsPath.replace("\\", "/");
+        // get main folder
+
+        for (String s : listFolders(assetsPath, 10)) {
+            if (s.endsWith("assets")) {
+                s = s.replace("\\", "/");
+                assetsPath += s.split(assetsPath)[s.split(assetsPath).length-1] + "/";
+            }
+        }
+        if (assetsPath.endsWith("resources/")) {
+            log("(Util.getResourceBlockFaces) Could not find assets folder in resources folder");
+            throw new IOException();
+        }
+
+        return assetsPath;
+    }
+
+    public static ArrayList<ArrayList<String>> getResourceBlockFaces(SmartManaging plugin) throws IOException {
+        ArrayList<ArrayList<String>> out = new ArrayList<>();
+        ArrayList<String> blockList = new ArrayList<>();
+
+        String blockPath = getAssetsPath(plugin) + "minecraft/textures/block/";
+
+        Set<String> items = listFiles(getAssetsPath(plugin) + "minecraft/textures/item/", 1);
+        for (String file : listFiles(blockPath, 1)) {
+            if (!file.endsWith(".png")) continue;
+
+            // Left, Right, Topside
+            ArrayList<String> subList = new ArrayList<>();
+
+            String[] spl = file.split("_");
+            String block;
+            String[] invisibleSides = {"bottom", "back", "end", "left"};
+            String[] sides = {"top", "right", "front", "side"};
+
+            if (spl.length > 0 && Arrays.asList(invisibleSides).contains(spl[spl.length - 1].replace(".png", ""))) {
+                continue;
+            }
+            if (spl.length > 0 && Arrays.asList(sides).contains(spl[spl.length - 1].replace(".png", ""))) {
+                 block = file.replace("_" + spl[spl.length - 1], "");
+            } else {
+                block = file.replace(".png", "");
+            }
+
+            if (items.contains(block + ".png") || items.contains(file) || blockList.contains(block)) {
+                continue;
+            }
+
+            blockList.add(block);
+
+
+            File main = new File(blockPath + block.replace("_sticky", "") + ".png");
+            File end = new File(blockPath + block + "_end.png");
+            File front = new File(blockPath + block + "_front.png");
+            File right = new File(blockPath + block + "_right.png");
+            File side = new File(blockPath + block + "_side.png");
+            File top = new File(blockPath + block.replace("cut_", "").replace("chiseled_", "") + "_top.png");
+
+            if (front.exists()) { subList.add(front.getPath()); }
+            else if (side.exists()) { subList.add(side.getPath()); }
+            else if (main.exists()) { subList.add(main.getPath()); }
+            else if (end.exists()) { subList.add(end.getPath()); }
+            else { subList.add(blockPath + file); }
+
+            if (right.exists()) { subList.add(right.getPath()); }
+            else if (side.exists()) { subList.add(side.getPath()); }
+            else if (main.exists()) { subList.add(main.getPath()); }
+            else if (end.exists()) { subList.add(end.getPath()); }
+            else { subList.add(blockPath + file); }
+
+            if (top.exists()) { subList.add(top.getPath()); }
+            else if (end.exists()) { subList.add(end.getPath()); }
+            else if (main.exists()) { subList.add(main.getPath()); }
+            else { subList.add(blockPath + file); }
+
+            if (!front.exists() && !right.exists() && !side.exists() && !top.exists() && !file.replace(".png", "").equals(block)) {
+                block = file.replace(".png", "");
+            }
+
+            subList.add(block);
+            out.add(subList);
+
+        }
+
+        return out;
+    }
+
+    public static void showErrorPage(HttpExchange he, TemplateEngine engine, Exception e, boolean loggedIn, String errorText) throws IOException {
+        SmartManaging plugin = JavaPlugin.getPlugin(SmartManaging.class);
+        Map<String, String> map = new HashMap<>();
+        map.put("errorText", errorText);
+        map.put("stackTrace", "\n\n" + ExceptionUtils.getStackTrace(e).replace("at ", "<br>at "));
+        map.put("loggedin", String.valueOf(loggedIn));
+
+        SmartManaging.copyResources("Templates/error.html", plugin, false);
+        String response = engine.renderTemplate("error.html", map);
+
+        he.sendResponseHeaders(500, 0);
+        OutputStream os = he.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
     }
 }

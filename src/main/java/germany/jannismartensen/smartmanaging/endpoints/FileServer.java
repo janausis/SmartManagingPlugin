@@ -11,14 +11,23 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.Files;
 
+import static germany.jannismartensen.smartmanaging.utility.Util.log;
+
 public class FileServer implements HttpHandler {
 
     final SmartManaging plugin;
     final String filepath;
+    boolean renders = false;
 
     public FileServer(SmartManaging m, String path) {
         this.plugin = m;
         this.filepath = path;
+    }
+
+    public FileServer(SmartManaging m, String path, boolean renders) {
+        this.plugin = m;
+        this.filepath = path;
+        this.renders = renders;
     }
 
     public void handle(HttpExchange ex) throws IOException {
@@ -33,7 +42,11 @@ public class FileServer implements HttpHandler {
             SmartManaging.copyResources(filepath.substring(1) + "/" + name, plugin, false);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            if (renders) {
+                path = new File(plugin.getDataFolder() + "/renders/unknown.png");
+            } else {
+                log("The file " + name + " could not be found!",3);
+            }
         }
 
         OutputStream out = ex.getResponseBody();
@@ -42,7 +55,7 @@ public class FileServer implements HttpHandler {
             ex.sendResponseHeaders(200, path.length());
             out.write(Files.readAllBytes(path.toPath()));
         } else {
-            System.err.println("File not found: " + path.getAbsolutePath());
+            log("File not found: " + path.getAbsolutePath(), 3);
 
             ex.sendResponseHeaders(404, 0);
             out.write("FILE NOT FOUND".getBytes());

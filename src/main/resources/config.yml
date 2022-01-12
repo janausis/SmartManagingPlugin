@@ -11,11 +11,11 @@ domain:
 port: 9000
 
 
-httpsServer: true
+# httpsServer: false
 # put .keystore into the sslCert folder
-keystorePassword: Jannis
-certPassword: Jannis
-certAlias: mcserver
+# keystorePassword:
+# certPassword:
+# certAlias:
 
 
 # can either be "file", "console" or "both"
@@ -26,6 +26,9 @@ accessLogLocation: file
 
 # Will log website access
 logAccess: true
+
+# requires you to add a resource pack as "resource.zip" in the same folder this config is in to display the item icons
+onlineInventory: true
 
 # Announcements displayed in the routes
 announcements:

@@ -23,12 +23,12 @@ function minecraftInventory(originalData) {
   items.forEach((item) => {
     // On left Click
     item.addEventListener('click', function(){
-        moveItem(false, this);
+      moveItem(false, this);
     }, false);
 
     // On right click
     item.addEventListener('contextmenu', function(){
-        moveItem(true, this);
+      moveItem(true, this);
     }, false);
 
     // Set all item to not follow the cursor
@@ -45,6 +45,7 @@ function minecraftInventory(originalData) {
     // Clone item and make it attach to mouse
     let ghostItem = item.cloneNode(true);
     ghostItem.setAttribute('class', 'ghostItem');
+    ghostItem.classList.add("tooltip");
 
     if (halfItem) {
       value = parseInt(ghostItem.lastElementChild.innerHTML) / parseFloat(2);
@@ -87,10 +88,10 @@ function minecraftInventory(originalData) {
           let newItem = item.cloneNode(true);
           // register listeners for new item
           newItem.addEventListener('click', function(){
-              moveItem(false, this);
+            moveItem(false, this);
           }, false);
           newItem.addEventListener('contextmenu', function(){
-              moveItem(true, this);
+            moveItem(true, this);
           }, false);
           newItem.setAttribute('draggable', false);
 
@@ -171,10 +172,10 @@ function minecraftInventory(originalData) {
           let newItem = item.cloneNode(true);
           // register listeners for new item
           newItem.addEventListener('click', function(){
-              moveItem(false, this);
+            moveItem(false, this);
           }, false);
           newItem.addEventListener('contextmenu', function(){
-              moveItem(true, this);
+            moveItem(true, this);
           }, true);
           newItem.setAttribute('draggable', false);
 
@@ -188,7 +189,7 @@ function minecraftInventory(originalData) {
 
             // Remove from draggable
             ghostItem.lastElementChild.innerHTML =
-              parseInt(ghostItem.lastElementChild.innerHTML) - 1;
+                parseInt(ghostItem.lastElementChild.innerHTML) - 1;
           }
           // Set new item value to one because the space was free
           newItem.lastElementChild.innerHTML = 1;
@@ -206,7 +207,7 @@ function minecraftInventory(originalData) {
               status_click = !status_click;
             }
             let destiny = parseInt(
-              area.firstElementChild.lastElementChild.innerHTML
+                area.firstElementChild.lastElementChild.innerHTML
             );
             let origin = parseInt(ghostItem.lastElementChild.innerHTML);
             let total = destiny + 1;
@@ -308,15 +309,28 @@ function minecraftInventory(originalData) {
   }
 
 
-  function getSlotTemplate(count, id, tag) {
-    tmp = '<div data-nbt="' + tag + '" class="item" id="' + id +'">' +
-          '  <img class="iconImage" src="../favicon.ico">' +
-          '  <div class="number">' + count + '</div>' +
-          '</div>';
+  function getUpperCaseFirst(str) {
+    const arr = str.split(" ");
+    for (var i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+
+    }
+    const str2 = arr.join(" ");
+    return str2;
+  }
+
+
+  function getSlotTemplate(count, id, tag, parent_id) {
+    tmp = '<div data-nbt="' + tag + '" class="item tooltip" id="' + id +'">' +
+        '  <img class="iconImage" src="../images/renders/' + id.replace("minecraft:", "") +'.png">' +
+        '  <span id="tooltip-span">' +
+        '       ' + getUpperCaseFirst(id.replace("minecraft:", "").replace("_", " ").trim()) +
+        '  </span>' +
+        '  <div class="number">' + count + '</div>' +
+        '</div>';
 
     return tmp;
   }
-
 
   function populate(originalData) {
     slotspace = document.getElementById("slotspace");
@@ -326,39 +340,39 @@ function minecraftInventory(originalData) {
     dataArray = originalData.data;
 
     for (var i = 9; i < 36; i++) {
-        if (dataArray.hasOwnProperty(i)) {
-          addStackSize(dataArray[i]["id"], dataArray[i]["maxStack"]);
-          elem = "<div class='slot' id='" + i + "'>" + getSlotTemplate(dataArray[i]["count"], dataArray[i]["id"], dataArray[i]["tag"]) + "</div>"
-        } else {
-          elem = "<div class='slot' id='" + i + "'></div>"
-        }
-        slotspace.innerHTML += elem;
+      if (dataArray.hasOwnProperty(i)) {
+        addStackSize(dataArray[i]["id"], dataArray[i]["maxStack"]);
+        elem = "<div class='slot' id='" + i + "'>" + getSlotTemplate(dataArray[i]["count"], dataArray[i]["id"], dataArray[i]["tag"], i) + "</div>"
+      } else {
+        elem = "<div class='slot' id='" + i + "'></div>"
+      }
+      slotspace.innerHTML += elem;
     }
 
 
     for (var i = 0; i < 9; i++) {
-        if (dataArray.hasOwnProperty(i)) {
-          addStackSize(dataArray[i]["id"], dataArray[i]["maxStack"]);
-          elem = "<div class='slot' id='" + i + "'>" + getSlotTemplate(dataArray[i]["count"], dataArray[i]["id"], dataArray[i]["tag"]) + "</div>"
-        } else {
-          elem = "<div class='slot' id='" + i + "'></div>"
-        }
-        hotbar.innerHTML += elem;
+      if (dataArray.hasOwnProperty(i)) {
+        addStackSize(dataArray[i]["id"], dataArray[i]["maxStack"]);
+        elem = "<div class='slot' id='" + i + "'>" + getSlotTemplate(dataArray[i]["count"], dataArray[i]["id"], dataArray[i]["tag"], i) + "</div>"
+      } else {
+        elem = "<div class='slot' id='" + i + "'></div>"
+      }
+      hotbar.innerHTML += elem;
     }
 
 
     for (var i = 103; i >= 100 ; i--) {
-        if (dataArray.hasOwnProperty(i)) {
-          addStackSize(dataArray[i]["id"], dataArray[i]["maxStack"]);
-          elem = "<div class='slot' id='" + i + "'>" + getSlotTemplate(dataArray[i]["count"], dataArray[i]["id"], dataArray[i]["tag"]) + "</div>"
-        } else {
-          elem = "<div class='slot' id='" + i + "'></div>"
-        }
-        armor.innerHTML += elem;
+      if (dataArray.hasOwnProperty(i)) {
+        addStackSize(dataArray[i]["id"], dataArray[i]["maxStack"]);
+        elem = "<div class='slot' id='" + i + "'>" + getSlotTemplate(dataArray[i]["count"], dataArray[i]["id"], dataArray[i]["tag"], i) + "</div>"
+      } else {
+        elem = "<div class='slot' id='" + i + "'></div>"
+      }
+      armor.innerHTML += elem;
     }
     if (dataArray.hasOwnProperty(-106)) {
       addStackSize(dataArray[-106]["id"], dataArray[-106]["maxStack"]);
-      elem = "<div class='slot' id='-106'>" + getSlotTemplate(dataArray[-106]["count"], dataArray[-106]["id"], dataArray[-106]["tag"]) + "</div>"
+      elem = "<div class='slot' id='-106'>" + getSlotTemplate(dataArray[-106]["count"], dataArray[-106]["id"], dataArray[-106]["tag"], -106) + "</div>"
     } else {
       elem = "<div class='slot' id='-106'></div>"
     }
@@ -371,6 +385,6 @@ function minecraftInventory(originalData) {
   }
 
   function getStackSize(id) {
-      return stackSizeDict[id];
+    return stackSizeDict[id];
   }
 }
