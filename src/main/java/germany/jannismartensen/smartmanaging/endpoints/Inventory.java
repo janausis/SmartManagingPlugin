@@ -69,6 +69,7 @@ public class Inventory implements HttpHandler {
 
         Map<String, String> map = new HashMap<>();
         map.put("playername", user.getName());
+        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
 
         map = readNBT(map, user);
 

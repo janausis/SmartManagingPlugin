@@ -43,6 +43,7 @@ public class Root implements HttpHandler {
         map.put("version", plugin.getServer().getBukkitVersion().split("-")[0]);
         map.put("ip", Util.getIpOrDomain(plugin));
         map.put("loggedin", String.valueOf(Util.loggedIn(he, connect)));
+        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
 
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 

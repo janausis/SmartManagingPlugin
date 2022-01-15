@@ -48,6 +48,7 @@ public class Players implements HttpHandler {
 
         map.put("announcement", config.getString("announcements.players"));
         map.put("ip", "'http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "'");
+        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
 
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 

@@ -99,27 +99,46 @@ html {
 .scrollbutton:hover {
   background-color: #7C91BC;
 }
-[class*='b2'] {width: 50%;}
+.b1 {width: 100%}
+
+.b2 {width: 50%;}
 .b2-1 {margin-left: 0;}
 .b2-2 {margin-left: 50%;}
 
-[class*='b3'] {width: 33.3%;}
+.b3 {width: 33.3%;}
 .b3-1 {margin-left: 0;}
 .b3-2 {margin-left: 33.3%;}
 .b3-3 {margin-left: 66.6%;}
 
+.b4 {width: 25%;}
+.b4-1 {margin-left: 0;}
 .b4-2 {margin-left: 25%;}
-.b25 {width: 100%;}
 .b4-3 {margin-left: 50%;}
 .b4-4 {margin-left: 75%;}
 
-[class*='b5'] {width: 16.6%;}
+.b5 {width: 20%;}
 .b5-1 {margin-left: 0;}
-.b5-2 {margin-left: 16.6%;}
-.b5-3 {margin-left: 33.2%;}
-.b5-4 {margin-left: 49.8%;}
-.b5-5 {margin-left: 66.4%;}
-.b5-6 {margin-left: 83%;}
+.b5-2 {margin-left: 20%;}
+.b5-3 {margin-left: 40%;}
+.b5-4 {margin-left: 60%;}
+.b5-5 {margin-left: 80%;}
+
+.b6 {width: 16.6%;}
+.b6-1 {margin-left: 0;}
+.b6-2 {margin-left: 16.6%;}
+.b6-3 {margin-left: 33.2%;}
+.b6-4 {margin-left: 49.8%;}
+.b6-5 {margin-left: 66.4%;}
+.b6-6 {margin-left: 83%;}
+
+.b7 {width: 14.28%;}
+.b7-1 {margin-left: 0;}
+.b7-2 {margin-left: 14.28%;}
+.b7-3 {margin-left: 28.57%;}
+.b7-4 {margin-left: 42.84%;}
+.b7-5 {margin-left: 57.12%;}
+.b7-6 {margin-left: 71.4%;}
+.b7-7 {margin-left: 85.68%;}
 
 .item-column-login {
   width: inherit;

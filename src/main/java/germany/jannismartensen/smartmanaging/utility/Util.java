@@ -371,21 +371,21 @@ public class Util {
         StringBuilder valueString = new StringBuilder("[");
 
         for (String va : valueList) valueString.append('\"').append(va).append("\",");
-        valueString.deleteCharAt(valueString.length() - 1);
+        if(valueString.toString().endsWith(",")) valueString.deleteCharAt(valueString.length() - 1);
         valueString.append("]");
 
         return valueString.toString();
     }
 
-    public static String getStringFromArray(ArrayList<ArrayList<String>> valueList) {
+    public static String getStringFromArray2(ArrayList<ArrayList<String>> valueList) {
         StringBuilder valueString = new StringBuilder("[");
         for (ArrayList<String> value : valueList) {
             valueString.append("[");
             for (String va : value) valueString.append('\"').append(va).append("\",");
-            valueString.deleteCharAt(valueString.length() - 1);
+            if(valueString.toString().endsWith(",")) valueString.deleteCharAt(valueString.length() - 1);
             valueString.append("],");
         }
-        valueString.deleteCharAt(valueString.length() - 1);
+        if(valueString.toString().endsWith(",")) valueString.deleteCharAt(valueString.length() - 1);
         valueString.append("]");
 
         return valueString.toString();
@@ -393,23 +393,23 @@ public class Util {
 
     public static String getStringFromArray3(ArrayList<ArrayList<ArrayList<String>>> valueList) {
         try {
-        StringBuilder valueString = new StringBuilder("[");
-        for (ArrayList<ArrayList<String>> value : valueList) {
-            valueString.append("[");
-
-            for (ArrayList<String> subvalue : value) {
+            StringBuilder valueString = new StringBuilder("[");
+            for (ArrayList<ArrayList<String>> value : valueList) {
                 valueString.append("[");
-                for (String va : subvalue) valueString.append('\"').append(va).append("\",");
-                valueString.deleteCharAt(valueString.length() - 1);
+
+                for (ArrayList<String> subvalue : value) {
+                    valueString.append("[");
+                    for (String va : subvalue) valueString.append('\"').append(va).append("\",");
+                    if(valueString.toString().endsWith(",")) valueString.deleteCharAt(valueString.length() - 1);
+                    valueString.append("],");
+                }
+                if(valueString.toString().endsWith(",")) valueString.deleteCharAt(valueString.length() - 1);
                 valueString.append("],");
             }
-            valueString.deleteCharAt(valueString.length() - 1);
-            valueString.append("],");
-        }
-        valueString.deleteCharAt(valueString.length() - 1);
-        valueString.append("]");
+                if(valueString.toString().endsWith(",")) valueString.deleteCharAt(valueString.length() - 1);
+            valueString.append("]");
 
-        return valueString.toString();
+            return valueString.toString();
         } catch (Exception e) {
             log(e, 3);
             log("(Util.getStringFromArray3) There was an error converting an array to string!", 3);
@@ -758,6 +758,36 @@ public class Util {
         }
 
         return out;
+    }
+
+    public static void getNavbarRoutes(SmartManaging plugin, Map<String, String> map, boolean loggedIn) {
+        ArrayList<String> routes = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        FileConfiguration config = plugin.getConfig();
+        ConfigurationSection section;
+
+        if (loggedIn) {
+            section = config.getConfigurationSection("sites.loggedIn");
+        } else {
+            section = config.getConfigurationSection("sites.notLoggedIn");
+        }
+        if (section != null) {
+            for (String item : section.getKeys(true)) {
+                try {
+                    if (section.getBoolean(item)) {
+                        routes.add(item.split(";")[0]);
+                        names.add(item.split(";")[1]);
+                    }
+                } catch (Exception e) {
+                    log(e, 3);
+                    log("(Util.getNavbarRoutes) Unexpected error whilst adding " + item);
+                }
+            }
+        }
+        log(getStringFromArray1(routes));
+        log(getStringFromArray1(names));
+        map.put("navbarRoutes", getStringFromArray1(routes));
+        map.put("navbarNames", getStringFromArray1(names));
     }
 
     public static void showErrorPage(HttpExchange he, TemplateEngine engine, Exception e, boolean loggedIn, String errorText) throws IOException {

@@ -56,6 +56,7 @@ public class Profile implements HttpHandler {
         map.put("username", user.getName());
         map.put("announcement", config.getString("announcements.profile"));
         map.put("playtime", Util.getPlayTime(plugin, user));
+        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
 
 
         // Populate modeScores
@@ -147,8 +148,8 @@ public class Profile implements HttpHandler {
             valueList.add(tmpValueList);
         }
 
-        map.put("scoreList", Util.getStringFromArray(scoreList));
-        map.put("valueList", Util.getStringFromArray(valueList));
+        map.put("scoreList", Util.getStringFromArray2(scoreList));
+        map.put("valueList", Util.getStringFromArray2(valueList));
 
         return map;
     }
