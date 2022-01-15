@@ -49,8 +49,13 @@ function minecraftInventory(originalData) {
 
     if (halfItem) {
       value = parseInt(ghostItem.lastElementChild.innerHTML) / parseFloat(2);
-      ghostItem.lastElementChild.innerHTML -= Math.floor(value);
-      item.lastElementChild.innerHTML -= Math.floor(value);
+      if (value !== 0.5) {
+        ghostItem.lastElementChild.innerHTML -= Math.floor(value);
+        item.lastElementChild.innerHTML -= Math.floor(value);
+      } else {
+        item.lastElementChild.innerHTML -= 1;
+        item.classList.add("invisible")
+      }
     } else {
 
       value = parseInt(ghostItem.lastElementChild.innerHTML);

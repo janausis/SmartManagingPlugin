@@ -7,6 +7,7 @@ import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.utility.Util;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
@@ -17,13 +18,13 @@ import java.util.Map;
 
 import static germany.jannismartensen.smartmanaging.utility.Util.redirect;
 
-public class Players implements HttpHandler {
+public class Admin implements HttpHandler {
 
     final TemplateEngine engine;
     final SmartManaging plugin;
     final Connection connect;
 
-    public Players(TemplateEngine e, SmartManaging m, Connection c) {
+    public Admin(TemplateEngine e, SmartManaging m, Connection c) {
         this.plugin = m;
         this.engine = e;
         this.connect = c;
@@ -34,12 +35,12 @@ public class Players implements HttpHandler {
         Util.logAccess(he);
 
         if (!Util.loggedIn(he, connect)) {
-            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
+            redirect(plugin, he, Util.root());
             return;
         }
 
         ManagingPlayer user = Util.getUser(connect, he, plugin);
-        if (user == null) {
+        if (user == null || !Connect.getManagerStatus(connect, user.getUUID())) {
             redirect(plugin, he, Util.root());
             return;
         }

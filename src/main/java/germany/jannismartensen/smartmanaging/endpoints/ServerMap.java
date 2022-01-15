@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
 
-public class Logout implements HttpHandler {
+public class ServerMap implements HttpHandler {
 
     final TemplateEngine engine;
     final SmartManaging plugin;
     final Connection connect;
 
-    public Logout(TemplateEngine e, SmartManaging m, Connection c) {
+    public ServerMap(TemplateEngine e, SmartManaging m, Connection c) {
         this.plugin = m;
         this.engine = e;
         this.connect = c;
@@ -28,11 +28,11 @@ public class Logout implements HttpHandler {
         Util.logAccess(he);
 
         Headers headers = he.getResponseHeaders();
-        headers.add("Location", Util.root());
-
-        if (Util.loggedIn(he, connect)) {
-            // Remove login cookie
-            headers.add("Set-Cookie", Util.invalidCookie().toString());
+        String d = plugin.getConfig().getString("dynmap");
+        if (d == null) {
+            headers.add("Location", Util.root());
+        } else {
+            headers.add("Location", d);
         }
 
         String response = "";

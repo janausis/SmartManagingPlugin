@@ -36,6 +36,10 @@ announcements:
   profile: Take a look at your game stats
   players: Search for other players with an account
 
+# Exact web path to the dynmap of your server, set map to true in sites to show in navbar
+# Example: https://dynmap.yourwebsite.com or https://yourwebsite.com/dynmap or https://yourip:8192
+dynmap:
+
 sites:
   # Admin page will always be displayed when logged in as admin
 

@@ -43,13 +43,13 @@ public class Inventory implements HttpHandler {
 
 
         if (!Util.loggedIn(he, connect) || !plugin.getConfig().getBoolean("onlineInventory")) {
-            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
+            redirect(plugin, he, Util.root());
             return;
         }
 
         ManagingPlayer user = Util.getUser(connect, he, plugin);
         if (user == null) {
-            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
+            redirect(plugin, he, Util.root());
             return;
         }
 

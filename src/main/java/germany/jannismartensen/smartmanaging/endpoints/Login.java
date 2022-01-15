@@ -4,6 +4,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
+import germany.jannismartensen.smartmanaging.utility.Cookie;
 import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.utility.database.Connect;
 import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
@@ -18,6 +19,7 @@ import java.time.Instant;
 import java.util.*;
 
 import static germany.jannismartensen.smartmanaging.utility.Util.log;
+import static germany.jannismartensen.smartmanaging.utility.Util.redirect;
 
 public class Login implements HttpHandler {
 
@@ -39,7 +41,7 @@ public class Login implements HttpHandler {
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 
         if (Util.loggedIn(he, connect)) {
-            Util.redirect(plugin, he, "http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
+            redirect(plugin, he, Util.root());
             return;
         }
 

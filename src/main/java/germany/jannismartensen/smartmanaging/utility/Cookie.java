@@ -1,4 +1,4 @@
-package germany.jannismartensen.smartmanaging.endpoints;
+package germany.jannismartensen.smartmanaging.utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

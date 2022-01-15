@@ -39,6 +39,7 @@ public class PlayerSearchRandom implements HttpHandler {
 
         ManagingPlayer user = Util.getUser(connect, he, plugin);
         if (user == null) {
+            redirect(plugin, he, Util.root());
             return;
         }
 

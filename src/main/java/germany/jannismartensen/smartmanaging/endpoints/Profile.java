@@ -40,13 +40,13 @@ public class Profile implements HttpHandler {
         Util.logAccess(he);
 
         if (!Util.loggedIn(he, connect)) {
-            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
+            redirect(plugin, he, Util.root());
             return;
         }
 
         ManagingPlayer user = Util.getUser(connect, he, plugin);
         if (user == null) {
-            redirect(plugin, he,"http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "/");
+            redirect(plugin, he, Util.root());
             return;
         }
 

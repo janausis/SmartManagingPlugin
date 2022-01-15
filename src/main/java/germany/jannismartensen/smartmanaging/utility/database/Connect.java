@@ -41,7 +41,8 @@ public class Connect {
                     uuid text NOT NULL,
                     password text NOT NULL,
                     cookie text UNIQUE,
-                    expires Integer);""";
+                    expires Integer,
+                    manager text);""";
 
             try {
                 Statement stmt = conn.createStatement();
@@ -99,6 +100,50 @@ public class Connect {
         pstmt.setString(3, username);
         pstmt.executeUpdate();
     }
+
+    public static void setManagerStatus(Connection conn, String uuid, boolean manager) {
+        String sql = "UPDATE player SET manager = ? WHERE uuid = ?";
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, String.valueOf(manager));
+            pstmt.setString(2, uuid);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            log(ex, 3);
+            log("(Connect.setManagerStatus) Could not set managing status for uuid " + uuid, 3, true);
+        }
+    }
+
+    public static boolean getManagerStatus(Connection conn, String uuid) {
+        String sql = "SELECT manager FROM player WHERE uuid = ?";
+        boolean manager = false;
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, uuid);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Only expecting a single result
+
+                if (rs.next()) {
+                    manager = rs.getString(1).equals("true");
+
+                    // Get data from the current row and use it
+                }
+                return manager;
+
+            } catch (SQLException ex) {
+                log(ex, 3);
+                log("(Connect.getManagerStatus) Could not get managing status from uuid " + uuid, 3, true);
+            }
+
+        } catch (SQLException e) {
+            log(e, 3);
+            log("(Connect.getManagerStatus) Could not get managing status from uuid " + uuid, 3, true);
+        }
+        return manager;
+    }
+
 
     public static boolean isCookieValid(Connection conn, String cookie) {
         String sql = "SELECT expires FROM player WHERE cookie = ?";

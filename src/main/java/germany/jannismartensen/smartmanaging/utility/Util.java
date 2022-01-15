@@ -3,7 +3,6 @@ package germany.jannismartensen.smartmanaging.utility;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.endpoints.Cookie;
 import germany.jannismartensen.smartmanaging.utility.database.Connect;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
@@ -784,8 +783,7 @@ public class Util {
                 }
             }
         }
-        log(getStringFromArray1(routes));
-        log(getStringFromArray1(names));
+
         map.put("navbarRoutes", getStringFromArray1(routes));
         map.put("navbarNames", getStringFromArray1(names));
     }

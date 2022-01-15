@@ -196,6 +196,8 @@ public class SmartManaging extends JavaPlugin {
         server.createContext("/players/results", new PlayerSearchResults(engine, this, Database));
         server.createContext("/players/random", new PlayerSearchRandom(engine, this, Database));
         server.createContext("/inventory", new Inventory(engine, this, Database));
+        server.createContext("/map", new ServerMap(engine, this, Database));
+        server.createContext("/admin", new Admin(engine, this, Database));
 
         // Static Files
         server.createContext("/favicon.ico", new ServeFile(this, "favicon.ico"));
