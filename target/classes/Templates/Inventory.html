@@ -11,36 +11,12 @@
   <link href="../style/inventory.css" rel="stylesheet" />
   <script src="../scripts/navbar.js"></script>
   <script src="../scripts/inventory.js"></script>
+  <script>checkLogin(${navbarRoutes}, ${navbarNames});</script>
 
 </head>
-<body style="margin: 0; background-color: #444;">
-  <div class="navbar" id="logged">
-    <a href="/">          <button class="navbar-button b5-1">Home</button></a>
-    <a href="/profile">   <button class="navbar-button b5-2">Profile</button></a>
-    <a href="/map">       <button class="navbar-button b5-3">Map</button></a>
-    <a href="/inventory"> <button class="navbar-button b5-4">Inventory</button></a>
-    <a href="/players">     <button class="navbar-button b5-5">Players</button></a>
-    <a href="/logout">    <button class="navbar-button b5-6">Logout</button></a>
+<body style="margin: 0;">
 
-    <div class="topnav">
-      <a class="active">
-      </a>
-        <div id="myLinks">
-          <a class="tab" href="/">Home</a>
-          <a class="tab" href="/profile">Profile</a>
-          <a class="tab" href="/map">Map</a>
-          <a class="tab" href="/inventory">Inventory</a>
-          <a class="tab" href="/players">Players</a>
-          <a class="tab" href="/logout">Logout</a>
-        </div>
-
-      <div href="javascript:void(0);" class="icon" onclick="myFunction()">
-          <div class="burger"></div>
-          <div class="burger"></div>
-          <div class="burger"></div>
-      </div>
-    </div>
-  </div>
+<div class="navbar" id="mainNav"></div>
 
 <!-- Main content -->
 

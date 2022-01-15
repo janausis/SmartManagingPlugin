@@ -36,8 +36,21 @@ announcements:
   profile: Take a look at your game stats
   players: Search for other players with an account
 
-# this will add a mode which list some general stuff from the ingame statistics tab
-# Replace Minecraft Stats with false if you want to deactivate this
+sites:
+  # Admin page will always be displayed when logged in as admin
+
+  # (actual route;display name)
+  loggedIn:
+    /;Home: true
+    /profile;Profile: true
+    /map;Map: true
+    /inventory;Inventory: true
+    /players;Search: true
+    /logout;Logout: true
+
+  notLoggedIn:
+    /;Home: true
+    /login;Login: true
 
 # list of the worlds to read the playtime from
 # if you use a normal spigot server set this to the main world and not the nether or end
@@ -47,6 +60,8 @@ worldName: world
 # The world the player inventory will be read from, can currently only be one
 inventoryWorld: world
 
+# this will add a mode which list some general stuff from the ingame statistics tab
+# Replace Minecraft Stats with false if you want to deactivate this
 # exact names of minecraft stats to display, only work if showMinecraftStats is not set to false
 # max (10)
 stats:
