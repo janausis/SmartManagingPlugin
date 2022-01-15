@@ -8,7 +8,6 @@ import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.utility.Util;
 import germany.jannismartensen.smartmanaging.utility.database.Connect;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,17 +45,12 @@ public class Admin implements HttpHandler {
         }
 
         Map<String, String> map = new HashMap<>();
-        FileConfiguration config = plugin.getConfig();
-
-
         map.put("ip", "'http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "'");
         Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect), true);
-
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 
-        // SmartManaging.copyResources("Templates/admin.html", plugin, false);
-        // String response = engine.renderTemplate("admin.html", map);
-        String response = "Yay, you have web admin rights!";
+        SmartManaging.copyResources("Templates/admin.html", plugin, false);
+        String response = engine.renderTemplate("admin.html", map);
 
         he.sendResponseHeaders(200, response.length());
         OutputStream os = he.getResponseBody();
