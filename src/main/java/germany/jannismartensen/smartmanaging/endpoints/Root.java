@@ -4,9 +4,10 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import germany.jannismartensen.smartmanaging.SmartManaging;
-import germany.jannismartensen.smartmanaging.utility.database.Connect;
+import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.utility.Util;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
@@ -38,12 +39,23 @@ public class Root implements HttpHandler {
 
         map.put("name", config.getString("servername"));
         map.put("announcement", config.getString("announcements.home"));
-        map.put("playercount", String.valueOf(plugin.getServer().getOnlinePlayers().size()) + " / " + plugin.getServer().getMaxPlayers());
+        map.put("playercount", plugin.getServer().getOnlinePlayers().size() + " / " + plugin.getServer().getMaxPlayers());
         map.put("accountNumber", String.valueOf(Connect.getPlayerCount(connect)));
         map.put("version", plugin.getServer().getBukkitVersion().split("-")[0]);
         map.put("ip", Util.getIpOrDomain(plugin));
         map.put("loggedin", String.valueOf(Util.loggedIn(he, connect)));
-        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
+
+        if (Util.loggedIn(he, connect)) {
+            ManagingPlayer user = Util.getUser(connect, he, plugin);
+            if (user == null) {
+                Util.getNavbarRoutes(plugin, map, false, false);
+            } else {
+                Util.getNavbarRoutes(plugin, map, true, Connect.getManagerStatus(connect, user.getUUID()));
+            }
+        } else {
+            Util.getNavbarRoutes(plugin, map, false, false);
+        }
+
 
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 

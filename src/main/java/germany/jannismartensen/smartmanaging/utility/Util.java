@@ -759,7 +759,7 @@ public class Util {
         return out;
     }
 
-    public static void getNavbarRoutes(SmartManaging plugin, Map<String, String> map, boolean loggedIn) {
+    public static void getNavbarRoutes(SmartManaging plugin, Map<String, String> map, boolean loggedIn, boolean admin) {
         ArrayList<String> routes = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         FileConfiguration config = plugin.getConfig();
@@ -781,6 +781,10 @@ public class Util {
                     log(e, 3);
                     log("(Util.getNavbarRoutes) Unexpected error whilst adding " + item);
                 }
+            }
+            if (admin) {
+                routes.add("admin");
+                names.add("Admin");
             }
         }
 

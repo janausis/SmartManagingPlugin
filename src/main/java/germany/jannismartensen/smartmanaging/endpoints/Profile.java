@@ -7,6 +7,7 @@ import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.utility.Util;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
 import germany.jannismartensen.smartmanaging.utility.database.GameModesDatabaseConnector;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -56,7 +57,7 @@ public class Profile implements HttpHandler {
         map.put("username", user.getName());
         map.put("announcement", config.getString("announcements.profile"));
         map.put("playtime", Util.getPlayTime(plugin, user));
-        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
+        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect), Connect.getManagerStatus(connect, user.getUUID()));
 
 
         // Populate modeScores

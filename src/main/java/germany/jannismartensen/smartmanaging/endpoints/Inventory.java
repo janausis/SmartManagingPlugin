@@ -7,6 +7,7 @@ import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.utility.Util;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
 import net.querz.nbt.io.NBTUtil;
 import net.querz.nbt.io.NamedTag;
 import net.querz.nbt.io.SNBTUtil;
@@ -69,7 +70,7 @@ public class Inventory implements HttpHandler {
 
         Map<String, String> map = new HashMap<>();
         map.put("playername", user.getName());
-        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
+        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect), Connect.getManagerStatus(connect, user.getUUID()));
 
         map = readNBT(map, user);
 

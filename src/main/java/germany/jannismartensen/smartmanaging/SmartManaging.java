@@ -43,7 +43,8 @@ public class SmartManaging extends JavaPlugin {
         zipLog(this, "");
         zipLog(this, "access/");
 
-        Objects.requireNonNull(getCommand("managing")).setTabCompleter(new TabCompleter());
+
+
         if (!Util.getLogStatus(this, "logLocation").equals("console")) {
             logToFile("Activating Plugin...", 0, this, "");
         }
@@ -51,6 +52,8 @@ public class SmartManaging extends JavaPlugin {
 
         Database = Connect.connect(this);
         engine = new TemplateEngine(this);
+
+        Objects.requireNonNull(getCommand("managing")).setTabCompleter(new TabCompleter(Database));
 
         BackGroundRunnable myRunnable = new BackGroundRunnable(this, false);
         Thread t = new Thread(myRunnable);
@@ -122,6 +125,24 @@ public class SmartManaging extends JavaPlugin {
                                 t.setName("Renderer");
                                 t.start();
                                 sender.sendMessage(ChatColor.GREEN + "Forced new render!");
+                            }
+                        } else if (args[1].equalsIgnoreCase("webAdmin")) {
+                            if (args[2].equalsIgnoreCase("add")) {
+                                if (args.length > 3) {
+                                    Connect.setManagerStatus(Database, Objects.requireNonNull(Connect.getPlayerByName(Database, args[3])).getUUID(), true);
+                                    sender.sendMessage(ChatColor.GREEN + "Added " + args[3] + " as Web Admin");
+                                } else {
+                                    sender.sendMessage(ChatColor.RED + "Please add a name");
+                                }
+                            } else if (args[2].equalsIgnoreCase("remove")) {
+                                if (args.length > 3) {
+                                    Connect.setManagerStatus(Database, Objects.requireNonNull(Connect.getPlayerByName(Database, args[3])).getUUID(), false);
+                                    sender.sendMessage(ChatColor.GREEN + "Removed " + args[3] + " as Web Admin");
+                                } else {
+                                    sender.sendMessage(ChatColor.RED + "Please add a name");
+                                }
+                            } else {
+                                sender.sendMessage("Unknown action");
                             }
                         } else {
                             sender.sendMessage("Unknown action");

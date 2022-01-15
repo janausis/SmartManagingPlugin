@@ -7,6 +7,7 @@ import germany.jannismartensen.smartmanaging.SmartManaging;
 import germany.jannismartensen.smartmanaging.utility.ManagingPlayer;
 import germany.jannismartensen.smartmanaging.utility.TemplateEngine;
 import germany.jannismartensen.smartmanaging.utility.Util;
+import germany.jannismartensen.smartmanaging.utility.database.Connect;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
@@ -47,9 +48,8 @@ public class Players implements HttpHandler {
         Map<String, String> map = new HashMap<>();
         FileConfiguration config = plugin.getConfig();
 
-        map.put("announcement", config.getString("announcements.players"));
         map.put("ip", "'http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "'");
-        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
+        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect), Connect.getManagerStatus(connect, user.getUUID()));
 
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 

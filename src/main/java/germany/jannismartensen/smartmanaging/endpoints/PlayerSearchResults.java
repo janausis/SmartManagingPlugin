@@ -71,7 +71,7 @@ public class PlayerSearchResults implements HttpHandler {
 
         map = getData(map, suggestions);
         map.put("query", query);
-        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
+        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect), Connect.getManagerStatus(connect, user.getUUID()));
 
         SmartManaging.copyResources("Templates/playersResult.html", plugin, false);
         String response = engine.renderTemplate("playersResult.html", map);

@@ -48,14 +48,15 @@ public class Admin implements HttpHandler {
         Map<String, String> map = new HashMap<>();
         FileConfiguration config = plugin.getConfig();
 
-        map.put("announcement", config.getString("announcements.players"));
+
         map.put("ip", "'http://" + Util.getIpOrDomain(plugin) + ":" + SmartManaging.port + "'");
-        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect));
+        Util.getNavbarRoutes(plugin, map, Util.loggedIn(he, connect), true);
 
         Headers headers = Util.deleteInvalidCookies(Util.loggedIn(he, connect), he);
 
-        SmartManaging.copyResources("Templates/players.html", plugin, false);
-        String response = engine.renderTemplate("players.html", map);
+        // SmartManaging.copyResources("Templates/admin.html", plugin, false);
+        // String response = engine.renderTemplate("admin.html", map);
+        String response = "Yay, you have web admin rights!";
 
         he.sendResponseHeaders(200, response.length());
         OutputStream os = he.getResponseBody();

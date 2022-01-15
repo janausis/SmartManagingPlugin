@@ -42,7 +42,7 @@ public class Connect {
                     password text NOT NULL,
                     cookie text UNIQUE,
                     expires Integer,
-                    manager text);""";
+                    manager text DEFAULT 'false');""";
 
             try {
                 Statement stmt = conn.createStatement();
@@ -142,6 +142,37 @@ public class Connect {
             log("(Connect.getManagerStatus) Could not get managing status from uuid " + uuid, 3, true);
         }
         return manager;
+    }
+
+
+    public static ArrayList<String> getAllManagers(Connection conn, boolean manager) {
+        String sql = "SELECT name FROM player WHERE manager = ?";
+        ArrayList<String> out = new ArrayList<>();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, String.valueOf(manager));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Only expecting a single result
+
+                while (rs.next()) {
+                    out.add(rs.getString(1));
+
+                    // Get data from the current row and use it
+                }
+                return out;
+
+            } catch (SQLException ex) {
+                log(ex, 3);
+                log("(Connect.getAllManagers) Could not get managers for type " + manager, 3, true);
+            }
+
+        } catch (SQLException e) {
+            log(e, 3);
+            log("(Connect.getAllManagers) Could not get managers for type " + manager, 3, true);
+        }
+        return out;
     }
 
 
@@ -298,7 +329,7 @@ public class Connect {
                 // Only expecting a single result
 
                 while (rs.next()) {
-                    ++count;
+                    count = rs.getInt(1);
                     // Get data from the current row and use it
                 }
 
